@@ -1,0 +1,27 @@
+ss-engineers/
+├── assets/
+│   ├── css/
+│   ├── js/
+│   ├── images/
+│   └── fonts/
+├── includes/
+│   ├── header.php
+│   ├── footer.php
+│   ├── navigation.php
+│   ├── config.php
+│   └── db.php
+├── admin/
+│   ├── index.php
+│   ├── login.php
+│   ├── dashboard.php
+│   └── manage-services.php
+├── services/
+│   ├── index.php
+│   ├── fire-extinguishers.php
+│   ├── fire-alarms.php
+│   ├── sprinkler-systems.php
+│   └── fire-safety-training.php
+├── about.php
+├── contact.php
+├── index.php
+└── .htaccess
