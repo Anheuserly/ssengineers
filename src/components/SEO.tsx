@@ -3,62 +3,76 @@ import React from "react";
 import Script from "next/script";
 
 export default function SEO() {
+  const companyName = "SS Engineers & Consultants";
+  const canonicalUrl = "https://www.ssengineers.in";
+  const logoUrl = "https://www.ssengineers.in/logo.png"; // Change to your real logo
+
   const localBusiness = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: "SHREE GANESHE ENTERPRISES",
-    url: "https://www.asge.org.in",
-    image: "https://www.asge.org.in/amcmep-icon.png",
-    logo: "https://www.asge.org.in/amcmep-icon.png",
+    name: companyName,
+    url: canonicalUrl,
+    logo: logoUrl,
+    image: logoUrl,
     telephone: "+91-9871936847",
-    email: "anilkumarsaini0507@gmail.com",
+    email: "anil@ssengineers.in",
+
     address: {
       "@type": "PostalAddress",
-      streetAddress:
-        "House No. 535, Second Floor, Left Side, Khasra No. 60, 128-D21, Chattarpur Pahadi",
-      addressLocality: "New Delhi",
-      postalCode: "110074",
+      streetAddress: "A-45 Industrial Area",
+      addressLocality: "Gurgaon",
+      addressRegion: "Haryana",
+      postalCode: "122001",
       addressCountry: "IN",
     },
+
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 28.5068707,
-      longitude: 77.1847125,
+      latitude: 28.4595,
+      longitude: 77.0266,
     },
+
     founder: {
       "@type": "Person",
-      name: "A. K. Saini",
+      name: "Poonam Saini",
     },
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: "+91-9871936847",
-      contactType: "customer service",
-      areaServed: "IN",
-      availableLanguage: ["en", "hi"],
-    },
+
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: "+91-9871936847",
+        contactType: "customer service",
+        areaServed: "IN",
+        availableLanguage: ["en", "hi"],
+      },
+    ],
+
     hasPart: [
-      { "@type": "WebPage", url: "https://www.asge.org.in/about", name: "About Us" },
-      { "@type": "WebPage", url: "https://www.asge.org.in/contact", name: "Contact Us" },
-      { "@type": "WebPage", url: "https://www.asge.org.in/portfolio", name: "Portfolio" },
-      { "@type": "WebPage", url: "https://www.asge.org.in/blog", name: "Blog" },
-      { "@type": "WebPage", url: "https://www.asge.org.in/journal", name: "Journal" },
-      { "@type": "WebPage", url: "https://www.asge.org.in/services", name: "Services" },
+      { "@type": "WebPage", url: `${canonicalUrl}/about`, name: "About Us" },
+      { "@type": "WebPage", url: `${canonicalUrl}/contact`, name: "Contact Us" },
+      { "@type": "WebPage", url: `${canonicalUrl}/projects`, name: "Projects" },
+      { "@type": "WebPage", url: `${canonicalUrl}/services`, name: "Services" },
+      { "@type": "WebPage", url: `${canonicalUrl}/career`, name: "Careers" },
+      { "@type": "WebPage", url: `${canonicalUrl}/journal`, name: "Journal" },
     ],
+
     sameAs: [
-      "https://www.facebook.com/shreeganesheenterprises",
-      "https://www.linkedin.com/company/shreeganesheenterprises ",
-      "https://www.google.com/maps/place/Shree+Ganesh+Enterprises/@28.5068754,77.1821376,17z",
+      "https://www.facebook.com/ssengineers",
+      "https://www.linkedin.com/company/ssengineers",
+      `${canonicalUrl}`,
     ],
-    seserviceType: [
+
+    service: [
+      "MEP Consulting",
       "Fire Fighting Systems",
       "Detection Systems",
-      "Electrical Work",
+      "Electrical Contracting",
       "Plumbing Solutions",
-      "AMC (Annual Maintenance Contracts)",
-      "Separation Systems",
-      "Security Systems",
-      "IT Solutions",
-      "AutoCAD Services"
+      "AMC Maintenance Services",
+      "HVAC Systems",
+      "Security Surveillance Setup",
+      "IT & Automation Solutions",
+      "AutoCAD Drafting Services",
     ],
   };
 
@@ -68,26 +82,28 @@ export default function SEO() {
     mainEntity: [
       {
         "@type": "Question",
-        name: "What services does SHREE GANESHE ENTERPRISES provide?",
+        name: "What services does SS Engineers & Consultants provide?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "We provide comprehensive fire safety solutions including fire fighting systems, detection systems, electrical work, plumbing solutions, AMC services, and security systems across Delhi NCR.",
+          text:
+            "We provide MEP consulting, fire fighting systems, electrical contracting, HVAC solutions, AMC services, and end-to-end industrial engineering solutions.",
         },
       },
       {
         "@type": "Question",
-        name: "Do you provide maintenance contracts for fire safety systems?",
+        name: "Do you provide AMC maintenance services?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Yes, SHREE GANESHE ENTERPRISES provides Annual Maintenance Contracts (AMC) for all types of fire safety and security systems.",
+          text:
+            "Yes, we provide Annual Maintenance Contracts (AMC) for fire systems, electrical panels, pumps, CCTV, and industrial infrastructure.",
         },
       },
       {
         "@type": "Question",
-        name: "Where are you located?",
+        name: "Which areas do you serve?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "We are based in New Delhi and serve clients across the Delhi NCR region.",
+          text: "We serve Delhi NCR, Gurgaon, Noida, Faridabad, and all industrial zones in North India.",
         },
       },
     ],
@@ -96,12 +112,12 @@ export default function SEO() {
   const organization = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "SHREE GANESHE ENTERPRISES",
-    url: "https://www.sge.org.in",
-    logo: "https://www.sge.org.in/amcmep-icon.png",
+    name: companyName,
+    url: canonicalUrl,
+    logo: logoUrl,
     sameAs: [
-      "https://www.facebook.com/shreeganesheenterprises",
-      "https://www.linkedin.com/company/shreeganesheenterprises",
+      "https://www.linkedin.com/company/ssengineers",
+      "https://www.facebook.com/ssengineers",
     ],
   };
 
@@ -109,35 +125,20 @@ export default function SEO() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://www.sge.org.in",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "About",
-        item: "https://www.sge.org.in/about",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Contact",
-        item: "https://www.sge.org.in/contact",
-      },
+      { "@type": "ListItem", position: 1, name: "Home", item: canonicalUrl },
+      { "@type": "ListItem", position: 2, name: "About", item: `${canonicalUrl}/about` },
+      { "@type": "ListItem", position: 3, name: "Contact", item: `${canonicalUrl}/contact` },
     ],
   };
 
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    serviceType: "Fire Safety Systems & Electrical Solutions",
+    name: "Engineering, MEP & Industrial Solutions",
     provider: {
       "@type": "LocalBusiness",
-      name: "SHREE GANESHE ENTERPRISES",
-      url: "https://www.sge.org.in",
+      name: companyName,
+      url: canonicalUrl,
     },
     areaServed: {
       "@type": "Place",
@@ -145,39 +146,43 @@ export default function SEO() {
     },
     offers: {
       "@type": "Offer",
-      url: "https://www.sge.org.in/services",
+      url: `${canonicalUrl}/services`,
       priceCurrency: "INR",
-      price: "Consultation-based",
+      price: "Based on project requirements",
       availability: "https://schema.org/InStock",
     },
   };
-
 
   return (
     <>
       <Script
         id="ld-localbusiness"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
       />
       <Script
         id="ld-faq"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <Script
         id="ld-organization"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
       />
       <Script
         id="ld-breadcrumb"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbList) }}
       />
       <Script
         id="ld-service"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
     </>
