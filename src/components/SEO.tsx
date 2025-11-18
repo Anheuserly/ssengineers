@@ -5,15 +5,17 @@ import Script from "next/script";
 export default function SEO() {
   const companyName = "SS Engineers & Consultants";
   const canonicalUrl = "https://www.ssengineers.in";
-  const logoUrl = "https://www.ssengineers.in/logo.png"; // Change to your real logo
+  const logoUrl = "https://www.ssengineers.in/logo.png"; // update if needed
 
   const localBusiness = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+
     name: companyName,
     url: canonicalUrl,
     logo: logoUrl,
     image: logoUrl,
+
     telephone: "+91-9871936847",
     email: "anil@ssengineers.in",
 
@@ -56,10 +58,50 @@ export default function SEO() {
       { "@type": "WebPage", url: `${canonicalUrl}/journal`, name: "Journal" },
     ],
 
+    // --------------------------------------------------------
+    //               COMPLETE ECOSYSTEM SAMEAS
+    // --------------------------------------------------------
     sameAs: [
+      // SS Engineers (main)
       "https://www.facebook.com/ssengineers",
       "https://www.linkedin.com/company/ssengineers",
-      `${canonicalUrl}`,
+      canonicalUrl,
+
+      // SGE Group
+      "https://www.sge.org.in/",
+      "https://www.facebook.com/profile.php?id=61566464961902",
+      "https://www.instagram.com/_sgemep/",
+      "https://www.linkedin.com/in/shree-ganesh-enterprises-1385b5271/",
+      "https://www.youtube.com/@sgemep",
+      "https://x.com/_sgemep",
+
+      // Owner YouTube Channel
+      "https://www.youtube.com/@purevegsatvikrasoi06",
+
+      // AMC-MEP Group
+      "https://x.com/amcmep24x7",
+      "https://www.instagram.com/amcmep247",
+      "https://www.linkedin.com/in/amc-mep-b53b68391",
+      "https://www.facebook.com/profile.php?id=61583370617483",
+
+      // Mobile Apps
+      "https://play.google.com/store/apps/details?id=com.mepsge.amcsge",
+      "https://play.google.com/store/apps/details?id=com.mepsge.amcsgepartner.amcsgepartner",
+
+      // Communication Platforms
+      "https://wa.me/919871936847",
+      "https://t.me/+HJbJBvfbGyMxMzI1",
+      "https://discord.gg/hp5Z6ddTNy",
+
+      // Other Company Domains
+      "https://www.amcmep.in/",
+      "https://www.arcelevenarchitect.com/",
+
+      // Arc Eleven Architects
+      "https://www.linkedin.com/in/ar-shashank-saini-a0830b19b",
+      "https://www.facebook.com/profile.php?id=61578009358525",
+      "https://koloapp.in/delhi/architects/shashank-saini--delhi",
+      "https://www.instagram.com/arc11studio_/",
     ],
 
     service: [
@@ -69,7 +111,6 @@ export default function SEO() {
       "Electrical Contracting",
       "Plumbing Solutions",
       "AMC Maintenance Services",
-      "HVAC Systems",
       "Security Surveillance Setup",
       "IT & Automation Solutions",
       "AutoCAD Drafting Services",
@@ -86,7 +127,7 @@ export default function SEO() {
         acceptedAnswer: {
           "@type": "Answer",
           text:
-            "We provide MEP consulting, fire fighting systems, electrical contracting, HVAC solutions, AMC services, and end-to-end industrial engineering solutions.",
+            "We provide MEP consulting, fire fighting systems, electrical contracting, HVAC solutions, AMC services, and complete industrial engineering solutions.",
         },
       },
       {
@@ -103,7 +144,8 @@ export default function SEO() {
         name: "Which areas do you serve?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "We serve Delhi NCR, Gurgaon, Noida, Faridabad, and all industrial zones in North India.",
+          text:
+            "We serve Delhi NCR, Gurgaon, Noida, Faridabad, and all industrial zones across North India.",
         },
       },
     ],
@@ -116,8 +158,17 @@ export default function SEO() {
     url: canonicalUrl,
     logo: logoUrl,
     sameAs: [
-      "https://www.linkedin.com/company/ssengineers",
+      // SS Engineers
       "https://www.facebook.com/ssengineers",
+      "https://www.linkedin.com/company/ssengineers",
+
+      // Ecosystem domains
+      "https://www.sge.org.in/",
+      "https://www.amcmep.in/",
+      "https://www.arcelevenarchitect.com/",
+
+      // Owner YouTube
+      "https://www.youtube.com/@purevegsatvikrasoi06"
     ],
   };
 
@@ -155,36 +206,11 @@ export default function SEO() {
 
   return (
     <>
-      <Script
-        id="ld-localbusiness"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
-      />
-      <Script
-        id="ld-faq"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <Script
-        id="ld-organization"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
-      />
-      <Script
-        id="ld-breadcrumb"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbList) }}
-      />
-      <Script
-        id="ld-service"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
+      <Script id="ld-localbusiness" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} />
+      <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <Script id="ld-organization" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }} />
+      <Script id="ld-breadcrumb" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbList) }} />
+      <Script id="ld-service" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
     </>
   );
 }
