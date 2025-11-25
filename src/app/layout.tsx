@@ -2,23 +2,25 @@
 // COMPLETE, FULL, UPDATED METADATA – SS ENGINEERS
 // ===============================================
 
+import Navigation from "../components/Navigation";
+import Footer from "../components/Footer";
+import { Analytics } from "@vercel/analytics/next";
+import "../app/globals.css";
+import SEO from "../components/SEO";
+
 export const metadata = {
   title:
     "SS Engineers & Consultants – India’s Leading MEP, Fire Safety, Electrical, Plumbing, AMC & Industrial Engineering Experts",
 
   description:
     "SS Engineers & Consultants is a PAN-India engineering solutions provider specializing in MEP consulting, fire fighting systems, fire alarm & detection, electrical contracting, LT/HT panel installation, industrial wiring, plumbing & PHE works, CCTV & security systems, pump room installation, automation, industrial maintenance, and turnkey project execution for commercial, industrial and infrastructure sectors across India. Trusted by industries for quality, compliance, safety and precision engineering.",
-  // =======================================================
-  //                MASSIVE 500+ KEYWORD BANK
-  // =======================================================
+
   keywords: [
-    // BRAND
     "SS Engineers & Consultants",
     "SS Engineers Gurgaon",
     "SS Engineers India",
     "SS Engineering Company",
 
-    // MEP
     "MEP consultants",
     "MEP contracting company",
     "MEP design consultants",
@@ -26,8 +28,7 @@ export const metadata = {
     "MEP company Gurgaon",
     "mechanical electrical plumbing experts",
     "turnkey MEP contractors",
-    
-    // FIRE SAFETY
+
     "fire fighting system installation",
     "fire hydrant system contractors",
     "fire sprinkler installation",
@@ -39,7 +40,6 @@ export const metadata = {
     "fire safety audit Delhi NCR",
     "fire NOC consultancy",
 
-    // ELECTRICAL
     "electrical contractors Gurgaon",
     "industrial electrical contractors",
     "LT panel installation",
@@ -51,7 +51,6 @@ export const metadata = {
     "PCC panel installation",
     "MCC panel installation",
 
-    // HVAC
     "HVAC contractors Gurgaon",
     "HVAC AMC services",
     "ducting fabrication and installation",
@@ -61,7 +60,6 @@ export const metadata = {
     "industrial HVAC solutions",
     "ventilation system installation",
 
-    // PLUMBING & PHE
     "plumbing contractors Gurgaon",
     "industrial plumbing installation",
     "water pipeline installation",
@@ -71,7 +69,6 @@ export const metadata = {
     "sewage pump installation",
     "PHE consultants Delhi NCR",
 
-    // AMC SERVICES
     "AMC contractors",
     "industrial AMC services",
     "fire system AMC",
@@ -81,7 +78,6 @@ export const metadata = {
     "building AMC services",
     "pump room AMC",
 
-    // CCTV & SECURITY
     "CCTV installation contractors",
     "security surveillance setup",
     "access control system installers",
@@ -91,7 +87,6 @@ export const metadata = {
     "LAN networking installation",
     "fiber optic cable installation",
 
-    // INDUSTRIAL ENGINEERING
     "industrial engineering consultants",
     "factory setup contractors",
     "industrial automation company",
@@ -100,7 +95,6 @@ export const metadata = {
     "manufacturing plant contractors",
     "industrial project execution",
 
-    // CAD & BIM
     "MEP CAD drawings",
     "fire safety drawings",
     "electrical SLD drawings",
@@ -109,7 +103,6 @@ export const metadata = {
     "as-built drawings consultants",
     "BIM modelling services",
 
-    // HIGH CPC GOOGLE ADS TERMS
     "MEP consultant near me",
     "fire fighting contractor near me",
     "HVAC contractor near me",
@@ -118,7 +111,6 @@ export const metadata = {
     "industrial wiring services",
     "fire pump installation",
 
-    // REGION-SPECIFIC SEO
     "engineering company Delhi NCR",
     "engineering company Gurgaon",
     "MEP contractors Noida",
@@ -127,7 +119,6 @@ export const metadata = {
     "MEP consultants Haryana",
     "engineering consultants North India",
 
-    // LSI & LONG TAIL DEEP SEO
     "industrial building contractors",
     "commercial building contractors",
     "infrastructure engineering",
@@ -135,18 +126,15 @@ export const metadata = {
     "energy management consultants",
     "automation and control systems",
     "industrial pipeline contractors",
-    "factory construction services"
+    "factory construction services",
   ],
 
-  // =======================================================
-  // AUTHOR / CANONICAL
-  // =======================================================
-  authors: [{ name: "SS Engineers & Consultants", url: "https://www.ssengineers.in" }],
+  authors: [
+    { name: "SS Engineers & Consultants", url: "https://www.ssengineers.in" },
+  ],
+
   alternates: { canonical: "https://www.ssengineers.in" },
 
-  // =======================================================
-  //                  OPEN GRAPH ENHANCED
-  // =======================================================
   openGraph: {
     title:
       "SS Engineers & Consultants – MEP, Fire Safety, Electrical, HVAC, Plumbing & Industrial Engineering Company",
@@ -166,24 +154,47 @@ export const metadata = {
     type: "website",
   },
 
-  // =======================================================
-  //                    TWITTER SEO
-  // =======================================================
   twitter: {
     card: "summary_large_image",
-    title: "SS Engineers & Consultants – Engineering, Fire Safety, MEP & HVAC Experts",
+    title:
+      "SS Engineers & Consultants – Engineering, Fire Safety, MEP & HVAC Experts",
     description:
       "Leading MEP consultants, fire safety experts, HVAC contractors, electrical engineers, plumbing contractors & industrial engineering specialists.",
     images: ["/og-image.png"],
     creator: "@ssengineersin",
   },
 
-  // =======================================================
-  // ICONS
-  // =======================================================
   icons: {
     icon: "/ssengineers.svg",
     shortcut: "/ssengineers.svg",
     apple: "/ssengineers.svg",
   },
 };
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="icon" href="/ssengineers.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:opsz,wght@14..32,100..900&family=Poppins:wght@300;400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+
+      <body className="bg-amcmep-bg font-inter text-sm text-amcmep-text antialiased">
+        <Navigation />
+        <main className="flex-grow p-4">{children}</main>
+        <Footer />
+
+        {/* SEO JSON-LD */}
+        <SEO />
+
+        {/* Analytics */}
+        <Analytics />
+      </body>
+    </html>
+  );
+}
