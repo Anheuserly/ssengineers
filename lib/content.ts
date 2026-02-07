@@ -105,7 +105,7 @@ export const team = [
   { role: "Managing Director", name: "Mrs. Poonam Saini" },
   { role: "Executive Director", name: "Mr. A.K. Saini" },
   { role: "Architect", name: "Shashank Saini" },
-  { role: "MEP Head", name: "Nishu Agarwal" },
+  { role: "MEP Head", name: "" },
   { role: "Finance", name: "Rajeev Shukla" },
   { role: "Operations GM", name: "Prem" },
   { role: "Admin Manager", name: "Himanshu" },
