@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createAppwriteDocument, getAppwriteConfig } from "@/functions/appwrite";
 import { serviceRequestOptions } from "@/lib/content";
 
 export default function ServiceRequestForm() {
@@ -12,6 +11,7 @@ export default function ServiceRequestForm() {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.currentTarget;
     setStatus("sending");
     setMessage("");
 
@@ -19,16 +19,26 @@ export default function ServiceRequestForm() {
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      const { collections } = getAppwriteConfig();
-      await createAppwriteDocument(collections.serviceRequests, {
-        ...payload,
-        source: "website-service-request",
-        createdAt: new Date().toISOString(),
+      const response = await fetch("/api/service-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...payload,
+          source: "ssengineers.in",
+          createdAt: new Date().toISOString(),
+        }),
       });
-      event.currentTarget.reset();
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Request failed");
+      }
+
+      form.reset();
       setStatus("sent");
       setMessage("Request received. Our team will schedule a site visit.");
     } catch (error) {
+      console.error("Service request error:", error);
       setStatus("error");
       setMessage("Unable to submit right now. Please call us directly.");
     }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createAppwriteDocument, getAppwriteConfig } from "@/functions/appwrite";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -11,6 +10,7 @@ export default function ContactForm() {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.currentTarget;
     setStatus("sending");
     setMessage("");
 
@@ -18,16 +18,26 @@ export default function ContactForm() {
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      const { collections } = getAppwriteConfig();
-      await createAppwriteDocument(collections.contacts, {
-        ...payload,
-        source: "website-contact",
-        createdAt: new Date().toISOString(),
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...payload,
+          source: "ssengineers.in",
+          createdAt: new Date().toISOString(),
+        }),
       });
-      event.currentTarget.reset();
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Request failed");
+      }
+
+      form.reset();
       setStatus("sent");
       setMessage("Thanks! We will call you back shortly.");
     } catch (error) {
+      console.error("Contact form error:", error);
       setStatus("error");
       setMessage("Unable to submit right now. Please call us directly.");
     }
