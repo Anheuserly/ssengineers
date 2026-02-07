@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const runtime = "edge";
+
 const getServerConfig = () => {
   const endpoint =
     process.env.APPWRITE_ENDPOINT ||
