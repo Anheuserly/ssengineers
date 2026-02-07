@@ -4,12 +4,21 @@ type AppwriteConfig = {
   endpoint: string;
   projectId: string;
   databaseId: string;
+  collections: {
+    contacts: string;
+    serviceRequests: string;
+  };
 };
 
-const getConfig = (): AppwriteConfig => {
+export const getAppwriteConfig = (): AppwriteConfig => {
   const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || "";
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || "";
   const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || "";
+  const contacts =
+    process.env.NEXT_PUBLIC_APPWRITE_CONTACTS_COLLECTION_ID || "contacts";
+  const serviceRequests =
+    process.env.NEXT_PUBLIC_APPWRITE_SERVICE_REQUESTS_COLLECTION_ID ||
+    "service_requests";
 
   if (!endpoint || !projectId || !databaseId) {
     throw new Error(
@@ -17,7 +26,15 @@ const getConfig = (): AppwriteConfig => {
     );
   }
 
-  return { endpoint, projectId, databaseId };
+  return {
+    endpoint,
+    projectId,
+    databaseId,
+    collections: {
+      contacts,
+      serviceRequests,
+    },
+  };
 };
 
 const createDocumentId = () => {
@@ -32,7 +49,7 @@ export const createAppwriteDocument = async (
   collectionId: string,
   data: Record<string, unknown>
 ) => {
-  const { endpoint, projectId, databaseId } = getConfig();
+  const { endpoint, projectId, databaseId } = getAppwriteConfig();
   const url = `${endpoint}/databases/${databaseId}/collections/${collectionId}/documents`;
 
   const response = await fetch(url, {

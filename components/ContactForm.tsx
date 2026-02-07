@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createAppwriteDocument } from "@/functions/appwrite";
-
-const collectionId =
-  process.env.NEXT_PUBLIC_APPWRITE_CONTACTS_COLLECTION_ID || "contacts";
+import { createAppwriteDocument, getAppwriteConfig } from "@/functions/appwrite";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -21,7 +18,8 @@ export default function ContactForm() {
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      await createAppwriteDocument(collectionId, {
+      const { collections } = getAppwriteConfig();
+      await createAppwriteDocument(collections.contacts, {
         ...payload,
         source: "website-contact",
         createdAt: new Date().toISOString(),

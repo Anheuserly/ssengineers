@@ -1,12 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { createAppwriteDocument } from "@/functions/appwrite";
+import { createAppwriteDocument, getAppwriteConfig } from "@/functions/appwrite";
 import { serviceRequestOptions } from "@/lib/content";
-
-const collectionId =
-  process.env.NEXT_PUBLIC_APPWRITE_SERVICE_REQUESTS_COLLECTION_ID ||
-  "service_requests";
 
 export default function ServiceRequestForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -23,7 +19,8 @@ export default function ServiceRequestForm() {
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      await createAppwriteDocument(collectionId, {
+      const { collections } = getAppwriteConfig();
+      await createAppwriteDocument(collections.serviceRequests, {
         ...payload,
         source: "website-service-request",
         createdAt: new Date().toISOString(),
