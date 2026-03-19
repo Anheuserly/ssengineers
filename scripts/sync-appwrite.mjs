@@ -467,10 +467,6 @@ const schema = [
     name: "Feedback",
     attributes: [
       { key: "name", type: "string", size: 100, required: true },
-      { key: "phone", type: "string", size: 32, required: false },
-      { key: "email", type: "string", size: 160, required: false },
-      { key: "company", type: "string", size: 120, required: false },
-      { key: "projectName", type: "string", size: 160, required: false },
       { key: "rating", type: "integer", required: true },
       { key: "message", type: "string", size: 3000, required: true },
       { key: "consent", type: "string", size: 12, required: true },
