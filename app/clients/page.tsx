@@ -1,4 +1,6 @@
 import SectionHeading from "@/components/SectionHeading";
+import LogoWall from "@/components/LogoWall";
+import PartnerVisualShowcase from "@/components/PartnerVisualShowcase";
 import { clients, brands, certifications } from "@/lib/content";
 
 export default function ClientsPage() {
@@ -11,6 +13,7 @@ export default function ClientsPage() {
             title="Institutions That Trust Us"
             subtitle="We serve infrastructure, healthcare, commercial, and industrial facilities."
           />
+          <PartnerVisualShowcase />
         </div>
       </section>
 
@@ -21,11 +24,7 @@ export default function ClientsPage() {
             title="Major Clients"
             subtitle="Representative list of organizations served by S.S. Engineers & Consultants."
           />
-          <div className="logo-grid">
-            {clients.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </div>
+          <LogoWall items={clients} />
         </div>
       </section>
 
@@ -36,13 +35,7 @@ export default function ClientsPage() {
             title="Authorized Brands"
             subtitle="OEM partnerships ensure reliable sourcing and compliant installation."
           />
-          <div className="tag-grid">
-            {brands.map((item) => (
-              <span key={item} className="tag">
-                {item}
-              </span>
-            ))}
-          </div>
+          <LogoWall items={brands} />
         </div>
       </section>
 

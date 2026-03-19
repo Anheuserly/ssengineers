@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "appwrite:sync": "node scripts/sync-appwrite.mjs",
+    "sync:project-images": "node scripts/import-mediafire-project-images.mjs --clean true",
+    "sync:brand-logos": "node scripts/sync-brand-logos.mjs",
+    "sync:client-logos": "node scripts/sync-client-logos.mjs",
+    "sync:logos": "npm run sync:brand-logos && npm run sync:client-logos"
   },
   "dependencies": {
     "next": "16.1.6",

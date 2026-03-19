@@ -27,11 +27,15 @@ export default function ContactPage() {
               </div>
               <div>
                 <span>Email</span>
-                <p>{company.emails.join(" | ")}</p>
+                <p>{company.contactEmails.join(" | ")}</p>
               </div>
               <div>
                 <span>Website</span>
                 <p>{company.website}</p>
+              </div>
+              <div>
+                <span>Branch Offices</span>
+                <p>{company.branchOffices.join(" | ")}</p>
               </div>
             </div>
             <div className="notice">

@@ -1,0 +1,16 @@
+Upload your compliance PDFs in this folder with the exact names below:
+
+1) esi-registration.pdf
+2) pf-registration.pdf
+3) gst-delhi-certificate.pdf
+4) gst-haryana-certificate.pdf
+5) msme-udyam-certificate.pdf
+6) company-profile.pdf
+
+Path: /public/documents
+
+After upload, the links on:
+- /compliance-documents page
+- homepage "Quick Access > Compliance Documents"
+- footer "Compliance Documents" link
+will start working automatically.

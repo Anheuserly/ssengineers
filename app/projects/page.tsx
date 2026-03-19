@@ -1,6 +1,8 @@
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
-import { projectTypes } from "@/lib/content";
+import PartnerVisualShowcase from "@/components/PartnerVisualShowcase";
+import ProjectImageGallery from "@/components/ProjectImageGallery";
+import { caseStudies, projectTypes } from "@/lib/content";
 
 const deliverables = [
   "Design drawings and hydraulic calculations",
@@ -26,6 +28,23 @@ export default function ProjectsPage() {
       <section className="section">
         <div className="container">
           <SectionHeading
+            eyebrow="Project Image Library"
+            title="Project-Wise Site Photos"
+            subtitle="On-site image documentation organized by project for quick verification."
+          />
+          <ProjectImageGallery />
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <PartnerVisualShowcase />
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <SectionHeading
             eyebrow="Sector Coverage"
             title="Project Types"
             subtitle="Experience across high-rise, infrastructure, healthcare, and industrial facilities."
@@ -41,6 +60,33 @@ export default function ProjectsPage() {
       </section>
 
       <section className="section alt">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Case Snapshots"
+            title="Representative Project Case Studies"
+            subtitle="Reference-style summaries to show our typical scope and delivery outcomes."
+          />
+          <div className="case-grid">
+            {caseStudies.map((item) => (
+              <article key={item.title} className="case-card">
+                <p className="eyebrow">{item.sector}</p>
+                <h3>{item.title}</h3>
+                <p className="muted">
+                  {item.location} | {item.timeline}
+                </p>
+                <ul>
+                  {item.scope.map((scopeLine) => (
+                    <li key={scopeLine}>{scopeLine}</li>
+                  ))}
+                </ul>
+                <p className="case-outcome">{item.outcome}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
         <div className="container split">
           <div>
             <SectionHeading

@@ -1,6 +1,14 @@
+import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import ServiceRequestForm from "@/components/ServiceRequestForm";
+import StatusQuickNav from "@/components/StatusQuickNav";
+import HomeChatWidget from "@/components/HomeChatWidget";
+import LogoWall from "@/components/LogoWall";
+import PartnerVisualShowcase from "@/components/PartnerVisualShowcase";
+import ProjectImageGallery from "@/components/ProjectImageGallery";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import { projectSiteImages } from "@/lib/project-site-images";
 import {
   company,
   highlights,
@@ -8,21 +16,30 @@ import {
   electricalWorks,
   plumbingWorks,
   securityNetworking,
-  maintenance,
+  homeStrengths,
   certifications,
   brands,
   clients,
   projectTypes,
+  workProcess,
+  caseStudies,
+  faqs,
 } from "@/lib/content";
 
 export default function HomePage() {
+  const heroPreviewImage =
+    projectSiteImages.find((project) => project.images.length > 0)?.images[0] ||
+    "/images/site-activity-05.jpeg";
+
   return (
     <main>
+      <StatusQuickNav active="/compliance-documents" />
+      <HomeChatWidget />
       <section className="hero">
         <div className="container hero-grid">
           <div>
             <p className="eyebrow">{company.iso} Certified • Since 1997</p>
-            <h1>{company.tagline}</h1>
+            <h1>{company.heroHeadline}</h1>
             <p className="lead">{company.overview}</p>
             <div className="hero-actions">
               <Link className="button" href="/contact">
@@ -41,18 +58,27 @@ export default function HomePage() {
             </div>
           </div>
           <div className="hero-card">
-            <p className="card-title">Rapid Response AMC</p>
+            <div className="hero-card-image">
+              <Image
+                src={heroPreviewImage}
+                alt="Recent execution image from project site"
+                fill
+                sizes="(max-width: 900px) 94vw, 34vw"
+                priority
+              />
+            </div>
+            <p className="card-title">Turnkey Fire & MEP Partner</p>
             <p className="muted">
-              Preventive maintenance, audits, and emergency response within
-              committed SLAs.
+              From design to handover, we execute fire, electrical, plumbing,
+              and safety systems with quality control at every stage.
             </p>
             <ul>
-              <li>Compliance-ready documentation</li>
-              <li>24x7 support and quarterly checks</li>
-              <li>Dedicated project coordinators</li>
+              <li>Compliance-ready engineering submissions</li>
+              <li>Dedicated project coordinators and supervisors</li>
+              <li>Multi-sector execution experience</li>
             </ul>
-            <Link className="button small" href="/contact">
-              Schedule AMC Review
+            <Link className="button small" href="/projects">
+              View Project Capability
             </Link>
           </div>
         </div>
@@ -67,6 +93,33 @@ export default function HomePage() {
               <p className="muted">{item.detail}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="On-Site Activity"
+            title="Execution Moments from Real Projects"
+            subtitle="From manpower briefings to installation-at-height, this is how our teams work on live sites."
+          />
+          <PartnerVisualShowcase />
+        </div>
+      </section>
+
+      <section className="section alt">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Project Library"
+            title="Project-Wise Site Image Collection"
+            subtitle="Verified site photos grouped by project for quick visual reference."
+          />
+          <ProjectImageGallery limitProjects={4} maxImagesPerProject={4} />
+          <div className="logo-wall-actions">
+            <Link className="button ghost small" href="/projects#project-image-gallery">
+              View All Project Images
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -117,15 +170,33 @@ export default function HomePage() {
       <section className="section">
         <div className="container">
           <SectionHeading
-            eyebrow="Maintenance"
-            title="Annual Maintenance Contracts"
-            subtitle="Preventive schedules, compliance testing, and emergency coverage."
+            eyebrow="Execution Strengths"
+            title="How We Deliver Better"
+            subtitle="Process, engineering discipline, and accountability that keep projects on track."
           />
           <div className="tag-grid">
-            {maintenance.map((item) => (
+            {homeStrengths.map((item) => (
               <span key={item} className="tag">
                 {item}
               </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section alt">
+        <div className="container">
+          <SectionHeading
+            eyebrow="How We Work"
+            title="Clear, Compliance-First Execution"
+            subtitle="Structured delivery to keep safety, quality, and timelines aligned."
+          />
+          <div className="grid-3">
+            {workProcess.map((step) => (
+              <div key={step.title} className="tile">
+                <h4>{step.title}</h4>
+                <p className="muted">{step.detail}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -155,13 +226,43 @@ export default function HomePage() {
             title="Trusted by Leading Institutions"
             subtitle="Execution across hospitals, transport infrastructure, commercial, and industrial sites."
           />
-          <div className="logo-grid">
-            {clients.map((item) => (
-              <span key={item}>{item}</span>
+          <LogoWall items={clients} limit={12} dense />
+          <div className="logo-wall-actions">
+            <Link className="button ghost small" href="/clients">
+              View All Clients
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="section alt">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Case Snapshots"
+            title="Representative Delivery Case Studies"
+            subtitle="Sample project patterns that reflect how we execute across sectors."
+          />
+          <div className="case-grid">
+            {caseStudies.map((item) => (
+              <article key={item.title} className="case-card">
+                <p className="eyebrow">{item.sector}</p>
+                <h3>{item.title}</h3>
+                <p className="muted">
+                  {item.location} | {item.timeline}
+                </p>
+                <ul>
+                  {item.scope.map((scopeLine) => (
+                    <li key={scopeLine}>{scopeLine}</li>
+                  ))}
+                </ul>
+                <p className="case-outcome">{item.outcome}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
+
+      <TestimonialsSection />
 
       <section className="section alt">
         <div className="container">
@@ -170,11 +271,28 @@ export default function HomePage() {
             title="Multi-Brand Supply & Integration"
             subtitle="We recommend the right OEM based on project scope and compliance needs."
           />
-          <div className="tag-grid">
-            {brands.map((item) => (
-              <span key={item} className="tag">
-                {item}
-              </span>
+          <LogoWall items={brands} dense />
+          <div className="logo-wall-actions">
+            <Link className="button ghost small" href="/clients">
+              View Full OEM Network
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="FAQ"
+            title="Common Questions Before Starting"
+            subtitle="Answers to the most frequent planning and execution questions from facilities teams."
+          />
+          <div className="faq-list">
+            {faqs.map((item) => (
+              <details key={item.question} className="faq-item">
+                <summary>{item.question}</summary>
+                <p className="muted">{item.answer}</p>
+              </details>
             ))}
           </div>
         </div>

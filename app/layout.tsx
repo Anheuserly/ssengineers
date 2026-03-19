@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const headingFont = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-heading",
-});
-
-const bodyFont = Manrope({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-body",
-});
+import StickyContactBar from "@/components/StickyContactBar";
+import CookieConsentManager from "@/components/CookieConsentManager";
 
 export const metadata: Metadata = {
   title: "S.S. Engineers & Consultants | Fire Protection & MEP",
@@ -29,11 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${headingFont.variable} ${bodyFont.variable}`}>
+      <body>
         <div className="page">
           <Header />
           {children}
           <Footer />
+          <StickyContactBar />
+          <CookieConsentManager />
         </div>
       </body>
     </html>

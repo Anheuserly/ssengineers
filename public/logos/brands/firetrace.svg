@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img">
+  <title>Firetrace logo</title>
+  <rect x="0" y="0" width="120" height="120" rx="20" fill="#ffffff"/>
+  <rect x="2" y="2" width="116" height="116" rx="18" fill="none" stroke="#e4e1dc" stroke-width="2"/>
+  <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA6ElEQVR42mMYBaNgFFAC3vo6Zv37/mXZ+3i/CTSx4JWMrgEQBwBxAxAvAOIDUPwfhL8t7v0PAl+m1f+HiSGpmQDV5wDEAkRbCNW0AYRRDcE0COS4P/evNIFCAk1cAao+AIt5DtgsLQAphGpQoFWUgTyA5KgCsIcGJUAEOWHcE+wqD9TiQAwmxQH/icWNbhYFQC3/icE0ccAyD4sIoJYGZAyzEF2cdAcgslUDboyZaHH5mFwHEHQ5rR2wAE8iVKCtAwjjhhHhgAeghIgDJ4DUD2giHHXA8HQARkIjHRwA4dE24ygYBUMCAABVq2qQ/x/d5AAAAABJRU5ErkJggg==" x="28" y="28" width="64" height="64"/>
+</svg>

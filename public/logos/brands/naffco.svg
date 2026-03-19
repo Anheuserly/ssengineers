@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img">
+  <title>NAFFCO logo</title>
+  <rect x="0" y="0" width="120" height="120" rx="20" fill="#ffffff"/>
+  <rect x="2" y="2" width="116" height="116" rx="18" fill="none" stroke="#e4e1dc" stroke-width="2"/>
+  <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAJFBMVEVHcEzwOj7wPUHxPEH0ZWXwMjjvKC7vLDLvIinvJSzvMTbvGiSju9izAAAAC3RSTlMAST0kEnC3ku7bYn00XbsAAAEPSURBVFiFzdfrDoMgDIbhqgyE3v/9Ds+gLpO+WTJ+mvgk/VJpFfm3MzgIdDowoFdNFFBPAY0UUO0poC8KmIPYAR1tHXEAqh0FNFDAEkQN6Njc2CegPYgL0BrEFagauw/fevQG0PULd8k/KOkWmPrajc8y+QgMD0PdgEgBFyAwlMXYAJFIAQkUyJc8BMRFCCxlIGAqgwG5iSGQHxqBalI7A9CVA8oGFAPKCBz3shXY72UzsC0cAFjKIMA8ZxEwvQaBPF4gsN+yZkDbgHk9MQM+LV/RNozagGp6+nbgdAIF+MJxCcKwunkKyIsCfPtcBxQAiiCsgCQKbJPFDqwLBwHmxkbAFAQDchAQEAd/bH9w3uAMKGm59J9gAAAAAElFTkSuQmCC" x="28" y="28" width="64" height="64"/>
+</svg>
