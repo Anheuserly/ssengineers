@@ -10,6 +10,7 @@ type AppwriteConfig = {
     vendorRegistrations: string;
     feedback: string;
     testimonials: string;
+    portalAuthUsers: string;
   };
   buckets: {
     career: string;
@@ -107,6 +108,11 @@ export const getAppwriteConfig = (): AppwriteConfig => {
     "NEXT_PUBLIC_APPWRITE_TESTIMONIALS_COLLECTION_ID",
     "testimonials"
   );
+  const portalAuthUsers = getValue(
+    "APPWRITE_PORTAL_AUTH_USERS_COLLECTION_ID",
+    "NEXT_PUBLIC_APPWRITE_PORTAL_AUTH_USERS_COLLECTION_ID",
+    "portal_auth_users"
+  );
   const careerBucket = getValue(
     "APPWRITE_CAREER_BUCKET_ID",
     "NEXT_PUBLIC_APPWRITE_CAREER_BUCKET_ID",
@@ -130,6 +136,7 @@ export const getAppwriteConfig = (): AppwriteConfig => {
       vendorRegistrations,
       feedback,
       testimonials,
+      portalAuthUsers,
     },
     buckets: {
       career: careerBucket,
@@ -411,6 +418,39 @@ export const createAppwriteDocument = async (
       }),
       body: JSON.stringify({
         documentId: createDocumentId(),
+        data,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new AppwriteRequestError(
+      await getAppwriteMessage(response, "Appwrite request failed."),
+      response.status
+    );
+  }
+
+  return response.json();
+};
+
+export const updateAppwriteDocument = async (
+  collectionId: string,
+  documentId: string,
+  data: Record<string, unknown>,
+  options: CreateDocumentOptions = {}
+) => {
+  const { endpoint, projectId, databaseId, apiKey } = getAppwriteConfig();
+
+  const response = await fetch(
+    `${endpoint}/databases/${databaseId}/collections/${collectionId}/documents/${documentId}`,
+    {
+      method: "PATCH",
+      headers: appwriteHeaders({
+        projectId,
+        apiKey,
+        requireApiKey: options.requireApiKey,
+      }),
+      body: JSON.stringify({
         data,
       }),
     }

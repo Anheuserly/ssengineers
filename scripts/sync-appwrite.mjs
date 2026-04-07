@@ -92,6 +92,10 @@ const collectionIds = {
     env.APPWRITE_TESTIMONIALS_COLLECTION_ID ||
     env.NEXT_PUBLIC_APPWRITE_TESTIMONIALS_COLLECTION_ID ||
     "testimonials",
+  portalAuthUsers:
+    env.APPWRITE_PORTAL_AUTH_USERS_COLLECTION_ID ||
+    env.NEXT_PUBLIC_APPWRITE_PORTAL_AUTH_USERS_COLLECTION_ID ||
+    "portal_auth_users",
 };
 
 const bucketIds = {
@@ -495,6 +499,43 @@ const schema = [
     indexes: [
       { key: "by_status", type: "key", attributes: ["status"], orders: ["ASC"] },
       { key: "by_order", type: "key", attributes: ["displayOrder"], orders: ["ASC"] },
+    ],
+  },
+  {
+    id: collectionIds.portalAuthUsers,
+    name: "Portal Auth Users",
+    attributes: [
+      { key: "role", type: "string", size: 20, required: true },
+      { key: "identifier", type: "string", size: 160, required: true },
+      { key: "phone", type: "string", size: 32, required: false },
+      { key: "email", type: "string", size: 160, required: false },
+      { key: "company", type: "string", size: 160, required: false },
+      { key: "city", type: "string", size: 120, required: false },
+      { key: "passwordHash", type: "string", size: 180, required: true },
+      { key: "passwordSalt", type: "string", size: 64, required: true },
+      { key: "displayName", type: "string", size: 120, required: false },
+      { key: "isActive", type: "boolean", required: true },
+      { key: "profileCompleted", type: "boolean", required: false },
+      { key: "createdAt", type: "string", size: 120, required: true },
+      { key: "lastLoginAt", type: "string", size: 120, required: false },
+      { key: "updatedAt", type: "string", size: 120, required: false },
+    ],
+    indexes: [
+      { key: "by_role", type: "key", attributes: ["role"], orders: ["ASC"] },
+      { key: "by_identifier", type: "key", attributes: ["identifier"], orders: ["ASC"] },
+      { key: "by_phone", type: "key", attributes: ["phone"], orders: ["ASC"] },
+      {
+        key: "by_role_identifier",
+        type: "key",
+        attributes: ["role", "identifier"],
+        orders: ["ASC", "ASC"],
+      },
+      {
+        key: "by_role_phone",
+        type: "key",
+        attributes: ["role", "phone"],
+        orders: ["ASC", "ASC"],
+      },
     ],
   },
 ];

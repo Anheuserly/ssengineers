@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "appwrite:sync": "node scripts/sync-appwrite.mjs",
+    "portal:seed-auth": "node scripts/seed-portal-auth-users.mjs",
     "sync:project-images": "node scripts/import-mediafire-project-images.mjs --clean true",
     "sync:brand-logos": "node scripts/sync-brand-logos.mjs",
     "sync:client-logos": "node scripts/sync-client-logos.mjs",

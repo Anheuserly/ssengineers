@@ -1,31 +1,87 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { company, gstRegistrations } from "@/lib/content";
 
-const navLinks = [
+type NavLink = {
+  href: string;
+  label: string;
+};
+
+type NavGroup = {
+  title: string;
+  links: NavLink[];
+};
+
+const primaryLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/projects", label: "Projects" },
-  { href: "/working-activity", label: "Status" },
-  { href: "/compliance-documents", label: "Compliance" },
+  { href: "/about", label: "About" },
   { href: "/clients", label: "Clients" },
-  { href: "/vendor-registration", label: "Vendors" },
-  { href: "/download-center", label: "Downloads" },
-  { href: "/career", label: "Career" },
   { href: "/contact", label: "Contact" },
+];
+
+const exploreGroups: NavGroup[] = [
+  {
+    title: "Execution",
+    links: [
+      { href: "/working-activity", label: "Working Activity" },
+      { href: "/work-in-progress", label: "Work In Progress" },
+      { href: "/work-done", label: "Work Done" },
+    ],
+  },
+  {
+    title: "Documents",
+    links: [
+      { href: "/compliance-documents", label: "Compliance Documents" },
+      { href: "/download-center", label: "Download Center" },
+      { href: "/sitemap", label: "Sitemap" },
+    ],
+  },
+  {
+    title: "Business",
+    links: [
+      { href: "/vendor-registration", label: "Vendor Registration" },
+      { href: "/portal-login", label: "Vendor/Customer Login" },
+      { href: "/portal-login?mode=register", label: "Create Account" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { href: "/team", label: "Team" },
+      { href: "/career", label: "Career" },
+    ],
+  },
+  {
+    title: "Policies",
+    links: [
+      { href: "/privacy-policy", label: "Privacy Policy" },
+      { href: "/cookie-policy", label: "Cookie Policy" },
+      { href: "/terms-conditions", label: "Terms & Conditions" },
+      { href: "/disclaimer", label: "Disclaimer" },
+    ],
+  },
 ];
 
 export default function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [desktopExploreOpen, setDesktopExploreOpen] = useState(false);
   const closeMobileMenu = () => setMobileMenuOpen(false);
+  const closeAllNav = () => {
+    setMobileMenuOpen(false);
+    setDesktopExploreOpen(false);
+  };
+  const desktopExploreRef = useRef<HTMLDivElement | null>(null);
+  const desktopExploreTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    if (!mobileMenuOpen) {
+    if (!mobileMenuOpen && !desktopExploreOpen) {
       document.body.style.overflow = "";
       return;
     }
@@ -35,7 +91,32 @@ export default function Header() {
     return () => {
       document.body.style.overflow = previous;
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, desktopExploreOpen]);
+
+  useEffect(() => {
+    if (!desktopExploreOpen) return;
+
+    const handleMouseDown = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (!target) return;
+      if (desktopExploreRef.current?.contains(target)) return;
+      if (desktopExploreTriggerRef.current?.contains(target)) return;
+      setDesktopExploreOpen(false);
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setDesktopExploreOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [desktopExploreOpen]);
 
   const gstLine = gstRegistrations
     .map((item) => `${item.state}: ${item.gstin}`)
@@ -46,29 +127,10 @@ export default function Header() {
     ? `+91 ${primaryPhoneDigits}`
     : primaryPhoneRaw;
   const primaryEmail = "anil@ssengineers.in";
-  const navGroups = [
-    {
-      title: "Company",
-      links: navLinks.filter((item) =>
-        ["/", "/services", "/projects", "/clients", "/career", "/contact"].includes(
-          item.href
-        )
-      ),
-    },
-    {
-      title: "Execution",
-      links: navLinks.filter((item) =>
-        [
-          "/working-activity",
-          "/compliance-documents",
-          "/download-center",
-        ].includes(item.href)
-      ),
-    },
-    {
-      title: "Business",
-      links: navLinks.filter((item) => ["/vendor-registration"].includes(item.href)),
-    },
+
+  const mobileNavGroups: NavGroup[] = [
+    { title: "Main", links: primaryLinks },
+    ...exploreGroups,
   ];
 
   return (
@@ -98,6 +160,7 @@ export default function Header() {
           </p>
         </div>
       </div>
+
       <div className="container header-inner">
         <div className="brand">
           <div className="brand-mark">
@@ -115,18 +178,35 @@ export default function Header() {
             <p className="brand-sub">Fire Protection & MEP Specialists</p>
           </div>
         </div>
+
         <nav className="nav desktop-nav">
-          {navLinks.map((link) => (
+          {primaryLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={`nav-link ${pathname === link.href ? "active" : ""}`}
+              onClick={closeAllNav}
             >
               {link.label}
             </Link>
           ))}
+
+          <button
+            ref={desktopExploreTriggerRef}
+            type="button"
+            className={`nav-link nav-more-trigger ${desktopExploreOpen ? "active" : ""}`}
+            onClick={() => setDesktopExploreOpen((value) => !value)}
+            aria-expanded={desktopExploreOpen}
+            aria-controls="desktop-explore-panel"
+          >
+            Explore
+          </button>
         </nav>
+
         <div className="header-actions">
+          <Link className="cta cta-secondary" href="/portal-login?mode=register">
+            Create Portal
+          </Link>
           <Link className="cta" href="/contact">
             Request a Survey
           </Link>
@@ -143,6 +223,44 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+      {desktopExploreOpen ? (
+        <div className="desktop-explore-shell">
+          <button
+            type="button"
+            className="desktop-explore-backdrop"
+            aria-label="Close explore navigation"
+            onClick={() => setDesktopExploreOpen(false)}
+          />
+          <div
+            ref={desktopExploreRef}
+            id="desktop-explore-panel"
+            className="container desktop-explore-panel"
+            role="dialog"
+            aria-modal="true"
+          >
+            {exploreGroups.map((group) => (
+              <section key={group.title} className="desktop-explore-group">
+                <p className="desktop-explore-title">{group.title}</p>
+                <div className="desktop-explore-links">
+                  {group.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`desktop-explore-link ${
+                        pathname === link.href ? "active" : ""
+                      }`}
+                      onClick={closeAllNav}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       {mobileMenuOpen ? (
         <div className="mobile-nav-shell" role="dialog" aria-modal="true">
@@ -164,7 +282,7 @@ export default function Header() {
                 ×
               </button>
             </div>
-            {navGroups.map((group) => (
+            {mobileNavGroups.map((group) => (
               <section key={group.title} className="mobile-nav-group">
                 <p className="mobile-nav-group-title">{group.title}</p>
                 <div className="mobile-nav-links">

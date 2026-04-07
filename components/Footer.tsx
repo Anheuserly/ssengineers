@@ -5,6 +5,7 @@ import CookiePreferencesButton from "@/components/CookiePreferencesButton";
 
 const quickLinks = [
   { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About" },
   { href: "/career", label: "Career" },
   { href: "/services", label: "Services" },
   { href: "/projects", label: "Projects" },
@@ -24,6 +25,7 @@ const policyLinks = [
 
 const businessLinks = [
   { href: "/vendor-registration", label: "Vendor Registration" },
+  { href: "/portal-login", label: "Vendor / Customer Login" },
   { href: "/sitemap", label: "Sitemap" },
 ];
 

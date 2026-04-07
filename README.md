@@ -54,7 +54,12 @@ Important keys:
 - `APPWRITE_VENDOR_REGISTRATIONS_COLLECTION_ID`
 - `APPWRITE_FEEDBACK_COLLECTION_ID`
 - `APPWRITE_TESTIMONIALS_COLLECTION_ID`
+- `APPWRITE_PORTAL_AUTH_USERS_COLLECTION_ID`
 - `APPWRITE_CAREER_BUCKET_ID`
+- `PORTAL_SESSION_SECRET`
+
+Optional admin seed credentials (used by `npm run portal:seed-auth`):
+- `PORTAL_ADMIN_LOGIN_ID` / `PORTAL_ADMIN_LOGIN_PASSWORD`
 
 ### Compliance PDFs (ESI / PF / GST / MSME / Company Profile)
 
@@ -82,6 +87,7 @@ These are linked automatically from:
 - `npm run start` - run production server
 - `npm run lint` - run ESLint checks
 - `npm run appwrite:sync` - create/update required Appwrite collections, attributes, indexes, and career bucket
+- `npm run portal:seed-auth` - upsert hidden admin login user into Appwrite `portal_auth_users` collection (hashed password)
 - `npm run sync:project-images` - import project-wise images from configured MediaFire folder
 
 ### Project Structure
@@ -100,12 +106,22 @@ These are linked automatically from:
 - `POST /api/vendor-registration` - vendor pre-qualification registration
 - `POST /api/feedback` - saves feedback directly to Appwrite `feedback` collection
 - `GET /api/testimonials` - returns published testimonials (Appwrite-backed with static fallback)
+- `POST /api/auth/login` - role-based login using database collection `portal_auth_users`
+- `POST /api/auth/register` - quick vendor/customer signup (`name + phone + password`)
+- `GET/POST /api/auth/profile` - second-step profile completion for vendor/customer accounts
+- `POST /api/auth/logout` - clear portal session cookie
 
 All endpoints validate and sanitize inputs server-side.
 
 Testimonials and feedback are intentionally separated:
 - Feedback form submissions go to `feedback` for internal review.
 - Public testimonial cards read from `testimonials` where `status` should be `published`.
+
+Portal auth is database-managed (not Appwrite Auth):
+- Visible login route: `/portal-login` (Vendor + Customer)
+- Hidden login route: `/admin-login`
+- Vendor and customer users can create their own accounts from `/portal-login`
+- After signup, they complete remaining profile details on `/portal-onboarding`
 
 `npm run appwrite:sync` also updates existing string-attribute constraints (for example size/required/default) to match the current API payload schema.
 
