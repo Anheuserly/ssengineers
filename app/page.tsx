@@ -8,11 +8,21 @@ import ServiceCatalogue from "@/components/ServiceCatalogue";
 import { projectSiteImages } from "@/lib/project-site-images";
 import {
   company,
-  highlights,
   brands,
   clients,
   faqs,
 } from "@/lib/content";
+import {
+  Flame,
+  Zap,
+  ShieldCheck,
+  CheckCircle2,
+  ArrowRight,
+  PhoneCall,
+  Sparkles,
+  Wrench,
+  Clock,
+} from "lucide-react";
 
 export default function HomePage() {
   const heroPreviewImage =
@@ -22,67 +32,123 @@ export default function HomePage() {
   return (
     <main>
       <HomeChatWidget />
-      <section className="hero">
+      <section className="hero advanced-hero">
         <div className="container hero-grid">
-          <div>
-            <p className="eyebrow">{company.iso} Certified • Since 1997</p>
-            <h1>{company.heroHeadline}</h1>
-            <p className="lead">{company.overview}</p>
+          <div className="hero-content-col">
+            <div className="hero-compliance-pill">
+              <span className="live-dot" />
+              <span>{company.iso} Certified</span>
+              <span className="divider">•</span>
+              <span>NFPA & NBC 2016 Compliant</span>
+              <span className="divider">•</span>
+              <span>Est. {company.founded}</span>
+            </div>
+
+            <h1 className="hero-main-title">
+              Turnkey Fire Protection, Substation & Integrated MEP Infrastructure
+            </h1>
+
+            <p className="lead hero-lead-text">
+              Engineering design, OEM supply, high-precision installation, statutory NOC
+              clearances, and 24x7 AMC operations. Proven execution across hospitals,
+              airports, commercial towers, and industrial manufacturing plants.
+            </p>
+
             <div className="hero-actions">
-              <Link className="button" href="/services">
-                Select Services
+              <Link className="button hero-cta-btn" href="/contact#request-work">
+                <Wrench size={18} style={{ marginRight: "8px" }} />
+                Create Work Request
+                <ArrowRight size={16} style={{ marginLeft: "8px" }} />
               </Link>
-              <Link className="button ghost" href="/projects">
-                View Recent Projects
+              <Link className="button ghost" href="/services">
+                Explore Services
               </Link>
             </div>
-            <div className="hero-strip">
-              <span>Fire Hydrant</span>
-              <span>Sprinkler</span>
-              <span>FM-200</span>
-              <span>Electrical</span>
-              <span>IBMS</span>
+
+            <div className="hero-capability-pills">
+              <span className="pill-item">
+                <Flame size={14} className="text-accent" /> Hydrant & Sprinkler Networks
+              </span>
+              <span className="pill-item">
+                <ShieldCheck size={14} className="text-gold" /> Addressable Fire Detection
+              </span>
+              <span className="pill-item">
+                <Zap size={14} className="text-accent" /> Substation & LT/HT Power
+              </span>
+              <span className="pill-item">
+                <Sparkles size={14} className="text-gold" /> Gas Suppression (FM-200 / Novec)
+              </span>
+              <span className="pill-item">
+                <Clock size={14} className="text-accent" /> 24x7 Statutory AMC & NOC
+              </span>
+            </div>
+
+            <div className="hero-hotline-strip">
+              <PhoneCall size={16} className="text-accent" />
+              <span>Direct Survey Hotline:</span>
+              <a href={`tel:${company.phones[0]}`}>+91 {company.phones[0]}</a>
+              <span className="separator">/</span>
+              <a href={`tel:${company.phones[1]}`}>+91 {company.phones[1]}</a>
             </div>
           </div>
-          <div className="hero-card">
+
+          <div className="hero-card hero-command-card">
             <div className="hero-card-image">
               <Image
                 src={heroPreviewImage}
-                alt="Recent execution image from project site"
+                alt="Recent turnkey execution from S.S. Engineers project site"
                 fill
                 sizes="(max-width: 900px) 94vw, 34vw"
                 priority
               />
+              <div className="image-overlay-badge">
+                <span className="live-status-dot" />
+                <span>Field Deployment Active</span>
+              </div>
             </div>
-            <p className="card-title">Turnkey Fire & MEP Partner</p>
-            <p className="muted">
-              From design to handover, we execute fire, electrical, plumbing,
-              and safety systems with quality control at every stage.
-            </p>
-            <ul>
-              <li>Compliance-ready engineering submissions</li>
-              <li>Dedicated project coordinators and supervisors</li>
-              <li>Multi-sector execution experience</li>
+
+            <div className="command-card-header">
+              <p className="card-title">Engineering Command & Dispatch</p>
+              <p className="command-card-sub">S.S. Engineers & Consultants • New Delhi</p>
+            </div>
+
+            <div className="command-metrics-grid">
+              <div className="metric-box">
+                <span className="metric-label">Survey SLA</span>
+                <strong className="metric-val">24-48 Hrs</strong>
+                <span className="metric-desc">Rapid on-site review</span>
+              </div>
+              <div className="metric-box">
+                <span className="metric-label">Statutory NOC</span>
+                <strong className="metric-val">NBC Part-IV</strong>
+                <span className="metric-desc">Delhi / Haryana ready</span>
+              </div>
+            </div>
+
+            <ul className="command-feature-list">
+              <li>
+                <CheckCircle2 size={15} className="text-accent" />
+                <span>Direct PostgreSQL registry logging with instant tracking ID</span>
+              </li>
+              <li>
+                <CheckCircle2 size={15} className="text-accent" />
+                <span>Authorized multi-brand integration (Honeywell, Schneider, Tyco)</span>
+              </li>
+              <li>
+                <CheckCircle2 size={15} className="text-accent" />
+                <span>Turnkey design-to-handover execution & annual maintenance</span>
+              </li>
             </ul>
-            <Link className="button small" href="/projects">
-              View Project Capability
+
+            <Link className="button small full-width command-card-btn" href="/contact#request-work">
+              Submit Project Scope for Survey
+              <ArrowRight size={14} style={{ marginLeft: "6px" }} />
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container stats-grid">
-          {highlights.map((item) => (
-            <div key={item.label} className="stat-card">
-              <p className="stat-value">{item.value}</p>
-              <p className="stat-label">{item.label}</p>
-              <p className="muted">{item.detail}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
+      {/* Services Catalogue */}
       <section className="section">
         <div className="container">
           <SectionHeading
@@ -99,6 +165,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Clients */}
       <section className="section">
         <div className="container">
           <SectionHeading
@@ -117,6 +184,7 @@ export default function HomePage() {
 
       <TestimonialsSection />
 
+      {/* Authorized Brands */}
       <section className="section alt">
         <div className="container">
           <SectionHeading
@@ -133,6 +201,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQs */}
       <section className="section">
         <div className="container">
           <SectionHeading
@@ -151,15 +220,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Final CTA */}
       <section className="section alt">
         <div className="container request-path-wrap">
           <div className="form-panel request-path-card" id="request-service">
-            <p className="eyebrow">One clear enquiry</p>
-            <h3>Start with the systems your site needs</h3>
+            <p className="eyebrow">Direct Dispatch</p>
+            <h3>Ready to commission your facility or require statutory AMC?</h3>
             <p className="muted">
-              Add fire, electrical, plumbing or ELV services to your bucket. Then share site details once, and our team will prepare the right review path.
+              Submit your project scope directly into our work request database or call our senior
+              engineers for technical consultation.
             </p>
-            <Link className="button" href="/services">Select services</Link>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "1.2rem" }}>
+              <Link className="button" href="/contact#request-work">
+                Create Work Request
+              </Link>
+              <Link className="button ghost" href="/contact">
+                Share Client Feedback
+              </Link>
+            </div>
           </div>
         </div>
       </section>

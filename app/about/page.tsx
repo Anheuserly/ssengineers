@@ -33,13 +33,13 @@ export default function AboutPage() {
       </section>
 
       <section className="section">
-        <div className="container grid-3">
+        <div className="container stats-grid">
           {highlights.map((item) => (
-            <article key={item.label} className="tile">
+            <div key={item.label} className="stat-card">
               <p className="stat-value">{item.value}</p>
               <p className="stat-label">{item.label}</p>
               <p className="muted">{item.detail}</p>
-            </article>
+            </div>
           ))}
         </div>
       </section>
