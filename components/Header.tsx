@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   Search,
   X,
@@ -16,6 +16,7 @@ import {
   Layers,
   Clock,
   ChevronRight,
+  Building,
 } from "lucide-react";
 import { company, gstRegistrations } from "@/lib/content";
 import { serviceCatalog } from "@/lib/service-catalog";
@@ -33,21 +34,46 @@ const allSearchServices = serviceCatalog.flatMap((cat) =>
 );
 
 const categoryNavItems = [
+  { name: "All Disciplines", slug: "all", icon: Layers },
   { name: "Fire Fighting & Safety", slug: "fire-fighting-fire-safety", icon: Flame },
   { name: "Electrical & Substation", slug: "electrical-services", icon: Zap },
   { name: "Plumbing & Sanitary", slug: "plumbing-services", icon: Wrench },
   { name: "ELV, Security & IBMS", slug: "elv-security-and-ibms", icon: ShieldCheck },
-  { name: "Turnkey Installation", slug: "design-supply-and-installation", icon: Layers },
+  { name: "Turnkey Installation", slug: "design-supply-and-installation", icon: Building },
   { name: "AMC & Maintenance", slug: "amc-and-maintenance", icon: Clock },
 ];
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDiscipline, setActiveDiscipline] = useState<string>("all");
 
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Sync active discipline from URL in browser
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const disc = params.get("discipline");
+    const svc = params.get("service");
+
+    if (svc) {
+      const match = allSearchServices.find(
+        (s) => s.name.toLowerCase() === svc.toLowerCase().trim()
+      );
+      if (match) setActiveDiscipline(match.slug);
+    } else if (disc) {
+      setActiveDiscipline(disc);
+    } else if (pathname === "/services") {
+      setActiveDiscipline("all");
+    } else {
+      setActiveDiscipline("");
+    }
+  }, [pathname]);
 
   const filteredServices = searchQuery.trim().length > 0
     ? allSearchServices
@@ -56,7 +82,7 @@ export default function Header() {
             item.name.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
             item.category.toLowerCase().includes(searchQuery.toLowerCase().trim())
         )
-        .slice(0, 7)
+        .slice(0, 8)
     : [];
 
   // Close dropdown on click outside
@@ -80,11 +106,12 @@ export default function Header() {
     router.push(`/services?q=${encodeURIComponent(searchQuery.trim())}`);
   };
 
-  const handleSelectService = (slug: string) => {
+  const handleSelectService = (item: { name: string; category: string; slug: string }) => {
     setSearchFocused(false);
     setSearchQuery("");
     setMobileMenuOpen(false);
-    router.push(`/services#${slug}`);
+    // Directly show ONLY that exact result!
+    router.push(`/services?service=${encodeURIComponent(item.name)}`);
   };
 
   const gstLine = gstRegistrations
@@ -142,7 +169,7 @@ export default function Header() {
           </div>
           <div>
             <p className="brand-name">S.S. Engineers & Consultants</p>
-            <p className="brand-sub">Fire Protection & MEP Specialists</p>
+            <p className="brand-sub">Turnkey Fire Protection & Integrated MEP</p>
           </div>
         </Link>
 
@@ -153,14 +180,14 @@ export default function Header() {
             <input
               type="text"
               className="header-search-input"
-              placeholder="Search services, fire fighting, electrical, MEP systems..."
+              placeholder="Search 50+ MEP services, fire fighting, HT/LT electrical..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
                 setSearchFocused(true);
               }}
               onFocus={() => setSearchFocused(true)}
-              aria-label="Search services"
+              aria-label="Search MEP services and systems"
             />
             {searchQuery ? (
               <button
@@ -173,7 +200,7 @@ export default function Header() {
               </button>
             ) : null}
             <button type="submit" className="search-submit-btn">
-              Find
+              Search
             </button>
           </form>
 
@@ -181,7 +208,7 @@ export default function Header() {
           {searchFocused && filteredServices.length > 0 ? (
             <div className="search-dropdown-menu">
               <div className="search-dropdown-header">
-                <span>Matching Capabilities & Systems</span>
+                <span>Direct System Match</span>
                 <span className="search-count">{filteredServices.length} found</span>
               </div>
               <ul className="search-results-list">
@@ -190,7 +217,7 @@ export default function Header() {
                     <button
                       type="button"
                       className="search-result-item"
-                      onClick={() => handleSelectService(item.slug)}
+                      onClick={() => handleSelectService(item)}
                     >
                       <div className="search-item-info">
                         <span className="search-item-name">{item.name}</span>
@@ -207,7 +234,7 @@ export default function Header() {
                   className="search-view-all"
                   onClick={() => setSearchFocused(false)}
                 >
-                  View all results in live catalogue →
+                  View all matching results in catalogue →
                 </Link>
               </div>
             </div>
@@ -234,7 +261,7 @@ export default function Header() {
             href={`tel:${primaryPhoneDigits}`}
             title="Direct Engineering Hotline"
           >
-            <PhoneCall size={15} />
+            <PhoneCall size={14} />
             <span>+91 {primaryPhoneDigits}</span>
           </a>
 
@@ -252,21 +279,28 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Sub-Header Category Strip */}
-      <nav className="header-category-strip" aria-label="Service Categories">
+      {/* Sub-Header MEP Disciplines Strip */}
+      <nav className="header-category-strip" aria-label="MEP Engineering Disciplines">
         <div className="container category-strip-inner">
           <div className="category-strip-label">
-            <span>Categories:</span>
+            <span>MEP DISCIPLINES:</span>
           </div>
           <div className="category-strip-scroll">
             {categoryNavItems.map((cat) => {
               const Icon = cat.icon;
+              const isSelected = activeDiscipline === cat.slug;
+              const href =
+                cat.slug === "all" ? "/services" : `/services?discipline=${cat.slug}`;
+
               return (
                 <Link
                   key={cat.slug}
-                  href={`/services#${cat.slug}`}
-                  className="category-strip-item"
-                  onClick={() => setMobileMenuOpen(false)}
+                  href={href}
+                  className={`category-strip-item ${isSelected ? "active" : ""}`}
+                  onClick={() => {
+                    setActiveDiscipline(cat.slug);
+                    setMobileMenuOpen(false);
+                  }}
                 >
                   <Icon size={14} className="category-icon" aria-hidden="true" />
                   <span>{cat.name}</span>
@@ -288,7 +322,7 @@ export default function Header() {
           />
           <div className="mobile-nav-drawer">
             <div className="mobile-nav-head">
-              <p>Service Categories</p>
+              <p>MEP Disciplines</p>
               <button
                 type="button"
                 className="mobile-nav-close"
@@ -311,15 +345,21 @@ export default function Header() {
             </div>
 
             <div className="mobile-category-list">
-              <p className="mobile-nav-group-title">Browse by Discipline</p>
+              <p className="mobile-nav-group-title">Select Discipline</p>
               {categoryNavItems.map((cat) => {
                 const Icon = cat.icon;
+                const isSelected = activeDiscipline === cat.slug;
+                const href =
+                  cat.slug === "all" ? "/services" : `/services?discipline=${cat.slug}`;
                 return (
                   <Link
                     key={cat.slug}
-                    href={`/services#${cat.slug}`}
-                    className="mobile-category-link"
-                    onClick={() => setMobileMenuOpen(false)}
+                    href={href}
+                    className={`mobile-category-link ${isSelected ? "active" : ""}`}
+                    onClick={() => {
+                      setActiveDiscipline(cat.slug);
+                      setMobileMenuOpen(false);
+                    }}
                   >
                     <Icon size={16} className="category-icon" />
                     <span>{cat.name}</span>

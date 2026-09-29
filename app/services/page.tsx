@@ -1,10 +1,7 @@
+import { Suspense } from "react";
 import SectionHeading from "@/components/SectionHeading";
 import ServiceCatalogue from "@/components/ServiceCatalogue";
 import {
-  fireSystems,
-  electricalWorks,
-  plumbingWorks,
-  securityNetworking,
   maintenance,
 } from "@/lib/content";
 
@@ -44,53 +41,20 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section" id="service-catalogue-view">
         <div className="container">
           <SectionHeading
-            eyebrow="Service catalogue"
-            title="Engineering Services Built Around Your Site"
-            subtitle="Every service starts with a technical review. We provide a tailored scope and commercial proposal after understanding the facility, compliance requirements, and timeline."
+            eyebrow="Capability Directory"
+            title="Engineering Systems Built Around Your Facility"
+            subtitle="Every system starts with a technical review. We provide a tailored scope, equipment datasheets, and commercial estimate after site assessment."
           />
-          <ServiceCatalogue />
+          <Suspense fallback={<div className="container" style={{ padding: "2rem 0", color: "#64748b" }}>Loading engineering systems...</div>}>
+            <ServiceCatalogue />
+          </Suspense>
         </div>
       </section>
 
-      <section className="section alt">
-        <div className="container grid-2">
-          <div className="panel">
-            <h3>Fire & Safety Systems</h3>
-            <ul>
-              {fireSystems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="panel">
-            <h3>Electrical Works</h3>
-            <ul>
-              {electricalWorks.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="panel">
-            <h3>Plumbing & Infrastructure</h3>
-            <ul>
-              {plumbingWorks.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="panel">
-            <h3>Security & Networking</h3>
-            <ul>
-              {securityNetworking.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
+
 
       <section className="section alt">
         <div className="container">
