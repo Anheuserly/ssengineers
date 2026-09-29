@@ -7,6 +7,11 @@
     "nodejs_compat"
   ],
   "keep_vars": true,
+  "vars": {
+    "NEXT_PUBLIC_WEBSITE_SOURCE": "ssengineers.in",
+    "PORTAL_SESSION_SECRET": "82e380806f363ebee3f07ae311f4939dd315bcc70a4d320b46b36b1c9cb1c164377f61e3c3fc8f0cd564bb04d8e138af",
+    "SS_ENGINEERS_BUSINESS_ID": "30ddc1d6-9961-4ce1-98ad-aeb897fd9242"
+  },
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
