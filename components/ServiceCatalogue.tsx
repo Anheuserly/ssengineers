@@ -10,6 +10,9 @@ import {
   toggleServiceBucketItem,
 } from "@/lib/service-bucket";
 
+const toSlug = (text: string) =>
+  text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
 type ServiceCatalogueProps = {
   compact?: boolean;
 };
@@ -33,7 +36,7 @@ export default function ServiceCatalogue({ compact = false }: ServiceCataloguePr
   return (
     <div className="service-catalogue">
       {categories.map((category) => (
-        <section className="service-category" key={category.name}>
+        <section className="service-category" id={toSlug(category.name)} key={category.name}>
           <div className="service-category-heading">
             <div>
               <p className="eyebrow">Service capability</p>

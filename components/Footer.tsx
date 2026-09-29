@@ -5,12 +5,13 @@ import { ArrowUpRight, Building2, LogIn, MapPin, Phone, ShieldCheck } from "luci
 import CookiePreferencesButton from "@/components/CookiePreferencesButton";
 
 const quickLinks = [
-  { href: "/contact", label: "Contact" },
-  { href: "/about", label: "About" },
-  { href: "/career", label: "Career" },
-  { href: "/services", label: "Services" },
-  { href: "/projects", label: "Projects" },
-  { href: "/clients", label: "Clients" },
+  { href: "/about", label: "About S.S. Engineers" },
+  { href: "/activity", label: "Site Activity & Progress" },
+  { href: "/career", label: "Career Opportunities" },
+  { href: "/contact", label: "Contact & Support" },
+  { href: "/services", label: "Engineering Services" },
+  { href: "/projects", label: "Projects & Case Studies" },
+  { href: "/clients", label: "Clients & Sectors" },
   { href: "/compliance-documents", label: "Compliance Documents" },
   { href: "/download-center", label: "Download Center" },
 ];

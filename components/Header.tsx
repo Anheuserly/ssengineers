@@ -3,107 +3,89 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { LogIn } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  Search,
+  X,
+  LogIn,
+  PhoneCall,
+  Flame,
+  Zap,
+  Wrench,
+  ShieldCheck,
+  Layers,
+  Clock,
+  ChevronRight,
+} from "lucide-react";
 import { company, gstRegistrations } from "@/lib/content";
+import { serviceCatalog } from "@/lib/service-catalog";
 import BucketLink from "@/components/BucketLink";
 
-type NavLink = {
-  href: string;
-  label: string;
-};
+const toSlug = (text: string) =>
+  text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-type NavGroup = {
-  title: string;
-  links: NavLink[];
-};
+const allSearchServices = serviceCatalog.flatMap((cat) =>
+  cat.services.map((svc) => ({
+    name: svc,
+    category: cat.name,
+    slug: toSlug(cat.name),
+  }))
+);
 
-const primaryLinks: NavLink[] = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/projects", label: "Projects" },
-  { href: "/activity", label: "Activity" },
-  { href: "/about", label: "About" },
-  { href: "/clients", label: "Clients" },
-  { href: "/contact", label: "Contact" },
-];
-
-const exploreGroups: NavGroup[] = [
-  {
-    title: "Documents",
-    links: [
-      { href: "/compliance-documents", label: "Compliance Documents" },
-      { href: "/download-center", label: "Download Center" },
-      { href: "/sitemap", label: "Sitemap" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { href: "/team", label: "Team" },
-      { href: "/career", label: "Career" },
-    ],
-  },
-  {
-    title: "Policies",
-    links: [
-      { href: "/privacy-policy", label: "Privacy Policy" },
-      { href: "/cookie-policy", label: "Cookie Policy" },
-      { href: "/terms-conditions", label: "Terms & Conditions" },
-      { href: "/disclaimer", label: "Disclaimer" },
-    ],
-  },
+const categoryNavItems = [
+  { name: "Fire Fighting & Safety", slug: "fire-fighting-fire-safety", icon: Flame },
+  { name: "Electrical & Substation", slug: "electrical-services", icon: Zap },
+  { name: "Plumbing & Sanitary", slug: "plumbing-services", icon: Wrench },
+  { name: "ELV, Security & IBMS", slug: "elv-security-and-ibms", icon: ShieldCheck },
+  { name: "Turnkey Installation", slug: "design-supply-and-installation", icon: Layers },
+  { name: "AMC & Maintenance", slug: "amc-and-maintenance", icon: Clock },
 ];
 
 export default function Header() {
-  const pathname = usePathname();
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [desktopExploreOpen, setDesktopExploreOpen] = useState(false);
-  const closeMobileMenu = () => setMobileMenuOpen(false);
-  const closeAllNav = () => {
-    setMobileMenuOpen(false);
-    setDesktopExploreOpen(false);
-  };
-  const desktopExploreRef = useRef<HTMLDivElement | null>(null);
-  const desktopExploreTriggerRef = useRef<HTMLButtonElement | null>(null);
 
+  const searchContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const filteredServices = searchQuery.trim().length > 0
+    ? allSearchServices
+        .filter(
+          (item) =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
+            item.category.toLowerCase().includes(searchQuery.toLowerCase().trim())
+        )
+        .slice(0, 7)
+    : [];
+
+  // Close dropdown on click outside
   useEffect(() => {
-    if (!mobileMenuOpen && !desktopExploreOpen) {
-      document.body.style.overflow = "";
-      return;
-    }
-
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [mobileMenuOpen, desktopExploreOpen]);
-
-  useEffect(() => {
-    if (!desktopExploreOpen) return;
-
-    const handleMouseDown = (event: MouseEvent) => {
-      const target = event.target as Node | null;
-      if (!target) return;
-      if (desktopExploreRef.current?.contains(target)) return;
-      if (desktopExploreTriggerRef.current?.contains(target)) return;
-      setDesktopExploreOpen(false);
-    };
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setDesktopExploreOpen(false);
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(e.target as Node)
+      ) {
+        setSearchFocused(false);
       }
     };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
 
-    document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("keydown", handleEscape);
-    return () => {
-      document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [desktopExploreOpen]);
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    setSearchFocused(false);
+    router.push(`/services?q=${encodeURIComponent(searchQuery.trim())}`);
+  };
+
+  const handleSelectService = (slug: string) => {
+    setSearchFocused(false);
+    setSearchQuery("");
+    setMobileMenuOpen(false);
+    router.push(`/services#${slug}`);
+  };
 
   const gstLine = gstRegistrations
     .map((item) => `${item.state}: ${item.gstin}`)
@@ -115,13 +97,9 @@ export default function Header() {
     : primaryPhoneRaw;
   const primaryEmail = "anil@ssengineers.in";
 
-  const mobileNavGroups: NavGroup[] = [
-    { title: "Main", links: primaryLinks },
-    ...exploreGroups,
-  ];
-
   return (
     <header className="site-header">
+      {/* Top GST & Contact Strip */}
       <div className="gst-top-strip">
         <div className="container gst-strip-inner">
           <p className="gst-item">
@@ -129,7 +107,7 @@ export default function Header() {
             {primaryPhoneDigits ? (
               <>
                 <span className="gst-sep">|</span>
-                <strong>Call:</strong>{" "}
+                <strong>Hotline:</strong>{" "}
                 <a className="gst-inline-link" href={`tel:${primaryPhoneDigits}`}>
                   {primaryPhoneLabel}
                 </a>
@@ -148,8 +126,10 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Main Header Bar */}
       <div className="container header-inner">
-        <div className="brand">
+        {/* Brand */}
+        <Link href="/" className="brand" onClick={() => setMobileMenuOpen(false)}>
           <div className="brand-mark">
             <Image
               src="/ssenglogo.jpeg"
@@ -164,47 +144,106 @@ export default function Header() {
             <p className="brand-name">S.S. Engineers & Consultants</p>
             <p className="brand-sub">Fire Protection & MEP Specialists</p>
           </div>
+        </Link>
+
+        {/* Smart Search Box */}
+        <div className="header-search-wrap" ref={searchContainerRef}>
+          <form className="header-search-form" onSubmit={handleSearchSubmit}>
+            <Search className="search-icon" size={17} aria-hidden="true" />
+            <input
+              type="text"
+              className="header-search-input"
+              placeholder="Search services, fire fighting, electrical, MEP systems..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setSearchFocused(true);
+              }}
+              onFocus={() => setSearchFocused(true)}
+              aria-label="Search services"
+            />
+            {searchQuery ? (
+              <button
+                type="button"
+                className="search-clear-btn"
+                onClick={() => setSearchQuery("")}
+                aria-label="Clear search input"
+              >
+                <X size={15} />
+              </button>
+            ) : null}
+            <button type="submit" className="search-submit-btn">
+              Find
+            </button>
+          </form>
+
+          {/* Live Search Suggestions Dropdown */}
+          {searchFocused && filteredServices.length > 0 ? (
+            <div className="search-dropdown-menu">
+              <div className="search-dropdown-header">
+                <span>Matching Capabilities & Systems</span>
+                <span className="search-count">{filteredServices.length} found</span>
+              </div>
+              <ul className="search-results-list">
+                {filteredServices.map((item) => (
+                  <li key={`${item.category}-${item.name}`}>
+                    <button
+                      type="button"
+                      className="search-result-item"
+                      onClick={() => handleSelectService(item.slug)}
+                    >
+                      <div className="search-item-info">
+                        <span className="search-item-name">{item.name}</span>
+                        <span className="search-item-cat">{item.category}</span>
+                      </div>
+                      <ChevronRight size={15} className="search-arrow" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <div className="search-dropdown-footer">
+                <Link
+                  href={`/services?q=${encodeURIComponent(searchQuery.trim())}`}
+                  className="search-view-all"
+                  onClick={() => setSearchFocused(false)}
+                >
+                  View all results in live catalogue →
+                </Link>
+              </div>
+            </div>
+          ) : null}
         </div>
 
-        <nav className="nav desktop-nav">
-          {primaryLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`nav-link ${pathname === link.href ? "active" : ""}`}
-              onClick={closeAllNav}
-            >
-              {link.label}
-            </Link>
-          ))}
-
-          <button
-            ref={desktopExploreTriggerRef}
-            type="button"
-            className={`nav-link nav-more-trigger ${desktopExploreOpen ? "active" : ""}`}
-            onClick={() => setDesktopExploreOpen((value) => !value)}
-            aria-expanded={desktopExploreOpen}
-            aria-controls="desktop-explore-panel"
-          >
-            Explore
-          </button>
-        </nav>
-
+        {/* Header Actions */}
         <div className="header-actions">
           <BucketLink />
-          <a className="app-login-link" href={company.appLinks.login} target="_blank" rel="noreferrer">
-            <LogIn aria-hidden="true" size={16} />
-            <span>One App login</span>
+
+          <a
+            className="app-login-link"
+            href={company.appLinks.login}
+            target="_blank"
+            rel="noreferrer"
+            title="SGE One App Login"
+          >
+            <LogIn aria-hidden="true" size={15} />
+            <span>One App</span>
           </a>
-          <Link className="cta" href="/services">
-            Select Services
-          </Link>
+
+          <a
+            className="header-hotline-btn"
+            href={`tel:${primaryPhoneDigits}`}
+            title="Direct Engineering Hotline"
+          >
+            <PhoneCall size={15} />
+            <span>+91 {primaryPhoneDigits}</span>
+          </a>
+
           <button
             type="button"
             className="mobile-nav-trigger"
-            aria-label="Open mobile navigation"
+            aria-label="Toggle navigation"
             aria-expanded={mobileMenuOpen}
-            onClick={() => setMobileMenuOpen(true)}
+            onClick={() => setMobileMenuOpen((v) => !v)}
           >
             <span />
             <span />
@@ -213,44 +252,32 @@ export default function Header() {
         </div>
       </div>
 
-      {desktopExploreOpen ? (
-        <div className="desktop-explore-shell">
-          <button
-            type="button"
-            className="desktop-explore-backdrop"
-            aria-label="Close explore navigation"
-            onClick={() => setDesktopExploreOpen(false)}
-          />
-          <div
-            ref={desktopExploreRef}
-            id="desktop-explore-panel"
-            className="container desktop-explore-panel"
-            role="dialog"
-            aria-modal="true"
-          >
-            {exploreGroups.map((group) => (
-              <section key={group.title} className="desktop-explore-group">
-                <p className="desktop-explore-title">{group.title}</p>
-                <div className="desktop-explore-links">
-                  {group.links.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`desktop-explore-link ${
-                        pathname === link.href ? "active" : ""
-                      }`}
-                      onClick={closeAllNav}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            ))}
+      {/* Sub-Header Category Strip */}
+      <nav className="header-category-strip" aria-label="Service Categories">
+        <div className="container category-strip-inner">
+          <div className="category-strip-label">
+            <span>Categories:</span>
+          </div>
+          <div className="category-strip-scroll">
+            {categoryNavItems.map((cat) => {
+              const Icon = cat.icon;
+              return (
+                <Link
+                  key={cat.slug}
+                  href={`/services#${cat.slug}`}
+                  className="category-strip-item"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Icon size={14} className="category-icon" aria-hidden="true" />
+                  <span>{cat.name}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
-      ) : null}
+      </nav>
 
+      {/* Mobile Drawer */}
       {mobileMenuOpen ? (
         <div className="mobile-nav-shell" role="dialog" aria-modal="true">
           <button
@@ -261,36 +288,55 @@ export default function Header() {
           />
           <div className="mobile-nav-drawer">
             <div className="mobile-nav-head">
-              <p>Quick Navigation</p>
+              <p>Service Categories</p>
               <button
                 type="button"
                 className="mobile-nav-close"
                 aria-label="Close navigation"
-                onClick={closeMobileMenu}
+                onClick={() => setMobileMenuOpen(false)}
               >
                 ×
               </button>
             </div>
-            {mobileNavGroups.map((group) => (
-              <section key={group.title} className="mobile-nav-group">
-                <p className="mobile-nav-group-title">{group.title}</p>
-                <div className="mobile-nav-links">
-                  {group.links.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={closeMobileMenu}
-                      className={`mobile-nav-link ${
-                        pathname === item.href ? "active" : ""
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            ))}
+
+            <div className="mobile-nav-search">
+              <form onSubmit={handleSearchSubmit}>
+                <input
+                  type="text"
+                  placeholder="Search systems & services..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </form>
+            </div>
+
+            <div className="mobile-category-list">
+              <p className="mobile-nav-group-title">Browse by Discipline</p>
+              {categoryNavItems.map((cat) => {
+                const Icon = cat.icon;
+                return (
+                  <Link
+                    key={cat.slug}
+                    href={`/services#${cat.slug}`}
+                    className="mobile-category-link"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Icon size={16} className="category-icon" />
+                    <span>{cat.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
             <div className="mobile-nav-meta">
+              <Link
+                href="/contact#request-work"
+                className="button full-width"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ marginBottom: "0.8rem", textAlign: "center" }}
+              >
+                Create Work Request
+              </Link>
               <a href={`tel:${primaryPhoneDigits || primaryPhoneRaw}`}>
                 Call: {primaryPhoneLabel}
               </a>

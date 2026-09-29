@@ -1,5 +1,17 @@
+import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
-import { certifications, company, highlights, team, workProcess } from "@/lib/content";
+import LogoWall from "@/components/LogoWall";
+import {
+  certifications,
+  company,
+  highlights,
+  team,
+  workProcess,
+  clients,
+  brands,
+  caseStudies,
+  projectTypes,
+} from "@/lib/content";
 
 const values = [
   {
@@ -32,6 +44,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Highlights & Industry Practice */}
       <section className="section">
         <div className="container stats-grid">
           {highlights.map((item) => (
@@ -76,7 +89,79 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section">
+      {/* Projects & Sector Track Record */}
+      <section className="section" id="projects-coverage">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Execution Track Record"
+            title="Projects & Multidisciplinary Delivery"
+            subtitle="Demonstrated engineering capability across transport infrastructure, healthcare networks, commercial hubs, and industrial sites."
+          />
+
+          <div className="list-grid" style={{ marginBottom: "2rem" }}>
+            {projectTypes.map((item) => (
+              <div key={item} className="list-card">
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="case-grid">
+            {caseStudies.slice(0, 3).map((item) => (
+              <article key={item.title} className="case-card">
+                <p className="eyebrow">{item.sector}</p>
+                <h3>{item.title}</h3>
+                <p className="muted">
+                  {item.location} | {item.timeline}
+                </p>
+                <ul>
+                  {item.scope.map((scopeLine) => (
+                    <li key={scopeLine}>{scopeLine}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+
+          <div className="logo-wall-actions" style={{ marginTop: "1.5rem" }}>
+            <Link className="button ghost small" href="/projects">
+              Explore Full Projects & Case Studies Portfolio →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Institutional Clients */}
+      <section className="section alt" id="clients">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Trusted Clients"
+            title="Institutional Clients & Long-Term Partnerships"
+            subtitle="Leading enterprises and government-authorized institutions that depend on our engineering execution."
+          />
+          <LogoWall items={clients} limit={16} dense compactRow />
+          <div className="logo-wall-actions" style={{ marginTop: "1.2rem" }}>
+            <Link className="button ghost small" href="/clients">
+              View All Client Records →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Authorized Brands */}
+      <section className="section" id="brands">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Authorized Brands"
+            title="Multi-Brand Supply & OEM Integration"
+            subtitle="Direct OEM sourcing and certified compatibility for critical fire safety and MEP equipment."
+          />
+          <LogoWall items={brands} limit={16} dense compactRow />
+        </div>
+      </section>
+
+      {/* How We Work */}
+      <section className="section alt">
         <div className="container">
           <SectionHeading
             eyebrow="How We Work"
@@ -94,7 +179,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section alt">
+      {/* Team & Certifications */}
+      <section className="section">
         <div className="container split">
           <article className="panel">
             <h3>Team Snapshot</h3>

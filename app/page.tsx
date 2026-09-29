@@ -1,37 +1,44 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SectionHeading from "@/components/SectionHeading";
 import HomeChatWidget from "@/components/HomeChatWidget";
-import LogoWall from "@/components/LogoWall";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import ServiceCatalogue from "@/components/ServiceCatalogue";
-import { projectSiteImages } from "@/lib/project-site-images";
+import { company, faqs } from "@/lib/content";
 import {
-  company,
-  brands,
-  clients,
-  faqs,
-} from "@/lib/content";
-import {
-  Flame,
-  Zap,
+  Wrench,
+  PhoneCall,
+  ArrowRight,
   ShieldCheck,
   CheckCircle2,
-  ArrowRight,
-  PhoneCall,
-  Sparkles,
-  Wrench,
   Clock,
+  Building,
 } from "lucide-react";
 
 export default function HomePage() {
-  const heroPreviewImage =
-    projectSiteImages.find((project) => project.images.length > 0)?.images[0] ||
-    "/images/site-activity-05.jpeg";
+  const router = useRouter();
+  const [selectedDiscipline, setSelectedDiscipline] = useState("Fire Fighting & Hydrants");
+  const [facilityType, setFacilityType] = useState("Commercial Building");
+  const [siteLocation, setSiteLocation] = useState("");
+
+  const handleQuickDispatch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const query = new URLSearchParams({
+      discipline: selectedDiscipline,
+      facility: facilityType,
+      location: siteLocation,
+    }).toString();
+    router.push(`/contact?${query}#request-work`);
+  };
 
   return (
     <main>
       <HomeChatWidget />
+
+      {/* Clean, Smart Engineering Hero */}
       <section className="hero advanced-hero">
         <div className="container hero-grid">
           <div className="hero-content-col">
@@ -39,19 +46,19 @@ export default function HomePage() {
               <span className="live-dot" />
               <span>{company.iso} Certified</span>
               <span className="divider">•</span>
-              <span>NFPA & NBC 2016 Compliant</span>
+              <span>Statutory NOC Ready</span>
               <span className="divider">•</span>
-              <span>Est. {company.founded}</span>
+              <span>Est. {company.founded.replace("July ", "")}</span>
             </div>
 
             <h1 className="hero-main-title">
-              Turnkey Fire Protection, Substation & Integrated MEP Infrastructure
+              Turnkey Fire Protection & Integrated MEP Engineering
             </h1>
 
             <p className="lead hero-lead-text">
-              Engineering design, OEM supply, high-precision installation, statutory NOC
-              clearances, and 24x7 AMC operations. Proven execution across hospitals,
-              airports, commercial towers, and industrial manufacturing plants.
+              Turnkey design, OEM equipment supply, high-precision installation, statutory NOC
+              clearances, and lifecycle AMC for commercial, healthcare, and industrial facilities
+              across India.
             </p>
 
             <div className="hero-actions">
@@ -60,154 +67,141 @@ export default function HomePage() {
                 Create Work Request
                 <ArrowRight size={16} style={{ marginLeft: "8px" }} />
               </Link>
-              <Link className="button ghost" href="/services">
-                Explore Services
-              </Link>
+
+              <a className="button ghost" href={`tel:${company.phones[0]}`}>
+                <PhoneCall size={16} style={{ marginRight: "8px" }} />
+                Hotline: +91 {company.phones[0]}
+              </a>
             </div>
 
-            <div className="hero-capability-pills">
-              <span className="pill-item">
-                <Flame size={14} className="text-accent" /> Hydrant & Sprinkler Networks
-              </span>
-              <span className="pill-item">
-                <ShieldCheck size={14} className="text-gold" /> Addressable Fire Detection
-              </span>
-              <span className="pill-item">
-                <Zap size={14} className="text-accent" /> Substation & LT/HT Power
-              </span>
-              <span className="pill-item">
-                <Sparkles size={14} className="text-gold" /> Gas Suppression (FM-200 / Novec)
-              </span>
-              <span className="pill-item">
-                <Clock size={14} className="text-accent" /> 24x7 Statutory AMC & NOC
-              </span>
-            </div>
-
-            <div className="hero-hotline-strip">
-              <PhoneCall size={16} className="text-accent" />
-              <span>Direct Survey Hotline:</span>
-              <a href={`tel:${company.phones[0]}`}>+91 {company.phones[0]}</a>
-              <span className="separator">/</span>
-              <a href={`tel:${company.phones[1]}`}>+91 {company.phones[1]}</a>
+            <div className="hero-quick-trust-row">
+              <div className="trust-item">
+                <ShieldCheck size={16} className="text-accent" />
+                <span>NBC 2016 Part-IV & NFPA Compliant</span>
+              </div>
+              <div className="trust-item">
+                <Clock size={16} className="text-accent" />
+                <span>24–48 Hr Technical Site Survey</span>
+              </div>
             </div>
           </div>
 
-          <div className="hero-card hero-command-card">
-            <div className="hero-card-image">
-              <Image
-                src={heroPreviewImage}
-                alt="Recent turnkey execution from S.S. Engineers project site"
-                fill
-                sizes="(max-width: 900px) 94vw, 34vw"
-                priority
-              />
-              <div className="image-overlay-badge">
-                <span className="live-status-dot" />
-                <span>Field Deployment Active</span>
+          {/* Smart Engineering Dispatch & Survey Terminal (Clean, No Photo Clutter) */}
+          <div className="hero-card hero-dispatch-terminal">
+            <div className="terminal-header">
+              <div className="terminal-title-row">
+                <div className="terminal-status-indicator">
+                  <span className="live-dot" />
+                  <span className="terminal-live-label">Engineering Desk</span>
+                </div>
+                <span className="terminal-id">S.S. Engineers Registry</span>
               </div>
+              <p className="terminal-subtitle">
+                Quick Dispatch & Technical Survey Allocation
+              </p>
             </div>
 
-            <div className="command-card-header">
-              <p className="card-title">Engineering Command & Dispatch</p>
-              <p className="command-card-sub">S.S. Engineers & Consultants • New Delhi</p>
-            </div>
-
-            <div className="command-metrics-grid">
-              <div className="metric-box">
-                <span className="metric-label">Survey SLA</span>
-                <strong className="metric-val">24-48 Hrs</strong>
-                <span className="metric-desc">Rapid on-site review</span>
+            <form onSubmit={handleQuickDispatch} className="terminal-form">
+              <div className="terminal-field">
+                <label htmlFor="discipline-select">Required Discipline</label>
+                <select
+                  id="discipline-select"
+                  value={selectedDiscipline}
+                  onChange={(e) => setSelectedDiscipline(e.target.value)}
+                  className="terminal-select"
+                >
+                  <option value="Fire Fighting & Hydrants">Fire Fighting & Hydrant Systems</option>
+                  <option value="Addressable Fire Detection">Addressable Fire Detection</option>
+                  <option value="Gas Suppression (FM-200/CO2)">Gas Suppression (FM-200 / CO2)</option>
+                  <option value="Electrical Substation & Panels">Electrical Substation & LT/HT Panels</option>
+                  <option value="Plumbing & Pump Room">Commercial Plumbing & Pump Room</option>
+                  <option value="ELV, CCTV & IBMS">ELV, Security & IBMS Automation</option>
+                  <option value="Statutory AMC & NOC">Statutory NOC & Preventive AMC</option>
+                </select>
               </div>
-              <div className="metric-box">
-                <span className="metric-label">Statutory NOC</span>
-                <strong className="metric-val">NBC Part-IV</strong>
-                <span className="metric-desc">Delhi / Haryana ready</span>
+
+              <div className="terminal-field">
+                <label htmlFor="facility-select">Facility / Project Type</label>
+                <select
+                  id="facility-select"
+                  value={facilityType}
+                  onChange={(e) => setFacilityType(e.target.value)}
+                  className="terminal-select"
+                >
+                  <option value="Commercial Office / Tower">Commercial Office / IT Park</option>
+                  <option value="Hospital / Healthcare">Hospital & Healthcare Facility</option>
+                  <option value="Industrial / Manufacturing">Industrial & Manufacturing Plant</option>
+                  <option value="Educational / Campus">University / Institutional Campus</option>
+                  <option value="Residential Complex">Residential High-Rise Complex</option>
+                  <option value="Airport / Logistics">Airport / Logistics Warehouse</option>
+                </select>
+              </div>
+
+              <div className="terminal-field">
+                <label htmlFor="location-input">Site Location / City</label>
+                <input
+                  id="location-input"
+                  type="text"
+                  placeholder="e.g. Delhi NCR, Gurugram, Noida..."
+                  value={siteLocation}
+                  onChange={(e) => setSiteLocation(e.target.value)}
+                  className="terminal-input"
+                />
+              </div>
+
+              <button type="submit" className="button full-width terminal-submit-btn">
+                <span>Configure Work Request</span>
+                <ArrowRight size={16} />
+              </button>
+            </form>
+
+            <div className="terminal-trust-footer">
+              <div className="terminal-stat">
+                <strong>25+ Yrs</strong>
+                <span>Industry Practice</span>
+              </div>
+              <div className="terminal-stat-sep" />
+              <div className="terminal-stat">
+                <strong>100%</strong>
+                <span>Authority NOC Ready</span>
+              </div>
+              <div className="terminal-stat-sep" />
+              <div className="terminal-stat">
+                <strong>24x7</strong>
+                <span>Support Operations</span>
               </div>
             </div>
-
-            <ul className="command-feature-list">
-              <li>
-                <CheckCircle2 size={15} className="text-accent" />
-                <span>Direct PostgreSQL registry logging with instant tracking ID</span>
-              </li>
-              <li>
-                <CheckCircle2 size={15} className="text-accent" />
-                <span>Authorized multi-brand integration (Honeywell, Schneider, Tyco)</span>
-              </li>
-              <li>
-                <CheckCircle2 size={15} className="text-accent" />
-                <span>Turnkey design-to-handover execution & annual maintenance</span>
-              </li>
-            </ul>
-
-            <Link className="button small full-width command-card-btn" href="/contact#request-work">
-              Submit Project Scope for Survey
-              <ArrowRight size={14} style={{ marginLeft: "6px" }} />
-            </Link>
           </div>
         </div>
       </section>
 
       {/* Services Catalogue */}
-      <section className="section">
+      <section className="section" id="service-catalogue-section">
         <div className="container">
           <SectionHeading
-            eyebrow="Service catalogue"
-            title="Specify the Right System for Your Facility"
-            subtitle="Choose a capability, then request a survey. Engineering scope and pricing are prepared only after a site review."
+            eyebrow="Live Capability Directory"
+            title="Specify the Right Engineering System for Your Facility"
+            subtitle="Explore our core disciplines. Scope, bill of quantities, and commercial estimates are finalized after a technical site review."
           />
           <ServiceCatalogue compact />
           <div className="logo-wall-actions">
             <Link className="button ghost small" href="/services">
-              View all service capabilities
+              Browse Full Live Catalogue →
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Clients */}
-      <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Clients"
-            title="Trusted by Leading Institutions"
-            subtitle="Execution across hospitals, transport infrastructure, commercial, and industrial sites."
-          />
-          <LogoWall items={clients} limit={10} dense compactRow />
-          <div className="logo-wall-actions">
-            <Link className="button ghost small" href="/clients">
-              View All Clients
-            </Link>
-          </div>
-        </div>
-      </section>
-
+      {/* Client Testimonials */}
       <TestimonialsSection />
 
-      {/* Authorized Brands */}
-      <section className="section alt">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Authorized Brands"
-            title="Multi-Brand Supply & Integration"
-            subtitle="We recommend the right OEM based on project scope and compliance needs."
-          />
-          <LogoWall items={brands} limit={12} dense compactRow />
-          <div className="logo-wall-actions">
-            <Link className="button ghost small" href="/services">
-              Explore service capabilities
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQs */}
+      {/* Frequently Asked Questions */}
       <section className="section">
         <div className="container">
           <SectionHeading
-            eyebrow="FAQ"
-            title="Common Questions Before Starting"
-            subtitle="Answers to the most frequent planning and execution questions from facilities teams."
+            eyebrow="Technical FAQ"
+            title="Common Planning & Compliance Questions"
+            subtitle="Straightforward answers on statutory clearances, surveys, and multi-system execution."
           />
           <div className="faq-list">
             {faqs.map((item) => (
@@ -220,7 +214,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Final CTA */}
+      {/* Final Direct Dispatch CTA */}
       <section className="section alt">
         <div className="container request-path-wrap">
           <div className="form-panel request-path-card" id="request-service">
