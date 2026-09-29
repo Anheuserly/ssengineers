@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { database } from "@/lib/server/database";
 
-export const runtime = "nodejs";
-
 export async function GET() {
   const businessId = process.env.SS_ENGINEERS_BUSINESS_ID;
 

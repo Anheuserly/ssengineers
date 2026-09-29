@@ -5,8 +5,6 @@ import {
   validateChatAssistantPayload,
 } from "@/lib/server/validation";
 
-export const runtime = "edge";
-
 type AssistantOutput = {
   reply: string;
   lead?: Partial<ChatLeadFields>;
