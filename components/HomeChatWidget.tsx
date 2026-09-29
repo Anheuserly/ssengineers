@@ -2,6 +2,20 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  MessageSquare,
+  X,
+  CheckCircle2,
+  Wrench,
+  Send,
+  PhoneCall,
+  Sparkles,
+  Flame,
+  Zap,
+  ShieldCheck,
+  Building2,
+  RotateCcw,
+} from "lucide-react";
 
 type ChatRole = "assistant" | "user";
 
@@ -9,6 +23,8 @@ type ChatMessage = {
   id: string;
   role: ChatRole;
   text: string;
+  isConfirmation?: boolean;
+  requestNumber?: string;
 };
 
 type LeadState = {
@@ -27,6 +43,7 @@ type ChatApiResponse = {
   lead?: Partial<LeadState>;
   missingFields?: string[];
   leadSaved?: boolean;
+  requestNumber?: string;
   message?: string;
 };
 
@@ -55,44 +72,30 @@ const mergeLead = (base: LeadState, patch: Partial<LeadState>): LeadState => ({
   budget: (patch.budget || base.budget || "").trim(),
 });
 
-const toFieldLabel = (value: string) => {
-  if (value === "name") return "Name";
-  if (value === "phone") return "Phone";
-  if (value === "location") return "Location";
-  if (value === "requirement") return "Requirement";
-  if (value === "email") return "Email";
-  if (value === "company") return "Company";
-  if (value === "timeline") return "Timeline";
-  if (value === "budget") return "Budget";
-  return value;
-};
-
-type RequiredField = "name" | "phone" | "email" | "requirement";
+type RequiredField = "requirement" | "name" | "phone";
 
 const REQUIRED_FLOW: RequiredField[] = [
+  "requirement",
   "name",
   "phone",
-  "email",
-  "requirement",
 ];
 
-const placeholderByField: Record<RequiredField, string> = {
-  name: "Enter your full name",
-  phone: "Enter your contact number",
-  email: "Enter your email address",
-  requirement: "Tell us your exact requirement",
-};
+const initialQuickChips = [
+  "🚒 Fire Hydrant & Sprinkler",
+  "🚨 Fire Alarm & Detection",
+  "💨 Gas Suppression (FM-200)",
+  "⚡ Electrical Substation",
+  "🛡️ Annual Maintenance (AMC)",
+  "📋 Fire NOC & Safety Audit",
+];
 
-const quickRepliesByField: Record<RequiredField, string[]> = {
-  name: ["Shubham Kumar", "Anil Saini"],
-  phone: ["9871936847", "+91 9310286848"],
-  email: ["anil@ssengineers.in", "name@company.com"],
-  requirement: [
-    "Need fire hydrant and sprinkler setup for new project.",
-    "Need AMC support for fire and MEP systems.",
-    "Need site survey and technical proposal.",
-  ],
-};
+const facilityQuickChips = [
+  "Commercial Tower",
+  "Industrial Plant / Factory",
+  "Hospital / Healthcare",
+  "Warehouse / Logistics",
+  "Educational Campus",
+];
 
 export default function HomeChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,82 +104,68 @@ export default function HomeChatWidget() {
   const [input, setInput] = useState("");
   const [lead, setLead] = useState<LeadState>(emptyLead);
   const [missing, setMissing] = useState<string[]>([
+    "requirement",
     "name",
     "phone",
-    "email",
-    "requirement",
   ]);
   const [leadSaved, setLeadSaved] = useState(false);
+  const [generatedRefCode, setGeneratedRefCode] = useState("");
+
+  const initialGreeting =
+    "Hello! Welcome to S.S. Engineers & Consultants. How can we assist your facility today? What service or engineering system do you need help with?";
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: createId(),
       role: "assistant",
-      text: "Hello, I am your AI support assistant. May I have your full name to get started?",
+      text: initialGreeting,
     },
   ]);
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const target = messagesRef.current;
-    if (!target) {
-      return;
+    if (target) {
+      target.scrollTo({
+        top: target.scrollHeight,
+        behavior: "smooth",
+      });
     }
-
-    target.scrollTo({
-      top: target.scrollHeight,
-      behavior: "smooth",
-    });
   }, [messages, status]);
 
-  const capturedSummary = useMemo(() => {
-    const items: string[] = [];
-    if (lead.name) items.push(`Name: ${lead.name}`);
-    if (lead.phone) items.push(`Phone: ${lead.phone}`);
-    if (lead.email) items.push(`Email: ${lead.email}`);
-    if (lead.location) items.push(`Location: ${lead.location}`);
-    return items;
-  }, [lead.email, lead.location, lead.name, lead.phone]);
-
-  const nextRequiredField = useMemo<RequiredField | null>(() => {
-    const missingSet = new Set(missing);
-    for (const field of REQUIRED_FLOW) {
-      if (missingSet.has(field)) {
-        return field;
-      }
-    }
-    return null;
-  }, [missing]);
-
-  const requiredCompletedCount = useMemo(
-    () => REQUIRED_FLOW.filter((field) => Boolean(lead[field].trim())).length,
-    [lead]
-  );
+  const requiredCompletedCount = useMemo(() => {
+    let count = 0;
+    if (lead.requirement.trim()) count++;
+    if (lead.name.trim()) count++;
+    if (lead.phone.trim()) count++;
+    return count;
+  }, [lead]);
 
   const progressPercent = Math.round(
     (requiredCompletedCount / REQUIRED_FLOW.length) * 100
   );
 
-  const quickReplies = useMemo(() => {
-    if (!nextRequiredField || leadSaved) {
-      return [];
-    }
-    return quickRepliesByField[nextRequiredField];
-  }, [leadSaved, nextRequiredField]);
+  const activeQuickChips = useMemo(() => {
+    if (leadSaved) return [];
+    if (!lead.requirement) return initialQuickChips;
+    if (!lead.location) return facilityQuickChips;
+    return [];
+  }, [lead.requirement, lead.location, leadSaved]);
 
-  const inputPlaceholder = nextRequiredField
-    ? placeholderByField[nextRequiredField]
-    : "Tell us what you need...";
+  const inputPlaceholder = useMemo(() => {
+    if (!lead.requirement) return "Tell us what system or service you need...";
+    if (!lead.location) return "Enter your site location or city...";
+    if (!lead.name) return "Enter your full name...";
+    if (!lead.phone) return "Enter your contact phone / WhatsApp number...";
+    return "Ask any question or type message...";
+  }, [lead]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (status === "sending") {
-      return;
-    }
+    if (status === "sending") return;
 
     const messageText = input.trim();
-    if (!messageText) {
-      return;
-    }
+    if (!messageText) return;
 
     setInput("");
     setStatus("sending");
@@ -188,7 +177,7 @@ export default function HomeChatWidget() {
       text: messageText,
     };
 
-    const history = messages.slice(-12).map((item) => ({
+    const history = messages.slice(-14).map((item) => ({
       role: item.role,
       content: item.text,
     }));
@@ -208,56 +197,52 @@ export default function HomeChatWidget() {
       });
 
       const body = (await response.json().catch(() => null)) as ChatApiResponse | null;
-
       if (!response.ok || !body) {
         throw new Error(body?.message || "Unable to process chat request.");
       }
-
-      const assistantText =
-        typeof body.reply === "string" && body.reply.trim()
-          ? body.reply.trim()
-          : "Thanks. Please share more details so we can assist you better.";
 
       if (body.lead) {
         setLead((prev) => mergeLead(prev, body.lead || {}));
       }
 
-      const missingFields = Array.isArray(body.missingFields)
-        ? body.missingFields.filter((item) => typeof item === "string")
-        : [];
+      const missingFields = Array.isArray(body.missingFields) ? body.missingFields : [];
       setMissing(missingFields);
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: createId(),
-          role: "assistant",
-          text: assistantText,
-        },
-      ]);
+      const assistantText = body.reply || "Thank you. Let us proceed.";
 
-      if (body.leadSaved) {
+      if (body.leadSaved && body.requestNumber) {
         setLeadSaved(true);
-        setNotice(
-          "Thank you. Your enquiry has been submitted successfully. Our technical team will contact you shortly."
-        );
-      } else if (missingFields.length > 0) {
-        setNotice(`Next step: ${toFieldLabel(missingFields[0])}`);
+        setGeneratedRefCode(body.requestNumber);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: createId(),
+            role: "assistant",
+            text: assistantText,
+            isConfirmation: true,
+            requestNumber: body.requestNumber,
+          },
+        ]);
+        setNotice(`Work Request created! Reference #${body.requestNumber}`);
       } else {
-        setNotice("");
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: createId(),
+            role: "assistant",
+            text: assistantText,
+          },
+        ]);
       }
     } catch (error) {
-      const message =
-        error instanceof Error && error.message
-          ? error.message
-          : "Unable to connect right now.";
-      setNotice(message);
+      console.error("[Chat widget error]", error);
+      setNotice("Unable to reach assistant. Please try again or call our hotline.");
       setMessages((prev) => [
         ...prev,
         {
           id: createId(),
           role: "assistant",
-          text: "Connection issue right now. Let us continue manually. Please share your full name first.",
+          text: "I am having temporary trouble with network connectivity. Please call our engineering desk directly at +91 98719 36847 for immediate assistance.",
         },
       ]);
     } finally {
@@ -265,14 +250,28 @@ export default function HomeChatWidget() {
     }
   };
 
+  const handleChipClick = (text: string) => {
+    // Strip leading emojis for cleaner prompt submission
+    const cleanText = text.replace(/^[\p{Emoji}\s]+/gu, "").trim();
+    setInput(cleanText);
+  };
+
   return (
     <div className={`chat-widget ${isOpen ? "open" : ""}`}>
       {isOpen ? (
-        <section className="chat-widget-panel" aria-label="AI chat widget">
+        <section className="chat-widget-panel" aria-label="AI Engineering Assistant">
+          {/* Header */}
           <div className="chat-widget-head">
             <div className="chat-widget-title-wrap">
-              <p className="chat-widget-title">AI Help Desk</p>
-              <p className="chat-widget-subtitle">Step-by-step project support</p>
+              <div className="chat-avatar-badge">
+                <Sparkles size={16} />
+              </div>
+              <div>
+                <p className="chat-widget-title">Engineering Helpdesk AI</p>
+                <p className="chat-widget-subtitle">
+                  Instant Work Request & Site Survey Dispatch
+                </p>
+              </div>
             </div>
             <button
               type="button"
@@ -280,29 +279,42 @@ export default function HomeChatWidget() {
               onClick={() => setIsOpen(false)}
               aria-label="Close chat"
             >
-              ×
+              <X size={18} />
             </button>
           </div>
 
+          {/* Progress Strip */}
           <div className="chat-widget-progress">
             <div className="chat-widget-progress-meta">
               <span>
-                {requiredCompletedCount}/{REQUIRED_FLOW.length} details captured
+                {leadSaved
+                  ? "🎉 Work Request Registered"
+                  : `${requiredCompletedCount}/3 Details Captured`}
               </span>
               <span>
-                {nextRequiredField
-                  ? `Next: ${toFieldLabel(nextRequiredField)}`
-                  : "Required details complete"}
+                {leadSaved
+                  ? `Ref #${generatedRefCode}`
+                  : !lead.requirement
+                  ? "Step 1: Your Requirement"
+                  : !lead.name
+                  ? "Step 2: Client Name"
+                  : !lead.phone
+                  ? "Step 3: Contact Phone"
+                  : "All Details Complete"}
               </span>
             </div>
             <div className="chat-widget-progress-track">
               <span
                 className="chat-widget-progress-fill"
-                style={{ width: `${progressPercent}%` }}
+                style={{
+                  width: `${leadSaved ? 100 : progressPercent}%`,
+                  background: leadSaved ? "#16a34a" : "var(--accent)",
+                }}
               />
             </div>
           </div>
 
+          {/* Messages Scroll Area */}
           <div
             ref={messagesRef}
             className="chat-widget-messages"
@@ -310,72 +322,131 @@ export default function HomeChatWidget() {
             aria-live="polite"
           >
             {messages.map((item) => (
-              <p key={item.id} className={`chat-bubble ${item.role}`}>
-                {item.text}
-              </p>
+              <div key={item.id} className={`chat-bubble-row ${item.role}`}>
+                <div className={`chat-bubble ${item.role}`}>
+                  <p>{item.text}</p>
+                  {item.isConfirmation && item.requestNumber && (
+                    <div className="chat-confirmation-badge">
+                      <div className="badge-header">
+                        <CheckCircle2 size={16} className="text-success" />
+                        <strong>Work Request Created</strong>
+                      </div>
+                      <div className="badge-code">
+                        <span>Ref Code:</span>
+                        <strong>{item.requestNumber}</strong>
+                      </div>
+                      <p className="badge-note">
+                        Saved in S.S. Engineers Central Database. Direct technical
+                        dispatch initiated.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             ))}
+
+            {status === "sending" && (
+              <div className="chat-bubble-row assistant">
+                <div className="chat-bubble assistant typing">
+                  <span className="dot" />
+                  <span className="dot" />
+                  <span className="dot" />
+                </div>
+              </div>
+            )}
           </div>
 
+          {/* Form and Quick Chips */}
           <form className="chat-widget-form" onSubmit={onSubmit}>
-            {quickReplies.length > 0 ? (
+            {activeQuickChips.length > 0 && (
               <div className="chat-widget-quick">
-                {quickReplies.map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className="chat-quick-chip"
-                    onClick={() => setInput(item)}
-                  >
-                    {item}
-                  </button>
-                ))}
+                <span className="quick-label">Suggestions:</span>
+                <div className="quick-chips-row">
+                  {activeQuickChips.map((chip) => (
+                    <button
+                      key={chip}
+                      type="button"
+                      className="chat-quick-chip"
+                      onClick={() => handleChipClick(chip)}
+                    >
+                      {chip}
+                    </button>
+                  ))}
+                </div>
               </div>
-            ) : null}
+            )}
 
-            <label>
-              Your Reply
+            <div className="chat-input-bar">
               <textarea
                 value={input}
-                onChange={(event) => setInput(event.target.value)}
-                rows={2}
+                onChange={(e) => setInput(e.target.value)}
+                rows={1}
                 placeholder={inputPlaceholder}
                 maxLength={2000}
                 required
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    if (input.trim()) {
+                      onSubmit(e as any);
+                    }
+                  }
+                }}
               />
-            </label>
+              <button
+                className="chat-send-btn"
+                type="submit"
+                disabled={status === "sending" || !input.trim()}
+                aria-label="Send message"
+              >
+                <Send size={16} />
+              </button>
+            </div>
 
-            {capturedSummary.length > 0 ? (
-              <div className="chat-widget-meta">
-                {capturedSummary.map((item) => (
-                  <span key={item}>{item}</span>
-                ))}
+            {/* Captured tags preview */}
+            {(lead.requirement || lead.name || lead.location) && (
+              <div className="chat-captured-tags">
+                {lead.requirement && (
+                  <span className="cap-tag">
+                    <strong>Req:</strong> {lead.requirement.slice(0, 30)}
+                  </span>
+                )}
+                {lead.location && (
+                  <span className="cap-tag">
+                    <strong>Loc:</strong> {lead.location}
+                  </span>
+                )}
+                {lead.name && (
+                  <span className="cap-tag">
+                    <strong>Name:</strong> {lead.name}
+                  </span>
+                )}
               </div>
-            ) : null}
+            )}
 
-            <p className="chat-widget-legal">
-              By chatting, you agree to our <Link href="/privacy-policy">Privacy Policy</Link>.
-            </p>
+            {notice && <p className="chat-widget-note">{notice}</p>}
 
-            <button className="button" type="submit" disabled={status === "sending"}>
-              {status === "sending" ? "Thinking..." : "Send"}
-            </button>
-            {notice ? <p className="chat-widget-note">{notice}</p> : null}
-            {missing.length > 0 ? (
-              <p className="chat-widget-missing">
-                Next: {toFieldLabel(missing[0])}
-              </p>
-            ) : null}
+            <div className="chat-footer-links">
+              <span>Direct Hotline: <a href="tel:9871936847">+91 98719 36847</a></span>
+              <span>•</span>
+              <Link href="/contact#request-work">Full Survey Form</Link>
+            </div>
           </form>
         </section>
       ) : null}
 
+      {/* Floating Trigger Button */}
       <button
         type="button"
         className="chat-widget-toggle"
         onClick={() => setIsOpen((prev) => !prev)}
-        aria-label="Open AI chat"
+        aria-label="Open AI Engineering Helpdesk"
       >
-        AI Chat
+        <span className="toggle-icon-wrap">
+          <MessageSquare size={20} />
+          <span className="toggle-badge-dot" />
+        </span>
+        <span className="toggle-text">AI Helpdesk</span>
       </button>
     </div>
   );
