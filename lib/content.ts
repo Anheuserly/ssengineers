@@ -33,12 +33,14 @@ export const company = {
   branchOffices: [
     "Plot No 16, Gali No 01, Opp Sheetla Mata Mandir, Gurgaon, Haryana, 122001",
   ],
-  appName: "AMC MEP 24x7 Service App",
+  appName: "AMC MEP 24x7 One App",
+  appTagline: "Service requests, updates, documents and business access in one place.",
   appLinks: {
+    login: "https://amcmep.in/login",
     playStore:
       "https://play.google.com/store/apps/details?id=com.mepsge.amcsge&pcampaignid=web_share",
     appStore:
-      "https://apps.apple.com/in/app/amc-mep-24x7-service-app/id6756487144",
+      "https://apps.apple.com/in/app/amc-mep-24x7-one-app/id6792257571",
   },
   appBadges: {
     playStore: "/badges/playstore-badge.png",
@@ -147,7 +149,7 @@ export const homeStrengths = [
   "Code-compliant layouts, hydraulic calculations, and authority-ready documentation",
   "Multi-brand sourcing with site-specific engineering recommendations",
   "Quality-led installation, testing, and commissioning workflows",
-  "Digital service tracking through AMC MEP 24x7 Service App",
+  "Digital service tracking through AMC MEP 24x7 One App",
 ];
 
 export const certifications = [
@@ -665,45 +667,6 @@ export const vendorDocumentShareModes = [
   "Google Drive Link",
   "Physical Dossier",
   "Will Share After Discussion",
-];
-
-export const testimonialFallback = [
-  {
-    authorName: "Project Director",
-    authorRole: "Construction Management",
-    company: "Healthcare Infrastructure Client",
-    projectName: "Fire & MEP Integration Package",
-    rating: 5,
-    testimonial:
-      "S.S. Engineers handled site coordination with discipline and strong documentation support. Their execution quality and response speed were consistent throughout the project.",
-    createdAt: "2026-01-15T10:00:00.000Z",
-    status: "published",
-    displayOrder: 1,
-  },
-  {
-    authorName: "Facility Head",
-    authorRole: "Operations",
-    company: "Commercial Tower Client",
-    projectName: "Hydrant, Alarm & Utility Upgrade",
-    rating: 5,
-    testimonial:
-      "The team delivered technical clarity, smooth commissioning, and clean handover records. We especially valued their proactive issue resolution during execution.",
-    createdAt: "2025-12-08T10:00:00.000Z",
-    status: "published",
-    displayOrder: 2,
-  },
-  {
-    authorName: "Engineering Coordinator",
-    authorRole: "Infrastructure Program",
-    company: "Institutional Client",
-    projectName: "Multi-Site Safety Works",
-    rating: 4,
-    testimonial:
-      "Good planning, transparent communication, and reliable follow-through on site actions. Their compliance-focused delivery made review cycles easier for our team.",
-    createdAt: "2025-11-01T10:00:00.000Z",
-    status: "published",
-    displayOrder: 3,
-  },
 ];
 
 export const careerOpenings = [

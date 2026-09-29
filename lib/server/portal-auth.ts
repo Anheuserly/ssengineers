@@ -49,8 +49,6 @@ const secureEqual = (left: string, right: string) => {
 const getSessionSecret = () => {
   return (
     process.env.PORTAL_SESSION_SECRET ||
-    process.env.APPWRITE_API_KEY ||
-    process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID ||
     "ssengineers-dev-secret"
   );
 };

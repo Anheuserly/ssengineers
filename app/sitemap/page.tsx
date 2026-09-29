@@ -5,6 +5,7 @@ const mainPages = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/projects", label: "Projects" },
+  { href: "/activity", label: "Activity" },
   { href: "/about", label: "About" },
   { href: "/clients", label: "Clients" },
   { href: "/team", label: "Team" },
@@ -27,8 +28,6 @@ const legalPages = [
   { href: "/disclaimer", label: "Disclaimer" },
   { href: "/hse-policy", label: "Health & Safety (HSE) Policy" },
   { href: "/quality-policy", label: "Quality Policy" },
-  { href: "/vendor-registration", label: "Vendor Registration" },
-  { href: "/portal-login", label: "Vendor / Customer Login" },
 ];
 
 export default function SitemapPage() {

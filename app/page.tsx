@@ -1,28 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
-import ServiceRequestForm from "@/components/ServiceRequestForm";
-import StatusQuickNav from "@/components/StatusQuickNav";
 import HomeChatWidget from "@/components/HomeChatWidget";
 import LogoWall from "@/components/LogoWall";
-import PartnerVisualShowcase from "@/components/PartnerVisualShowcase";
-import ProjectImageGallery from "@/components/ProjectImageGallery";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import ServiceCatalogue from "@/components/ServiceCatalogue";
 import { projectSiteImages } from "@/lib/project-site-images";
 import {
   company,
   highlights,
-  fireSystems,
-  electricalWorks,
-  plumbingWorks,
-  securityNetworking,
-  homeStrengths,
-  certifications,
   brands,
   clients,
-  projectTypes,
-  workProcess,
-  caseStudies,
   faqs,
 } from "@/lib/content";
 
@@ -33,7 +21,6 @@ export default function HomePage() {
 
   return (
     <main>
-      <StatusQuickNav active="/compliance-documents" />
       <HomeChatWidget />
       <section className="hero">
         <div className="container hero-grid">
@@ -42,11 +29,11 @@ export default function HomePage() {
             <h1>{company.heroHeadline}</h1>
             <p className="lead">{company.overview}</p>
             <div className="hero-actions">
-              <Link className="button" href="/contact">
-                Get a Site Survey
+              <Link className="button" href="/services">
+                Select Services
               </Link>
-              <Link className="button ghost" href="/services">
-                Explore Services
+              <Link className="button ghost" href="/projects">
+                View Recent Projects
               </Link>
             </div>
             <div className="hero-strip">
@@ -99,122 +86,15 @@ export default function HomePage() {
       <section className="section">
         <div className="container">
           <SectionHeading
-            eyebrow="On-Site Activity"
-            title="Execution Moments from Real Projects"
-            subtitle="From manpower briefings to installation-at-height, this is how our teams work on live sites."
+            eyebrow="Service catalogue"
+            title="Specify the Right System for Your Facility"
+            subtitle="Choose a capability, then request a survey. Engineering scope and pricing are prepared only after a site review."
           />
-          <PartnerVisualShowcase />
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Project Library"
-            title="Project-Wise Site Image Collection"
-            subtitle="Verified site photos grouped by project for quick visual reference."
-          />
-          <ProjectImageGallery limitProjects={4} maxImagesPerProject={4} />
+          <ServiceCatalogue compact />
           <div className="logo-wall-actions">
-            <Link className="button ghost small" href="/projects#project-image-gallery">
-              View All Project Images
+            <Link className="button ghost small" href="/services">
+              View all service capabilities
             </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Core Expertise"
-            title="Complete Fire Protection & MEP Delivery"
-            subtitle="Design, supply, installation, testing, commissioning, and AMC across multi-sector facilities."
-          />
-          <div className="grid-2">
-            <div className="panel">
-              <h3>Fire & Safety Systems</h3>
-              <ul>
-                {fireSystems.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="panel">
-              <h3>Electrical Works</h3>
-              <ul>
-                {electricalWorks.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="panel">
-              <h3>Plumbing & Infrastructure</h3>
-              <ul>
-                {plumbingWorks.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="panel">
-              <h3>Security & Networking</h3>
-              <ul>
-                {securityNetworking.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Execution Strengths"
-            title="How We Deliver Better"
-            subtitle="Process, engineering discipline, and accountability that keep projects on track."
-          />
-          <div className="tag-grid">
-            {homeStrengths.map((item) => (
-              <span key={item} className="tag">
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container">
-          <SectionHeading
-            eyebrow="How We Work"
-            title="Clear, Compliance-First Execution"
-            subtitle="Structured delivery to keep safety, quality, and timelines aligned."
-          />
-          <div className="grid-3">
-            {workProcess.map((step) => (
-              <div key={step.title} className="tile">
-                <h4>{step.title}</h4>
-                <p className="muted">{step.detail}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Certifications"
-            title="Compliance You Can Rely On"
-            subtitle="Quality assurance and authorized vendor registrations for public and private institutions."
-          />
-          <div className="grid-3">
-            {certifications.map((item) => (
-              <div key={item} className="tile">
-                <p>{item}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -226,38 +106,11 @@ export default function HomePage() {
             title="Trusted by Leading Institutions"
             subtitle="Execution across hospitals, transport infrastructure, commercial, and industrial sites."
           />
-          <LogoWall items={clients} limit={12} dense />
+          <LogoWall items={clients} limit={10} dense compactRow />
           <div className="logo-wall-actions">
             <Link className="button ghost small" href="/clients">
               View All Clients
             </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Case Snapshots"
-            title="Representative Delivery Case Studies"
-            subtitle="Sample project patterns that reflect how we execute across sectors."
-          />
-          <div className="case-grid">
-            {caseStudies.map((item) => (
-              <article key={item.title} className="case-card">
-                <p className="eyebrow">{item.sector}</p>
-                <h3>{item.title}</h3>
-                <p className="muted">
-                  {item.location} | {item.timeline}
-                </p>
-                <ul>
-                  {item.scope.map((scopeLine) => (
-                    <li key={scopeLine}>{scopeLine}</li>
-                  ))}
-                </ul>
-                <p className="case-outcome">{item.outcome}</p>
-              </article>
-            ))}
           </div>
         </div>
       </section>
@@ -271,10 +124,10 @@ export default function HomePage() {
             title="Multi-Brand Supply & Integration"
             subtitle="We recommend the right OEM based on project scope and compliance needs."
           />
-          <LogoWall items={brands} dense />
+          <LogoWall items={brands} limit={12} dense compactRow />
           <div className="logo-wall-actions">
-            <Link className="button ghost small" href="/clients">
-              View Full OEM Network
+            <Link className="button ghost small" href="/services">
+              Explore service capabilities
             </Link>
           </div>
         </div>
@@ -298,29 +151,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container split">
-          <div>
-            <SectionHeading
-              eyebrow="Project Capability"
-              title="Multi-Sector Execution"
-              subtitle="Dedicated engineers, project managers, and compliance support for every stage."
-            />
-            <div className="list-grid">
-              {projectTypes.map((item) => (
-                <div key={item} className="list-card">
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="form-panel">
-            <h3>Request a Service Survey</h3>
+      <section className="section alt">
+        <div className="container request-path-wrap">
+          <div className="form-panel request-path-card" id="request-service">
+            <p className="eyebrow">One clear enquiry</p>
+            <h3>Start with the systems your site needs</h3>
             <p className="muted">
-              Share your site details and scope. We will review and propose the
-              right protection plan.
+              Add fire, electrical, plumbing or ELV services to your bucket. Then share site details once, and our team will prepare the right review path.
             </p>
-            <ServiceRequestForm />
+            <Link className="button" href="/services">Select services</Link>
           </div>
         </div>
       </section>

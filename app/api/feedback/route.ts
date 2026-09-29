@@ -1,38 +1,28 @@
 import { NextResponse } from "next/server";
-import {
-  AppwriteRequestError,
-  createAppwriteDocument,
-  getAppwriteConfig,
-} from "@/functions/appwrite";
-import { ValidationError, validateFeedbackPayload } from "@/lib/server/validation";
 
 export const runtime = "edge";
 
 export async function POST(request: Request) {
   try {
-    const rawPayload = await request.json();
-    const payload = validateFeedbackPayload(rawPayload);
-    const {
-      collections: { feedback },
-    } = getAppwriteConfig();
+    const payload = await request.json();
+    const apiUrl = process.env.SGE_API_URL || "https://api.amcmep.in/v1";
+    const businessId = process.env.SS_ENGINEERS_BUSINESS_ID;
 
-    const data = await createAppwriteDocument(feedback, payload);
-    return NextResponse.json(data, { status: 200 });
-  } catch (error) {
-    if (error instanceof SyntaxError) {
-      return NextResponse.json({ message: "Invalid form payload." }, { status: 400 });
-    }
+    const response = await fetch(`${apiUrl}/website/feedback`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        businessId,
+        customerName: payload.name || "Unknown",
+        rating: Number(payload.rating) || 5,
+        message: payload.message || "",
+        source: payload.source || "ssengineers.in",
+      }),
+    });
 
-    if (error instanceof ValidationError) {
-      return NextResponse.json({ message: error.message }, { status: error.status });
-    }
-
-    if (error instanceof AppwriteRequestError) {
-      return NextResponse.json({ message: error.message }, { status: error.status });
-    }
-
-    const message =
-      error instanceof Error ? error.message : "Unexpected server error";
-    return NextResponse.json({ message }, { status: 500 });
+    if (!response.ok) throw new Error("DataHub error");
+    return NextResponse.json(await response.json(), { status: 200 });
+  } catch {
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

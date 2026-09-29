@@ -8,9 +8,15 @@ type LogoWallProps = {
   items: PartnerLogo[];
   limit?: number;
   dense?: boolean;
+  compactRow?: boolean;
 };
 
-export default function LogoWall({ items, limit, dense = false }: LogoWallProps) {
+export default function LogoWall({
+  items,
+  limit,
+  dense = false,
+  compactRow = false,
+}: LogoWallProps) {
   const [failedLogos, setFailedLogos] = useState<Record<string, boolean>>({});
 
   const visibleItems = useMemo(
@@ -36,7 +42,11 @@ export default function LogoWall({ items, limit, dense = false }: LogoWallProps)
   }
 
   return (
-    <div className={`logo-wall ${dense ? "dense" : ""}`}>
+    <div
+      className={`logo-wall ${dense ? "dense" : ""} ${
+        compactRow ? "compact-row" : ""
+      }`}
+    >
       {visibleItems.map((item) => {
         const logoNode = (
           <span className="logo-mark-inner" aria-hidden="true">

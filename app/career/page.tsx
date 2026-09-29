@@ -44,7 +44,7 @@ export default function CareerPage() {
             <h3>Apply Now</h3>
             <p className="muted">
               Upload your resume and share your work details. The application will
-              be stored in Appwrite collection and resume bucket.
+              be stored securely for the recruitment team.
             </p>
             <CareerApplicationForm />
           </div>

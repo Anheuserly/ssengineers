@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>S.S. Engineers & Consultants | MEP Portfolio (A–O)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #eef2f8;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.45;
+      color: #1A2C3E;
+      padding: 2rem 1rem;
+    }
+
+    /* main portfolio card */
+    .folio {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .folio-inner {
+      padding: 2rem 2rem 2rem 2rem;
+    }
+
+    @media (max-width: 700px) {
+      .folio-inner {
+        padding: 1.5rem;
+      }
+    }
+
+    /* header + logo */
+    .folio-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 3px solid #eef2f8;
+    }
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .logo-frame {
+      background: #f8fafd;
+      border-radius: 20px;
+      padding: 6px;
+      border: 1px solid #e2eaf1;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #folioLogo {
+      max-width: 100%;
+      max-height: 80px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .brand h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0f3b57;
+      letter-spacing: -0.3px;
+    }
+    .brand .sub {
+      color: #617e9c;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .logo-actions {
+      background: #f5f9fe;
+      padding: 6px 16px;
+      border-radius: 50px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-sm {
+      background: white;
+      border: 1px solid #cbdfee;
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #1f6392;
+      transition: 0.2s;
+    }
+    .btn-sm:hover {
+      background: #eaf2fa;
+      border-color: #1f6392;
+    }
+    #logoInput {
+      display: none;
+    }
+    .hint {
+      font-size: 0.7rem;
+      color: #6e8eab;
+    }
+
+    /* alphabetical section styling */
+    .alpha-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .alpha-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid #eef3fa;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .alpha-card:hover {
+      border-color: #d4e2f0;
+      background: #fefefe;
+    }
+    .alpha-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #1f6392;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 1rem;
+      margin-right: 0.8rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .alpha-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1f5b7e;
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .alpha-content {
+      margin-left: 0.5rem;
+      color: #2c4a6e;
+    }
+    .badge-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .badge {
+      background: #eef3fc;
+      padding: 4px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1f6392;
+    }
+    .client-chip {
+      background: #f2f6fb;
+      border-radius: 40px;
+      padding: 4px 14px;
+      font-size: 0.85rem;
+      margin: 0 8px 8px 0;
+      display: inline-block;
+    }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 12px;
+    }
+    .contact-person {
+      background: #fafdff;
+      border-radius: 20px;
+      padding: 10px 16px;
+      flex: 1;
+      min-width: 170px;
+      border: 1px solid #e2ecf5;
+    }
+    hr {
+      margin: 12px 0;
+      border: none;
+      border-top: 1px solid #eef2f8;
+    }
+    .footer-note {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      border-top: 1px solid #eef2f8;
+      padding-top: 1.5rem;
+      color: #617e9c;
+    }
+    @media (max-width: 650px) {
+      .alpha-title {
+        font-size: 1.1rem;
+      }
+      .folio-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="folio">
+  <div class="folio-inner">
+    
+    <!-- HEADER with LOGO upload (supports PNG/JPEG / ssenglogo.jpeg) -->
+    <div class="folio-header">
+      <div class="logo-section">
+        <div class="logo-frame">
+          <img id="folioLogo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231f6392'/%3E%3Ctext x='50' y='68' font-size='42' text-anchor='middle' fill='white' font-weight='bold' font-family='Arial'%3ESS%3C/text%3E%3C/svg%3E" alt="Company Logo">
+        </div>
+        <div class="brand">
+          <h1>S.S. Engineers & Consultants</h1>
+          <div class="sub"><i class="fas fa-hard-hat"></i> MEP Specialists | Established 1997 | Quality First</div>
+        </div>
+      </div>
+      <div class="logo-actions">
+        <label for="logoInput" class="btn-sm"><i class="fas fa-upload"></i> Upload Logo (PNG/JPEG)</label>
+        <input type="file" id="logoInput" accept="image/png,image/jpeg">
+        <button id="resetLogoBtn" class="btn-sm"><i class="fas fa-undo-alt"></i> Reset</button>
+        <span class="hint"><i class="fas fa-info-circle"></i> ssenglogo.jpeg supported</span>
+      </div>
+    </div>
+
+    <!-- ALPHABETICAL SECTIONS A → O (explicitly labeled) -->
+    <div class="alpha-grid">
+      
+      <!-- A) Experience -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">A</span> Experience in Business</div>
+        <div class="alpha-content">
+          S.S Engineers & Consultants is a professionally managed MEP contracting firm established in 1997 with extensive experience in Mechanical, Electrical & Plumbing (MEP) works including fire fighting systems, electrical installations, and plumbing services.
+        </div>
+      </div>
+      
+      <!-- B) Capabilities -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">B</span> Capabilities</div>
+        <div class="alpha-content">
+          <div class="badge-list">
+            <span class="badge">Fire Protection Systems</span>
+            <span class="badge">Plumbing Systems</span>
+            <span class="badge">Electrical Works</span>
+            <span class="badge">IBMS, CCTV, Access Control Systems</span>
+            <span class="badge">AMC & Maintenance Services</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C) Client References -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">C</span> Client References</div>
+        <div class="alpha-content">
+          <div>
+            <span class="client-chip">DLF Ltd.</span>
+            <span class="client-chip">Larsen & Toubro (L&T)</span>
+            <span class="client-chip">Sattvasththa Projects Pvt. Ltd.</span>
+            <span class="client-chip">NKG</span>
+            <span class="client-chip">Mahagun</span>
+            <span class="client-chip">NBCC</span>
+            <span class="client-chip">Bluebell Public School</span>
+            <span class="client-chip">Architron Groups</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- D) Reliability & Quality -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">D</span> Reliability & Quality</div>
+        <div class="alpha-content">
+          We follow strict quality standards and ensure timely execution of projects.
+        </div>
+      </div>
+
+      <!-- E) Company Name as per GST -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">E</span> Company Name as per GST</div>
+        <div class="alpha-content"><strong>S.S. Engineers & Consultants</strong></div>
+      </div>
+
+      <!-- F) Related Parties – Self Declaration -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">F</span> Related Parties – Self Declaration</div>
+        <div class="alpha-content">No related party conflicts.</div>
+      </div>
+
+      <!-- G) Top 5 Clients -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">G</span> Top 5 Clients</div>
+        <div class="alpha-content">
+          <span class="client-chip">DLF Limited</span>
+          <span class="client-chip">Larsen & Toubro</span>
+          <span class="client-chip">Sattvasththa Projects</span>
+          <span class="client-chip">NBCC</span>
+          <span class="client-chip">Architron Groups</span>
+        </div>
+      </div>
+
+      <!-- H) Presence -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">H</span> Presence</div>
+        <div class="alpha-content">Delhi, Gurgaon, NCR</div>
+      </div>
+
+      <!-- J) Total Manpower -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">J</span> Total Manpower</div>
+        <div class="alpha-content">
+          <ul style="margin-left: 1.2rem; margin-top: 5px;">
+            <li>Engineers: 5–10</li>
+            <li>Supervisors: 8–12</li>
+            <li>Workers: 20–40</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- K) Turnover of last financial year -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">K</span> Turnover of last financial year</div>
+        <div class="alpha-content">Approx ₹1–2 Crore</div>
+      </div>
+
+      <!-- L) Services -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">L</span> Services</div>
+        <div class="alpha-content">
+          <div class="badge-list">
+            <span class="badge">Fire Fighting</span>
+            <span class="badge">Plumbing</span>
+            <span class="badge">Electrical</span>
+            <span class="badge">IBMS</span>
+            <span class="badge">AMC</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M) Years in Service -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">M</span> Years in Service</div>
+        <div class="alpha-content">28+ Years</div>
+      </div>
+
+      <!-- N) Address -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">N</span> Address</div>
+        <div class="alpha-content">
+          Plot No 16, Gali No 01, Opp Sheetla Mata Mandir, Gurgaon, Haryana - 122001
+        </div>
+      </div>
+
+      <!-- O) Escalation Matrix -->
+      <div class="alpha-card">
+        <div class="alpha-title"><span class="alpha-tag">O</span> Escalation Matrix</div>
+        <div class="alpha-content">
+          <div class="contact-row">
+            <div class="contact-person"><i class="fas fa-user-circle"></i> <strong>Poonam Saini</strong><br>Proprietor<br>📞 8527389555</div>
+            <div class="contact-person"><i class="fas fa-chalkboard-user"></i> <strong>Anil Kumar Saini</strong><br>Country Head<br>📞 9871936847</div>
+            <div class="contact-person"><i class="fas fa-drafting-compass"></i> <strong>Shashank Saini</strong><br>Architect<br>📞 8527378555</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- extra note: full compliance with all original alphabets A through O -->
+    <div class="footer-note">
+      <i class="fas fa-check-circle"></i> S.S. Engineers & Consultants – Complete MEP Portfolio (Sections A–O)<br>
+      GST: S.S. Engineers & Consultants | Timely execution | Quality assured
+    </div>
+  </div>
+</div>
+
+<script>
+  // LOGO UPLOAD (PNG/JPEG) — supports ssenglogo.jpeg
+  const logoImg = document.getElementById('folioLogo');
+  const logoInput = document.getElementById('logoInput');
+  const resetBtn = document.getElementById('resetLogoBtn');
+  
+  const defaultLogoSrc = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231f6392'/%3E%3Ctext x='50' y='68' font-size='42' text-anchor='middle' fill='white' font-weight='bold' font-family='Arial'%3ESS%3C/text%3E%3C/svg%3E";
+  
+  logoInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        logoImg.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else if (file) {
+      alert('Please select a PNG or JPEG image (e.g., ssenglogo.jpeg).');
+      logoInput.value = '';
+    }
+  });
+  
+  resetBtn.addEventListener('click', function() {
+    logoImg.src = defaultLogoSrc;
+    logoInput.value = '';
+  });
+</script>
+</body>
+</html>

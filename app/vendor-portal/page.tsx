@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import SectionHeading from "@/components/SectionHeading";
-import { getAppwriteConfig, listAppwriteDocuments } from "@/functions/appwrite";
 import {
   getPortalLoginPath,
   getPortalSession,
@@ -30,24 +29,6 @@ export default async function VendorPortalPage() {
   const session = await getPortalSession();
   if (!session || session.role !== "vendor") {
     redirect(getPortalLoginPath("vendor"));
-  }
-
-  const {
-    collections: { portalAuthUsers },
-  } = getAppwriteConfig();
-  const records = await listAppwriteDocuments(portalAuthUsers, {
-    requireApiKey: true,
-    limit: 200,
-  });
-  const docs = (records.documents || []) as Array<Record<string, unknown>>;
-  const current = docs.find((item) => {
-    const role = String(item.role || "").trim().toLowerCase();
-    const identifier = String(item.identifier || "").trim().toLowerCase();
-    return role === session.role && identifier === session.identifier;
-  });
-  const profileCompleted = Boolean(current?.profileCompleted === true);
-  if (!profileCompleted) {
-    redirect("/portal-onboarding");
   }
 
   return (

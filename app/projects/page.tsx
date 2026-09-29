@@ -1,7 +1,5 @@
 import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
-import PartnerVisualShowcase from "@/components/PartnerVisualShowcase";
-import ProjectImageGallery from "@/components/ProjectImageGallery";
 import { caseStudies, projectTypes } from "@/lib/content";
 
 const deliverables = [
@@ -22,23 +20,6 @@ export default function ProjectsPage() {
             title="Execution That Scales with Project Complexity"
             subtitle="We manage multi-disciplinary coordination and safety compliance on every site."
           />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Project Image Library"
-            title="Project-Wise Site Photos"
-            subtitle="On-site image documentation organized by project for quick verification."
-          />
-          <ProjectImageGallery />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <PartnerVisualShowcase />
         </div>
       </section>
 

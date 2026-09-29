@@ -1,4 +1,5 @@
 import SectionHeading from "@/components/SectionHeading";
+import ServiceCatalogue from "@/components/ServiceCatalogue";
 import {
   fireSystems,
   electricalWorks,
@@ -44,6 +45,17 @@ export default function ServicesPage() {
       </section>
 
       <section className="section">
+        <div className="container">
+          <SectionHeading
+            eyebrow="Service catalogue"
+            title="Engineering Services Built Around Your Site"
+            subtitle="Every service starts with a technical review. We provide a tailored scope and commercial proposal after understanding the facility, compliance requirements, and timeline."
+          />
+          <ServiceCatalogue />
+        </div>
+      </section>
+
+      <section className="section alt">
         <div className="container grid-2">
           <div className="panel">
             <h3>Fire & Safety Systems</h3>

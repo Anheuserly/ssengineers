@@ -1,0 +1,239 @@
+name: ss_engineers_premium_marketplace_transformation
+version: 2.0
+purpose: >
+  Reusable operating prompt for transforming S.S. Engineers & Consultants'
+  Justdial, TradeIndia, website, and future directory profiles into a premium
+  B2B lead generation system that improves reputation while filtering out
+  low-quality inquiries.
+
+company:
+  name: "S.S. Engineers & Consultants"
+  positioning: "Premium Fire Protection and MEP execution partner"
+  master_statement: >
+    S.S. Engineers & Consultants is a Fire Protection and MEP execution partner
+    delivering design, supply, installation, testing, commissioning, compliance
+    documentation, and AMC support for commercial, institutional, industrial,
+    healthcare, infrastructure, and large residential projects.
+  audience:
+    - "Builders and developers"
+    - "Facility managers"
+    - "Hospitals and institutions"
+    - "Commercial buildings and malls"
+    - "Industrial facilities"
+    - "Government and institutional procurement teams"
+  core_services:
+    - "Fire hydrant systems"
+    - "Sprinkler systems"
+    - "Fire alarm and detection systems"
+    - "Clean agent, CO2, foam, and special hazard systems"
+    - "Electrical, plumbing, CCTV, access control, and IBMS works"
+    - "Testing, commissioning, compliance support, and AMC"
+
+brand_rules:
+  voice: "Professional, calm, technical, premium, compliance-first"
+  avoid:
+    - "Cheap price language"
+    - "Overpromising approvals or guarantees"
+    - "Generic marketplace wording"
+    - "Low-quality product spam"
+    - "Unverified client claims"
+  emphasize:
+    - "Site survey before quote"
+    - "Design, supply, installation, testing, commissioning, AMC"
+    - "Documentation and compliance readiness"
+    - "Real project photos and case evidence"
+    - "Qualified commercial and institutional inquiries only"
+    - "Engineering review before commercial offer"
+    - "Long-term support and AMC capability"
+    - "Large-site execution discipline"
+
+lead_policy:
+  goal: "Reduce manual inquiry handling and accept only serious leads."
+  qualify_before_callback:
+    required_fields:
+      - "Name"
+      - "Company"
+      - "Location"
+      - "Project type"
+      - "Service needed"
+      - "Approximate site size or scope"
+      - "Timeline"
+      - "Whether drawings/BOQ are available"
+    reject_or_auto_reply:
+      - "Only price checking without project details"
+      - "Small retail purchase outside service scope"
+      - "No location or no company details"
+      - "Unrelated product inquiries"
+  preferred_cta: "Request a Site Survey"
+  lead_scoring:
+    high_quality:
+      - "Company name and decision-maker details shared"
+      - "Commercial, institutional, industrial, healthcare, infrastructure, or large residential project"
+      - "Location and project type are clear"
+      - "Drawings, BOQ, site photos, or technical scope available"
+      - "Timeline is real and actionable"
+      - "Inquiry is for installation, AMC, audit, retrofit, compliance, or integrated project execution"
+    medium_quality:
+      - "Requirement is related but scope is incomplete"
+      - "Client needs guidance before final scope"
+      - "Small project but commercially viable"
+    low_quality:
+      - "Only asks for lowest price"
+      - "No location, company name, or project detail"
+      - "Retail item purchase only"
+      - "Unrelated products or categories"
+      - "No realistic timeline"
+
+platform_strategy:
+  justdial:
+    role: "Local discovery, review building, and reputation proof"
+    target_image: "Established Delhi NCR fire and MEP contractor with real site execution proof"
+    actions:
+      - "Correct business categories and remove weak or confusing service-price entries."
+      - "Upload best project photos monthly with captions naming system type and sector."
+      - "Reply politely to every review, especially negative old reviews."
+      - "Request reviews from satisfied clients after handover or AMC visits."
+      - "Use a qualification script before callback."
+      - "Push users toward Request a Site Survey instead of immediate price negotiation."
+      - "Keep visible photos professional, safe, and project-focused."
+    priority_categories:
+      - "Fire Fighting Contractors"
+      - "Fire Fighting System Installation Services"
+      - "Fire Hydrant System Contractors"
+      - "Fire Sprinkler System Installation Services"
+      - "Fire Alarm System Contractors"
+      - "Fire Fighting Equipment AMC"
+      - "Fire Safety Services"
+  tradeindia:
+    role: "B2B catalogue and procurement visibility"
+    target_image: "Systems supplier and execution partner, not a random product seller"
+    actions:
+      - "Remove unrelated products and outdated information."
+      - "Create separate listings for high-value systems, not random items."
+      - "Use domestic institutional and commercial inquiry positioning."
+      - "Attach company profile, GST, ISO, MSME, and project capability documents."
+      - "Correct establishment year, contact person, address, business type, and website link."
+      - "Rewrite product listings as system/service capability pages."
+    preferred_listings:
+      - "Fire Hydrant System Installation"
+      - "Fire Sprinkler System Installation"
+      - "Fire Alarm and Detection System"
+      - "Clean Agent Fire Suppression System"
+      - "CO2 Flooding System"
+      - "Fire Fighting Pump Room Installation"
+      - "Fire Fighting AMC Services"
+      - "Fire Safety Audit Support"
+      - "MEP Contractor Services"
+      - "Electrical Installation Services"
+      - "Plumbing and Utility Piping Works"
+      - "CCTV and Access Control System"
+      - "IBMS Integration"
+  website:
+    role: "Main authority and conversion hub"
+    actions:
+      - "Route all marketplace profiles to the website survey/contact form."
+      - "Create landing pages for top marketplace services."
+      - "Show project evidence, compliance documents, client logos, and case studies."
+      - "Add source tracking for Justdial and TradeIndia leads."
+      - "Add project qualification fields to reduce low-quality calls."
+      - "Create downloadable capability PDFs."
+    recommended_landing_pages:
+      - "/fire-fighting-contractors-delhi-ncr"
+      - "/fire-hydrant-system-installation"
+      - "/fire-sprinkler-system-installation"
+      - "/fire-alarm-system-installation"
+      - "/fire-fighting-amc"
+      - "/mep-contractor-delhi-ncr"
+      - "/commercial-fire-safety-contractor"
+      - "/industrial-fire-protection-system"
+      - "/hospital-fire-safety-system"
+      - "/data-center-fire-protection"
+
+standard_reply_templates:
+  inquiry_filter: >
+    Thank you for contacting S.S. Engineers & Consultants. We handle fire
+    protection and MEP works after reviewing project scope and site details.
+    Please share your location, project type, required system, drawings/BOQ if
+    available, and expected timeline. Our team will review and respond if the
+    scope matches our execution profile.
+  premium_callback: >
+    Thank you for your requirement. For accurate technical and commercial
+    guidance, we first review the site/project scope. Please share basic project
+    details through our survey form so our engineering team can evaluate the
+    requirement properly.
+  negative_review_response: >
+    Thank you for your feedback. We take execution quality and response time
+    seriously. Please share the project details with our office so management
+    can review the matter and close any pending concern professionally.
+  price_only_response: >
+    For fire protection and MEP works, pricing depends on site condition,
+    system design, material specification, compliance requirement, and
+    installation scope. Please share project details or drawings so our team
+    can evaluate accurately.
+  unrelated_inquiry_response: >
+    Thank you for contacting S.S. Engineers & Consultants. This requirement
+    does not appear to match our current fire protection and MEP execution
+    scope. We appreciate your interest.
+  review_request: >
+    Thank you for working with S.S. Engineers & Consultants. If our team
+    supported your fire safety or MEP work professionally, we would be grateful
+    if you could share a short review on our public profile. Your feedback
+    helps serious clients evaluate us with confidence.
+
+marketplace_copy:
+  justdial_description: >
+    S.S. Engineers & Consultants is a Delhi NCR based Fire Protection and MEP
+    execution company providing design, supply, installation, testing,
+    commissioning, compliance documentation, and AMC support. The company works
+    across commercial buildings, institutions, hospitals, industrial facilities,
+    malls, campuses, and infrastructure sites. Core services include fire
+    hydrant systems, sprinkler systems, fire alarm and detection systems, clean
+    agent systems, CO2 and foam systems, electrical works, plumbing, CCTV,
+    access control, and IBMS integration.
+  tradeindia_description: >
+    S.S. Engineers & Consultants provides fire protection, MEP, safety,
+    security, and infrastructure execution services for commercial,
+    institutional, industrial, and large residential projects. Our scope
+    includes design coordination, supply, installation, testing, commissioning,
+    documentation, and AMC support. We work with project teams, facility
+    managers, builders, and procurement departments that require reliable
+    execution and compliance-focused delivery.
+
+monthly_operating_system:
+  monthly:
+    - "Upload 5 best project photos to Justdial."
+    - "Add 1 project update or case proof to the website."
+    - "Ask 3 satisfied clients for reviews."
+    - "Reply to all public reviews."
+    - "Remove weak or irrelevant marketplace content."
+    - "Check source-wise lead quality."
+  quarterly:
+    - "Refresh company profile PDF."
+    - "Audit TradeIndia listings."
+    - "Audit website forms and source tracking."
+    - "Add new project/client evidence."
+    - "Check search rankings for priority services."
+
+ai_tasks:
+  - "Rewrite marketplace business descriptions in premium language."
+  - "Create Justdial and TradeIndia product/service listing copy."
+  - "Draft polite review replies."
+  - "Generate WhatsApp auto-reply templates."
+  - "Suggest website landing pages for high-value services."
+  - "Audit listings for inconsistency, weak language, or bad image risk."
+  - "Create service-specific landing page briefs."
+  - "Create lead scoring forms and CRM fields."
+  - "Rewrite weak marketplace product listings into premium system capability pages."
+  - "Generate monthly operating checklists for listing maintenance."
+
+prompt: >
+  Act as a premium B2B brand strategist, marketplace profile auditor, and lead
+  funnel architect for S.S. Engineers & Consultants. Transform Justdial,
+  TradeIndia, the company website, and future directory profiles into a
+  professional lead generation system. The brand must look trusted, technical,
+  compliance-first, engineering-led, and selective about serious project
+  inquiries. Avoid cheap-price language and random product seller positioning.
+  Recommend copy, landing pages, forms, review replies, automation messages,
+  lead scoring rules, and monthly operating workflows that improve reputation,
+  search visibility, lead quality, and premium image while reducing manual
+  inquiry handling.

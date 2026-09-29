@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 12mm;
+            background-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Cover Header */
+        .header-banner {
+            background-color: #003399; /* Deep Navy from Logo */
+            color: white;
+            padding: 30px;
+            border-bottom: 5px solid #e31e24; /* Red Accent */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-box {
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            padding: 5px;
+            border: 2px solid #e31e24;
+        }
+
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 24pt;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-title p {
+            margin: 0;
+            font-size: 11pt;
+            font-weight: bold;
+            color: #ffcccc;
+        }
+
+        /* Layout Grid */
+        .content-container {
+            padding: 20px 0;
+        }
+
+        .section-row {
+            display: flex;
+            margin-bottom: 18px;
+            page-break-inside: avoid;
+        }
+
+        .letter-stamp {
+            flex: 0 0 45px;
+            height: 45px;
+            background: #003399;
+            color: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18pt;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .content-body {
+            flex: 1;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .content-body h2 {
+            margin: 0 0 8px 0;
+            font-size: 13pt;
+            color: #003399;
+            text-transform: uppercase;
+        }
+
+        .content-body p, .content-body li {
+            margin: 0;
+            font-size: 10.5pt;
+            color: #444;
+        }
+
+        .list-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            list-style: none;
+            padding: 0;
+        }
+
+        .list-grid li::before {
+            content: "■ ";
+            color: #e31e24;
+            font-size: 8pt;
+            margin-right: 5px;
+        }
+
+        /* Matrix Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+            padding: 8px;
+            font-size: 9pt;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 10pt;
+        }
+
+        .footer-info {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 9pt;
+            color: #888;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            padding-top: 5px;
+        }
+
+        .highlight-text {
+            color: #e31e24;
+            font-weight: bold;
+        }
+
+        .sidebar-box {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-left: 4px solid #003399;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-banner">
+        <div class="header-left">
+            <div class="logo-box">
+                <img src="ssenglogo.jpeg" alt="Logo">
+            </div>
+            <div class="header-title">
+                <h1>S.S. Engineers & Consultants</h1>
+                <p>28+ YEARS OF ENGINEERING EXCELLENCE | ESTD. 1997</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+
+        <div class="section-row">
+            <div class="letter-stamp">A</div>
+            <div class="content-body">
+                <h2>Experience in Business</h2>
+                <p>We are a professionally managed MEP contracting firm with deep roots in the industry since 1997. Our firm provides turnkey Mechanical, Electrical, and Plumbing solutions for high-compliance projects.</p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">B</div>
+            <div class="content-body">
+                <h2>Core Capabilities</h2>
+                <ul class="list-grid">
+                    <li>Fire Protection Systems</li>
+                    <li>Plumbing Infrastructure</li>
+                    <li>Electrical Installations</li>
+                    <li>IBMS & CCTV Security</li>
+                    <li>Access Control Systems</li>
+                    <li>AMC & Maintenance</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">C</div>
+            <div class="content-body">
+                <h2>Client References</h2>
+                <ul class="list-grid">
+                    <li>DLF Ltd.</li>
+                    <li>Larsen & Toubro (L&T)</li>
+                    <li>NBCC</li>
+                    <li>Mahagun Group</li>
+                    <li>Sattvasththa Projects</li>
+                    <li>NKG</li>
+                    <li>Architron Groups</li>
+                    <li>Bluebell Public School</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">D</div>
+            <div class="content-body">
+                <h2>Reliability & Quality</h2>
+                <p>Commitment to strict quality standards, zero-conflict operations, and 100% on-time project execution.</p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">E</div>
+            <div class="content-body">
+                <h2>Company Name as per GST</h2>
+                <p><strong>Registered Name (GST):</strong> S.S. Engineers & Consultants</p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">F</div>
+            <div class="content-body">
+                <h2> Related Parties – Self Declaration</h2>
+                <p> No related party conflicts.</p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">G</div>
+            <div class="content-body">
+                <h2>Top 5 Clients</h2>
+                <p>DLF Limited, Larsen & Toubro, NBCC, Sattvasththa Projects, Architron Groups.</p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">H</div>
+            <div class="content-body">
+                <h2>Presence</h2>
+                <p>Active Operations in: <strong>Delhi, Gurgaon, and the wider NCR Region.</strong></p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">J</div>
+            <div class="content-body">
+                <h2>Total Manpower</h2>
+                <div class="sidebar-box">
+                    <p><strong>Technical Staff:</strong> 5–10 Engineers | <strong>Supervisory:</strong> 8–12 Personnel</p>
+                    <p><strong>Operational Force:</strong> 20–40 Certified Workers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">K</div>
+            <div class="content-body">
+                <h2>Turnover of last financial year</h2>
+                <p>Annual Turnover (Last FY): <span>Approx ₹1–2 Crore</span></p>
+            </div>
+        </div>
+
+         <div class="section-row">
+            <div class="letter-stamp">L</div>
+            <div class="content-body">
+                <h2>Services</h2>
+                <p>Fire Fighting, Plumbing, Electrical, IBMS, AMC</p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">M</div>
+            <div class="content-body">
+                <h2>Years in Service</h2>
+                <p>Serving the industry for over 28 Years with a clean track record.</p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">N</div>
+            <div class="content-body">
+                <h2>Address</h2>
+                <p>Plot No 16, Gali No 01, Opp Sheetla Mata Mandir, Gurgaon, Haryana, 122001</p>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="letter-stamp">O</div>
+            <div class="content-body">
+                <h2>Escalation Matrix</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Executive Name</th>
+                            <th>Role / Designation</th>
+                            <th>Direct Contact</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                <tr>
+                    <td><strong>Poonam Saini</strong></td>
+                    <td>Proprietor</td>
+                    <td>+91 85273 89555</td>
+                    <td>poonam@ssengineers.in</td>
+                </tr>
+                <tr>
+                    <td><strong>Anil Kumar Saini</strong></td>
+                    <td>Country Head</td>
+                    <td>+91 98719 36847</td>
+                    <td>anil@ssengineers.in</td>
+                </tr>
+                <tr>
+                    <td><strong>Shashank Saini</strong></td>
+                    <td>Architect</td>
+                    <td>+91 85273 78555</td>
+                    <td>shashank@ssengineers.in</td>
+                </tr>
+            </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-info">
+        S.S. Engineers & Consultants | Corporate Capability Statement | Confidential
+    </div>
+
+</body>
+</html>
+

@@ -1,15 +1,8 @@
 import { NextResponse } from "next/server";
 import {
-  AppwriteRequestError,
-  createAppwriteDocument,
-  ensureAppwriteStringAttributes,
-  getAppwriteConfig,
-} from "@/functions/appwrite";
-import {
   ChatLeadFields,
   ValidationError,
   validateChatAssistantPayload,
-  validateChatLeadPayload,
 } from "@/lib/server/validation";
 
 export const runtime = "edge";
@@ -33,12 +26,6 @@ const REQUIRED_FIELDS: Array<keyof ChatLeadFields> = [
   "email",
   "requirement",
 ];
-const CHAT_CONTACT_STRING_ATTRIBUTES = [
-  { key: "location", size: 180 },
-  { key: "requirement", size: 2000 },
-  { key: "timeline", size: 120 },
-  { key: "budget", size: 120 },
-] as const;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const toClean = (value: unknown, maxLength: number) =>
@@ -358,23 +345,6 @@ const getAiOutput = async ({
   }
 };
 
-const buildLeadMessage = (
-  lead: Partial<ChatLeadFields>,
-  latestMessage: string
-): string => {
-  const extra = [
-    lead.requirement ? `Requirement: ${lead.requirement}` : "",
-    lead.location ? `Location: ${lead.location}` : "",
-    lead.timeline ? `Timeline: ${lead.timeline}` : "",
-    lead.budget ? `Budget: ${lead.budget}` : "",
-    `Latest Chat: ${latestMessage}`,
-  ]
-    .filter(Boolean)
-    .join(" | ");
-
-  return extra.slice(0, 3000);
-};
-
 export async function POST(request: Request) {
   try {
     const rawPayload = await request.json();
@@ -404,40 +374,12 @@ export async function POST(request: Request) {
 
     const missing = missingFields(nextLead);
 
-    let leadSaved = payload.leadSaved;
+    const leadSaved = payload.leadSaved;
     const hasAllRequired = REQUIRED_FIELDS.every((field) =>
       hasLeadField(nextLead, field)
     );
     if (!leadSaved && hasAllRequired) {
-      const {
-        collections: { contacts },
-      } = getAppwriteConfig();
-
-      const contactPayload = validateChatLeadPayload({
-        name: nextLead.name,
-        phone: nextLead.phone,
-        email: nextLead.email,
-        company: nextLead.company || "Website Chat Lead",
-        location: nextLead.location,
-        requirement: nextLead.requirement,
-        timeline: nextLead.timeline,
-        budget: nextLead.budget,
-        message: buildLeadMessage(nextLead, payload.message),
-        consent: true,
-        source: "ssengineers.in/chat-widget",
-        createdAt: new Date().toISOString(),
-      });
-
-      await ensureAppwriteStringAttributes(
-        contacts,
-        CHAT_CONTACT_STRING_ATTRIBUTES.map((attribute) => ({
-          ...attribute,
-        })),
-        { waitForAvailability: true, timeoutMs: 15000 }
-      );
-
-      await createAppwriteDocument(contacts, contactPayload);
-      leadSaved = true;
+      reply = "Thanks. Please use the detailed site-survey form below so we can securely create your request with the right scope and contact details.";
     }
 
     return NextResponse.json(
@@ -455,10 +397,6 @@ export async function POST(request: Request) {
     }
 
     if (error instanceof ValidationError) {
-      return NextResponse.json({ message: error.message }, { status: error.status });
-    }
-
-    if (error instanceof AppwriteRequestError) {
       return NextResponse.json({ message: error.message }, { status: error.status });
     }
 

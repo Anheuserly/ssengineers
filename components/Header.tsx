@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogIn } from "lucide-react";
 import { company, gstRegistrations } from "@/lib/content";
+import BucketLink from "@/components/BucketLink";
 
 type NavLink = {
   href: string;
@@ -20,6 +22,7 @@ const primaryLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/projects", label: "Projects" },
+  { href: "/activity", label: "Activity" },
   { href: "/about", label: "About" },
   { href: "/clients", label: "Clients" },
   { href: "/contact", label: "Contact" },
@@ -27,27 +30,11 @@ const primaryLinks: NavLink[] = [
 
 const exploreGroups: NavGroup[] = [
   {
-    title: "Execution",
-    links: [
-      { href: "/working-activity", label: "Working Activity" },
-      { href: "/work-in-progress", label: "Work In Progress" },
-      { href: "/work-done", label: "Work Done" },
-    ],
-  },
-  {
     title: "Documents",
     links: [
       { href: "/compliance-documents", label: "Compliance Documents" },
       { href: "/download-center", label: "Download Center" },
       { href: "/sitemap", label: "Sitemap" },
-    ],
-  },
-  {
-    title: "Business",
-    links: [
-      { href: "/vendor-registration", label: "Vendor Registration" },
-      { href: "/portal-login", label: "Vendor/Customer Login" },
-      { href: "/portal-login?mode=register", label: "Create Account" },
     ],
   },
   {
@@ -204,11 +191,13 @@ export default function Header() {
         </nav>
 
         <div className="header-actions">
-          <Link className="cta cta-secondary" href="/portal-login?mode=register">
-            Create Portal
-          </Link>
-          <Link className="cta" href="/contact">
-            Request a Survey
+          <BucketLink />
+          <a className="app-login-link" href={company.appLinks.login} target="_blank" rel="noreferrer">
+            <LogIn aria-hidden="true" size={16} />
+            <span>One App login</span>
+          </a>
+          <Link className="cta" href="/services">
+            Select Services
           </Link>
           <button
             type="button"

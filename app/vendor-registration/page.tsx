@@ -1,139 +1,21 @@
-import SectionHeading from "@/components/SectionHeading";
+import { ArrowUpRight, Smartphone } from "lucide-react";
 import { company } from "@/lib/content";
-import VendorRegistrationForm from "@/components/VendorRegistrationForm";
 
-const requiredDocs = [
-  "Company profile with service scope",
-  "GST, PAN, and statutory registration details",
-  "ESI / PF / MSME copies (if applicable)",
-  "Past project references and client list",
-  "Authorized signatory and contact information",
-  "Safety and quality process summary",
-];
-
-const onboardingSteps = [
-  {
-    title: "Step 1: Registration Submission",
-    detail:
-      "Submit core company credentials, capability scope, and contact details for review.",
-  },
-  {
-    title: "Step 2: Technical Screening",
-    detail:
-      "Our team checks domain fit, certifications, and execution readiness for project alignment.",
-  },
-  {
-    title: "Step 3: Commercial & Compliance Review",
-    detail:
-      "Commercial profile, legal documentation, and statutory status are validated.",
-  },
-  {
-    title: "Step 4: Empanelment Decision",
-    detail:
-      "Qualified vendors are shortlisted for RFQ / project-specific onboarding discussions.",
-  },
-];
-
-const evaluationFocus = [
-  "Relevant category experience and execution records",
-  "Safety, quality, and documentation discipline",
-  "Statutory compliance and legal readiness",
-  "Response timelines and communication reliability",
-];
-
-const preferredCategories = [
-  "Fire Fighting & Detection",
-  "Electrical LT/HT Works",
-  "Plumbing / PHE",
-  "Security & Networking",
-  "Testing / Commissioning",
-  "AMC & O&M",
-];
+export const metadata = {
+  title: "One App Registration | S.S. Engineers & Consultants",
+  description: "Business registration is managed through AMC MEP 24x7 One App.",
+};
 
 export default function VendorRegistrationPage() {
   return (
     <main>
       <section className="page-hero">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Business"
-            title="Vendor Registration"
-            subtitle="Join our qualified vendor ecosystem for fire protection, electrical, plumbing, and MEP project opportunities."
-          />
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container split">
-          <div className="panel">
-            <h3>Pre-Qualification Checklist</h3>
-            <p className="muted">
-              Please share complete and valid documentation for faster evaluation by
-              our technical and procurement teams.
-            </p>
-            <ul className="checklist">
-              {requiredDocs.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <p className="vendor-aux-title">Preferred Vendor Categories</p>
-            <div className="tag-grid">
-              {preferredCategories.map((item) => (
-                <span key={item} className="tag">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="form-panel">
-            <h3>Submit Vendor Details</h3>
-            <p className="muted">
-              Complete the form to start screening. You can share supporting files
-              afterward with subject line:
-              <strong> Vendor Registration - [Your Company Name]</strong>.
-            </p>
-            <p className="muted">
-              Email: <a href={`mailto:${company.footerEmails[0]}`}>{company.footerEmails[0]}</a>
-            </p>
-            <p className="muted">
-              Alternate:{" "}
-              <a href={`mailto:${company.footerEmails[1]}`}>{company.footerEmails[1]}</a>
-            </p>
-            <p className="muted">
-              For urgent support call: <a href={`tel:${company.phones[0]}`}>{company.phones[0]}</a>
-            </p>
-            <VendorRegistrationForm />
-          </div>
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container grid-2">
-          <article className="panel">
-            <h3>Onboarding Workflow</h3>
-            <div className="vendor-step-grid">
-              {onboardingSteps.map((step) => (
-                <article key={step.title} className="vendor-step-card">
-                  <h4>{step.title}</h4>
-                  <p className="muted">{step.detail}</p>
-                </article>
-              ))}
-            </div>
-          </article>
-
-          <article className="panel">
-            <h3>Evaluation Focus</h3>
-            <ul className="checklist">
-              {evaluationFocus.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <p className="muted">
-              Typical initial response window: <strong>2-4 business days</strong>{" "}
-              after complete submission.
-            </p>
-          </article>
+        <div className="container one-app-handoff">
+          <div className="one-app-handoff-icon"><Smartphone aria-hidden="true" size={28} /></div>
+          <p className="eyebrow">Business registration</p>
+          <h1>Register through AMC MEP 24x7 One App</h1>
+          <p className="lead">Vendor, customer and business registration are managed in the One App platform, where your account and requested services stay together.</p>
+          <a className="button" href={company.appLinks.login} target="_blank" rel="noreferrer">Open One App <ArrowUpRight aria-hidden="true" size={17} /></a>
         </div>
       </section>
     </main>

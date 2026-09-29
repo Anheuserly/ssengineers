@@ -7,20 +7,21 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "appwrite:sync": "node scripts/sync-appwrite.mjs",
-    "portal:seed-auth": "node scripts/seed-portal-auth-users.mjs",
     "sync:project-images": "node scripts/import-mediafire-project-images.mjs --clean true",
     "sync:brand-logos": "node scripts/sync-brand-logos.mjs",
     "sync:client-logos": "node scripts/sync-client-logos.mjs",
     "sync:logos": "npm run sync:brand-logos && npm run sync:client-logos"
   },
   "dependencies": {
+    "lucide-react": "^1.48.0",
     "next": "16.1.6",
+    "pg": "^8.23.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

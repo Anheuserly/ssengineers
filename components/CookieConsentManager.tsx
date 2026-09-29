@@ -83,18 +83,12 @@ const persistPreferences = (preferences: CookiePreferences) => {
 };
 
 export default function CookieConsentManager() {
-  const [initialPreferences] = useState<CookiePreferences | null>(() =>
-    readSavedPreferences()
-  );
-  const [isOpen, setIsOpen] = useState(() => !initialPreferences);
+  const [isReady, setIsReady] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isCustomizing, setIsCustomizing] = useState(false);
-  const [hasSavedChoice, setHasSavedChoice] = useState(Boolean(initialPreferences));
-  const [draftAnalytics, setDraftAnalytics] = useState(
-    initialPreferences?.analytics || false
-  );
-  const [draftMarketing, setDraftMarketing] = useState(
-    initialPreferences?.marketing || false
-  );
+  const [hasSavedChoice, setHasSavedChoice] = useState(false);
+  const [draftAnalytics, setDraftAnalytics] = useState(false);
+  const [draftMarketing, setDraftMarketing] = useState(false);
 
   const previewPreferences = useMemo(
     () =>
@@ -106,6 +100,15 @@ export default function CookieConsentManager() {
   );
 
   useEffect(() => {
+    const initialise = window.setTimeout(() => {
+      const saved = readSavedPreferences();
+      setHasSavedChoice(Boolean(saved));
+      setDraftAnalytics(saved?.analytics || false);
+      setDraftMarketing(saved?.marketing || false);
+      setIsOpen(!saved);
+      setIsReady(true);
+    }, 0);
+
     const openPreferences = () => {
       setIsOpen(true);
       setIsCustomizing(true);
@@ -113,6 +116,7 @@ export default function CookieConsentManager() {
 
     window.addEventListener(OPEN_COOKIE_PREFERENCES_EVENT, openPreferences);
     return () => {
+      window.clearTimeout(initialise);
       window.removeEventListener(OPEN_COOKIE_PREFERENCES_EVENT, openPreferences);
     };
   }, []);
@@ -148,7 +152,7 @@ export default function CookieConsentManager() {
     commit(previewPreferences);
   };
 
-  if (!isOpen) {
+  if (!isReady || !isOpen) {
     return null;
   }
 

@@ -1,54 +1,33 @@
 import { NextResponse } from "next/server";
-import {
-  AppwriteRequestError,
-  createAppwriteDocument,
-  ensureAppwriteStringAttributes,
-  getAppwriteConfig,
-} from "@/functions/appwrite";
-import { ValidationError, validateChatLeadPayload } from "@/lib/server/validation";
 
 export const runtime = "edge";
 
-const CHAT_CONTACT_STRING_ATTRIBUTES = [
-  { key: "location", size: 180 },
-  { key: "requirement", size: 2000 },
-  { key: "timeline", size: 120 },
-  { key: "budget", size: 120 },
-] as const;
-
 export async function POST(request: Request) {
   try {
-    const rawPayload = await request.json();
-    const payload = validateChatLeadPayload(rawPayload);
-    const {
-      collections: { contacts },
-    } = getAppwriteConfig();
+    const payload = await request.json();
+    const apiUrl = process.env.SGE_API_URL || "https://api.amcmep.in/v1";
+    const businessId = process.env.SS_ENGINEERS_BUSINESS_ID;
 
-    await ensureAppwriteStringAttributes(
-      contacts,
-      CHAT_CONTACT_STRING_ATTRIBUTES.map((attribute) => ({
-        ...attribute,
-      })),
-      { waitForAvailability: true, timeoutMs: 15000 }
-    );
+    const response = await fetch(`${apiUrl}/website/inquiry`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        businessId,
+        title: "Chat Assistant Lead",
+        description: payload.message || payload.requirement || "Generated from chat",
+        name: payload.name || "Unknown",
+        phone: payload.phone || "Unknown",
+        email: payload.email || "",
+        address: payload.location || "",
+        source: payload.source || "ssengineers.in (Chat)",
+        topic: "chat_lead",
+        urgency: payload.timeline || "normal",
+      }),
+    });
 
-    const data = await createAppwriteDocument(contacts, payload);
-    return NextResponse.json(data, { status: 200 });
-  } catch (error) {
-    if (error instanceof SyntaxError) {
-      return NextResponse.json({ message: "Invalid form payload." }, { status: 400 });
-    }
-
-    if (error instanceof ValidationError) {
-      return NextResponse.json({ message: error.message }, { status: error.status });
-    }
-
-    if (error instanceof AppwriteRequestError) {
-      return NextResponse.json({ message: error.message }, { status: error.status });
-    }
-
-    const message =
-      error instanceof Error ? error.message : "Unexpected server error";
-    return NextResponse.json({ message }, { status: 500 });
+    if (!response.ok) throw new Error("DataHub error");
+    return NextResponse.json(await response.json(), { status: 200 });
+  } catch {
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

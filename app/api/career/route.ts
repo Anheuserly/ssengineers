@@ -1,53 +1,32 @@
 import { NextResponse } from "next/server";
-import {
-  AppwriteRequestError,
-  createAppwriteDocument,
-  getAppwriteConfig,
-  uploadAppwriteFile,
-} from "@/functions/appwrite";
-import { ValidationError, validateCareerFormData } from "@/lib/server/validation";
 
 export const runtime = "edge";
 
 export async function POST(request: Request) {
   try {
-    const {
-      collections: { career },
-      buckets: { career: careerBucket },
-    } = getAppwriteConfig();
-    const formData = await request.formData();
-    const { applicationData, resumeFile } = validateCareerFormData(formData);
+    const payload = await request.json();
+    const apiUrl = process.env.SGE_API_URL || "https://api.amcmep.in/v1";
+    const businessId = process.env.SS_ENGINEERS_BUSINESS_ID;
 
-    const uploadedFile = await uploadAppwriteFile(careerBucket, resumeFile);
-    const document = await createAppwriteDocument(
-      career,
-      {
-        ...applicationData,
-        resumeFileId: uploadedFile.$id,
-        resumeFileName: uploadedFile.name,
-      },
-      { requireApiKey: true }
-    );
+    const response = await fetch(`${apiUrl}/website/career-apply`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        businessId,
+        applicantName: payload.name || "Unknown",
+        phone: payload.phone || "Unknown",
+        email: payload.email || "",
+        position: payload.position || "General",
+        experience: payload.experience || "",
+        location: payload.location || "",
+        workDescription: payload.workDescription || "",
+        source: payload.source || "ssengineers.in",
+      }),
+    });
 
-    return NextResponse.json(
-      {
-        message: "Career application submitted successfully.",
-        documentId: document.$id,
-        resumeFileId: uploadedFile.$id,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    if (error instanceof ValidationError) {
-      return NextResponse.json({ message: error.message }, { status: error.status });
-    }
-
-    if (error instanceof AppwriteRequestError) {
-      return NextResponse.json({ message: error.message }, { status: error.status });
-    }
-
-    const message =
-      error instanceof Error ? error.message : "Unexpected server error";
-    return NextResponse.json({ message }, { status: 500 });
+    if (!response.ok) throw new Error("DataHub error");
+    return NextResponse.json(await response.json(), { status: 200 });
+  } catch {
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
