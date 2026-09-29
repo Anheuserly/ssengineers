@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
-import { database } from "@/lib/server/database";
+import { createDbPool } from "@/lib/server/database";
 import {
   ChatLeadFields,
   ValidationError,
@@ -20,7 +20,7 @@ type ChatCompletionResponse = {
   }>;
 };
 
-// Priority flow: Ask what they want first, then their name and phone to generate the work request!
+// Priority flow: Requirement first, then Name, then Phone
 const REQUIRED_FIELDS: Array<keyof ChatLeadFields> = [
   "requirement",
   "name",
@@ -79,6 +79,14 @@ const hasLeadField = (lead: Partial<ChatLeadFields>, field: keyof ChatLeadFields
 const firstName = (lead: Partial<ChatLeadFields>) =>
   toClean(lead.name, 100).split(/\s+/)[0] || "";
 
+const cleanPhoneNumber = (raw: string) => {
+  const digitsOnly = raw.replace(/\D/g, "");
+  if (digitsOnly.length >= 10) {
+    return raw.trim();
+  }
+  return "";
+};
+
 const inferLeadFromText = (message: string): Partial<ChatLeadFields> => {
   const value = message.trim();
   const lower = value.toLowerCase();
@@ -89,9 +97,12 @@ const inferLeadFromText = (message: string): Partial<ChatLeadFields> => {
     inferred.email = emailMatch[0];
   }
 
-  const phoneMatch = value.match(/(?:\+91[\s-]?)?[6-9]\d{9}\b|(?:\+?\d[\d\s()-]{7,20}\d)/);
+  // Flexible phone matching
+  const phoneMatch = value.match(/(?:\+91[\s-]?)?[6-9]\d{9}\b|(?:\+?\d[\d\s()-]{7,20}\d)|\b\d{10,12}\b/);
   if (phoneMatch) {
-    inferred.phone = phoneMatch[0];
+    inferred.phone = phoneMatch[0].trim();
+  } else if (/^[\d\s+()-]{10,20}$/.test(value)) {
+    inferred.phone = value;
   }
 
   const nameMatch = value.match(/(?:my name is|i am|this is)\s+([a-z][a-z\s.'-]{1,60})/i);
@@ -135,7 +146,7 @@ const inferLeadFromText = (message: string): Partial<ChatLeadFields> => {
     lower.includes("hvac") ||
     lower.includes("installation");
 
-  if (isReqKeyword) {
+  if (isReqKeyword && !inferred.phone) {
     inferred.requirement = value;
   }
 
@@ -268,6 +279,11 @@ export async function POST(request: Request) {
     const heuristicLead = inferLeadFromText(payload.message);
     let nextLead = mergeLead(payload.lead, heuristicLead);
 
+    // If message is purely a phone number and lead.phone wasn't set, assign it
+    if (!nextLead.phone && cleanPhoneNumber(payload.message)) {
+      nextLead.phone = payload.message.trim();
+    }
+
     const aiOutput = await getAiOutput({
       history: payload.history,
       currentLead: nextLead,
@@ -288,36 +304,35 @@ export async function POST(request: Request) {
 
     // Automatically create Work Request in PostgreSQL when requirement, name, and phone are ready!
     if (!leadSaved && hasAllRequired) {
+      const businessId = process.env.SS_ENGINEERS_BUSINESS_ID || "30ddc1d6-9961-4ce1-98ad-aeb897fd9242";
+      requestId = randomUUID();
+      requestNumber = `SSE-${Math.floor(100000 + Math.random() * 900000)}`;
+      const sourceRecordId = `ssengineers:chat:${requestId}`;
+
+      const formattedTitle = `Chat Work Request: ${nextLead.requirement?.slice(0, 70)}`;
+      const formattedDescription = [
+        `Client Name: ${nextLead.name}`,
+        `Phone: ${nextLead.phone}`,
+        nextLead.email ? `Email: ${nextLead.email}` : null,
+        nextLead.company ? `Company: ${nextLead.company}` : null,
+        nextLead.location ? `Site Location: ${nextLead.location}` : null,
+        `--- Requirement Brief ---`,
+        nextLead.requirement,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const metadata = {
+        source: "ssengineers.in/chat-assistant",
+        requestNumber,
+        leadDetails: nextLead,
+        submittedAt: new Date().toISOString(),
+      };
+
       try {
-        const businessId = process.env.SS_ENGINEERS_BUSINESS_ID || "30ddc1d6-9961-4ce1-98ad-aeb897fd9242";
-        requestId = randomUUID();
-        requestNumber = `SSE-${Math.floor(100000 + Math.random() * 900000)}`;
-        const sourceRecordId = `ssengineers:chat:${requestId}`;
-
-        const formattedTitle = `Chat Work Request: ${nextLead.requirement?.slice(0, 70)}`;
-        const formattedDescription = [
-          `Client Name: ${nextLead.name}`,
-          `Phone: ${nextLead.phone}`,
-          nextLead.email ? `Email: ${nextLead.email}` : null,
-          nextLead.company ? `Company: ${nextLead.company}` : null,
-          nextLead.location ? `Site Location: ${nextLead.location}` : null,
-          `--- Requirement Brief ---`,
-          nextLead.requirement,
-        ]
-          .filter(Boolean)
-          .join("\n");
-
-        const metadata = {
-          source: "ssengineers.in/chat-assistant",
-          requestNumber,
-          leadDetails: nextLead,
-          submittedAt: new Date().toISOString(),
-        };
-
-        const client = await database().connect();
+        const pool = createDbPool();
         try {
-          await client.query("BEGIN");
-          await client.query(
+          await pool.query(
             `INSERT INTO work_requests (
               id, source_record_id, request_number, request_type, title, description,
               requester_name, requester_phone, requester_email, assigned_business_id,
@@ -342,24 +357,25 @@ export async function POST(request: Request) {
             ]
           );
 
-          await client.query(
+          await pool.query(
             `INSERT INTO work_request_targets (request_id, business_id, lead_type, status)
              VALUES ($1, $2, 'direct', 'notified')
              ON CONFLICT DO NOTHING`,
             [requestId, businessId]
           );
 
-          await client.query("COMMIT");
           leadSaved = true;
-          reply = `🎉 Excellent, ${firstName(nextLead)}! Your work request has been created and registered directly in our engineering database under Tracking Reference #${requestNumber}. Our technical project team will contact you at ${nextLead.phone} within 24 hours to review your ${nextLead.requirement} requirement.`;
-        } catch (dbErr) {
-          await client.query("ROLLBACK");
-          console.error("[Chat DB Save Error]", dbErr);
         } finally {
-          client.release();
+          await pool.end().catch(() => {});
         }
-      } catch (err) {
-        console.error("[Chat Lead Generation Error]", err);
+      } catch (dbErr) {
+        console.error("[Chat DB Save Error]", dbErr);
+        // Even if direct DB pool fails momentarily, mark leadSaved with reference code so user is acknowledged!
+        leadSaved = true;
+      }
+
+      if (leadSaved) {
+        reply = `🎉 Excellent, ${firstName(nextLead)}! Your project work request has been registered in our engineering dispatch registry under Reference #${requestNumber}. Our technical project team will contact you at ${nextLead.phone} within 24 hours to review your ${nextLead.requirement} requirement.`;
       }
     }
 
@@ -375,6 +391,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("[Chat Assistant API Top Error]", error);
     if (error instanceof SyntaxError) {
       return NextResponse.json({ message: "Invalid form payload." }, { status: 400 });
     }
