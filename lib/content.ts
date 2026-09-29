@@ -609,29 +609,54 @@ export const caseStudies = [
 
 export const faqs = [
   {
-    question: "Do you handle design, supply, installation, and AMC under one contract?",
+    question: "Do you execute design, OEM supply, site installation, testing, and AMC under a single turnkey contract?",
     answer:
-      "Yes. We support complete lifecycle delivery from survey and engineering design through installation, testing, commissioning, and annual maintenance.",
+      "Yes. S.S. Engineers & Consultants provides single-point turnkey accountability across all phases: initial risk survey, CAD layout and hydraulic calculations, direct OEM equipment procurement, on-site fabrication, statutory testing, authority handover, and ongoing annual maintenance contracts (AMC). Clients work directly with our engineering heads without intermediary sub-contractor friction.",
   },
   {
-    question: "Which standards and compliance requirements do you align with?",
+    question: "How do you handle Fire Department NOC clearances (DFS, Haryana Fire Service, etc.)?",
     answer:
-      "Our teams follow project-specific fire and MEP compliance requirements, with authority-ready documentation, test reports, and handover records.",
+      "Our installations strictly comply with the National Building Code of India (NBC 2016 Part-IV), NFPA standards, and local municipal bylaws (including Delhi Fire Service, Haryana Fire and Emergency Services, and UP Fire Services). We prepare complete approval-ready hydraulic layouts and riser schematics, calculate water storage and pump head requirements, coordinate joint site inspections with fire department officials, and guide the facility through initial Fire Safety Recommendations (FSR), provisional NOC, final Fire Safety Certificate (FSC), and periodic annual renewals.",
   },
   {
-    question: "How quickly can your team mobilize for an urgent site visit?",
+    question: "What is your typical turnaround time for an initial technical site survey and proposal?",
     answer:
-      "For Delhi NCR projects, we typically arrange an initial engineering discussion quickly and schedule site visits based on urgency and scope complexity.",
+      "For facilities across Delhi NCR (including New Delhi, Gurugram, Noida, Greater Noida, Faridabad, and Ghaziabad), our senior MEP engineers mobilize for an on-site technical survey within 24 to 48 hours of logging your work request. Following on-site inspection and review of your facility drawings, we deliver a detailed Bill of Quantities (BOQ), OEM technical data sheets, and transparent commercial estimates within 3 to 5 business days.",
   },
   {
-    question: "Can you work on retrofit projects in operational facilities?",
+    question: "Can you upgrade or execute MEP installations in active, operational facilities without business interruption?",
     answer:
-      "Yes. We regularly plan phased execution for live facilities to reduce downtime and maintain safety during installation and testing activities.",
+      "Yes. A significant portion of our 25+ years track record includes operational hospitals, continuous commercial offices, IT campuses, and manufacturing units. We establish isolated work zones, implement negative-pressure dust barriers, enforce hot-work safety permits, and schedule high-noise tasks, structural penetrations, or temporary electrical/water isolations during off-peak night shifts and weekends to ensure zero disruption to your daily operations.",
   },
   {
-    question: "What details should we share to get an accurate proposal?",
+    question: "What Annual Maintenance Contract (AMC) models do you offer, and what is the testing schedule?",
     answer:
-      "Share location, facility type, current system status, drawings (if available), and your required timeline. This helps us prepare a precise technical-commercial proposal.",
+      "We offer both Comprehensive AMC (covering preventive servicing, repair labor, and routine spare replacements) and Non-Comprehensive AMC (preventive inspections with emergency callouts). Standard maintenance protocols include weekly/monthly automatic pump starter checks, quarterly sprinkler alarm valve inspections, semi-annual smoke and heat detector sensitivity tests, and annual hydrostatic pressure testing of hydrant mains, landing valves, and delivery hoses in compliance with IS 2190.",
+  },
+  {
+    question: "Which tier-1 OEM brands do you source and integrate for fire protection and electrical systems?",
+    answer:
+      "As an authorized system integrator, we source directly from certified manufacturers including Tyco, Viking, Minimax, Ceasefire, Safex, Jindal Hissar pipes, Honeywell, Bosch, System Sensor, Ravel, Hochiki, Schneider Electric, ABB, L&T, Legrand, Polycab, and Astral. All materials arrive on site with original manufacturer test certificates, BIS/UL/FM listings, and full warranty coverage.",
+  },
+  {
+    question: "When is Clean Agent Gas Flooding (FM-200 / Novec / CO2) required instead of water sprinklers?",
+    answer:
+      "Clean agent fire suppression (such as FM-200, Novec 1230 / FK-5-1-12, and CO2 total flooding) is mandatory in mission-critical environments where water discharge would cause catastrophic electrical shorting or permanent equipment loss—including server rooms, data centers, HT/LT substation panel rooms, UPS battery banks, and medical imaging suites. These systems extinguish electrical fires thermally and chemically within 10 seconds without conducting electricity or leaving corrosive residues.",
+  },
+  {
+    question: "What statutory registrations, labor compliances, and safety standards does S.S. Engineers hold?",
+    answer:
+      "S.S. Engineers & Consultants is an ISO 9001:2008 certified enterprise with active MSME Udyam registration and verified GST registrations in Delhi (07BKMPS9694F1Z9) and Haryana (06BKMPS9694F1ZB). Our on-site technicians and supervisory staff are 100% compliant with Employee Provident Fund (EPF: DL/34311) and ESIC (11001140020001001) regulations, covered under Contractor All-Risk (CAR) insurance, and strictly adhere to daily Tool-Box Talks, PPE compliance, and zero-compromise safety standards.",
+  },
+  {
+    question: "How does your emergency response protocol work for critical faults, pump failures, or false alarms?",
+    answer:
+      "Our clients have 24x7 direct access to our emergency engineering hotline (+91 98719 36847 / 93102 86848) and the AMC MEP One App dispatch desk. For critical emergencies—such as main fire pump failure, significant hydrant line bursts, or panel ground faults—our mobile emergency response team is dispatched with repair equipment to site within 2 to 4 hours across Delhi NCR.",
+  },
+  {
+    question: "How do we initiate a project survey or track an active work request?",
+    answer:
+      "You can submit your project parameters directly through our website's Work Request form or via our interactive AI Chat Assistant. Every request is automatically assigned an official reference number (SSE-XXXXXX) logged in our centralized engineering database, and a technical coordinator is assigned within 24 hours to schedule the physical site evaluation.",
   },
 ];
 

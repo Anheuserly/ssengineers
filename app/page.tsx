@@ -204,10 +204,10 @@ export default function HomePage() {
             subtitle="Straightforward answers on statutory clearances, surveys, and multi-system execution."
           />
           <div className="faq-list">
-            {faqs.map((item) => (
-              <details key={item.question} className="faq-item">
+            {faqs.map((item, idx) => (
+              <details key={item.question} className="faq-item" open={idx === 0 ? true : undefined}>
                 <summary>{item.question}</summary>
-                <p className="muted">{item.answer}</p>
+                <p className="faq-answer-text">{item.answer}</p>
               </details>
             ))}
           </div>
