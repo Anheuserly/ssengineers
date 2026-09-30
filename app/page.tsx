@@ -110,13 +110,14 @@ export default function HomePage() {
                   onChange={(e) => setSelectedDiscipline(e.target.value)}
                   className="terminal-select"
                 >
-                  <option value="Fire Fighting & Hydrants">Fire Fighting & Hydrant Systems</option>
-                  <option value="Addressable Fire Detection">Addressable Fire Detection</option>
-                  <option value="Gas Suppression (FM-200/CO2)">Gas Suppression (FM-200 / CO2)</option>
+                  <option value="Fire Hydrant & Sprinkler Systems">Fire Hydrant & Sprinkler Systems</option>
+                  <option value="Fire Alarm & Smoke Detection">Fire Alarm & Smoke Detection</option>
+                  <option value="Gas Suppression (FM-200 / Novec)">Gas Suppression (FM-200 / Novec / CO2)</option>
                   <option value="Electrical Substation & Panels">Electrical Substation & LT/HT Panels</option>
-                  <option value="Plumbing & Pump Room">Commercial Plumbing & Pump Room</option>
-                  <option value="ELV, CCTV & IBMS">ELV, Security & IBMS Automation</option>
-                  <option value="Statutory AMC & NOC">Statutory NOC & Preventive AMC</option>
+                  <option value="Plumbing & Pumping Systems">Commercial Plumbing & Pump Room</option>
+                  <option value="HVAC & Smoke Extraction">HVAC & Smoke Extraction</option>
+                  <option value="IBMS & Access Control">ELV, Security & IBMS Automation</option>
+                  <option value="Comprehensive AMC & Fire Audit">Statutory Fire NOC & Preventive AMC</option>
                 </select>
               </div>
 
@@ -128,12 +129,12 @@ export default function HomePage() {
                   onChange={(e) => setFacilityType(e.target.value)}
                   className="terminal-select"
                 >
-                  <option value="Commercial Office / Tower">Commercial Office / IT Park</option>
+                  <option value="Commercial Complex / IT Park">Commercial Complex / IT Park</option>
                   <option value="Hospital / Healthcare">Hospital & Healthcare Facility</option>
-                  <option value="Industrial / Manufacturing">Industrial & Manufacturing Plant</option>
-                  <option value="Educational / Campus">University / Institutional Campus</option>
-                  <option value="Residential Complex">Residential High-Rise Complex</option>
-                  <option value="Airport / Logistics">Airport / Logistics Warehouse</option>
+                  <option value="Industrial Plant / Factory">Industrial Plant / Factory</option>
+                  <option value="Institutional / College Campus">University / Institutional Campus</option>
+                  <option value="Residential High-Rise">Residential High-Rise Complex</option>
+                  <option value="Warehouse / Logistics Hub">Airport / Logistics Warehouse</option>
                 </select>
               </div>
 

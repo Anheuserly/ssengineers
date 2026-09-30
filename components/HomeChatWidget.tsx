@@ -160,6 +160,19 @@ export default function HomeChatWidget() {
     return "Ask any question or type message...";
   }, [lead]);
 
+  const contactSurveyUrl = useMemo(() => {
+    const params = new URLSearchParams();
+    if (lead.requirement) params.set("discipline", lead.requirement);
+    if (lead.location) params.set("location", lead.location);
+    if (lead.name) params.set("name", lead.name);
+    if (lead.phone) params.set("phone", lead.phone);
+    if (lead.email) params.set("email", lead.email);
+    if (lead.company) params.set("company", lead.company);
+    if (lead.timeline) params.set("urgency", lead.timeline);
+    const qs = params.toString();
+    return qs ? `/contact?${qs}#request-work` : "/contact#request-work";
+  }, [lead]);
+
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (status === "sending") return;
@@ -429,7 +442,7 @@ export default function HomeChatWidget() {
             <div className="chat-footer-links">
               <span>Direct Hotline: <a href="tel:9871936847">+91 98719 36847</a></span>
               <span>•</span>
-              <Link href="/contact#request-work">Full Survey Form</Link>
+              <Link href={contactSurveyUrl}>Full Survey Form</Link>
             </div>
           </form>
         </section>

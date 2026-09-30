@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Wrench,
@@ -54,6 +54,65 @@ const urgencyLevels = [
   "Budgetary Quotation / Tender",
 ];
 
+const findMatchingService = (queryVal: string): string | null => {
+  const q = queryVal.toLowerCase().trim();
+  const direct = serviceCategories.find((c) => c.toLowerCase() === q);
+  if (direct) return direct;
+
+  if (q.includes("sprinkler") || q.includes("hydrant")) return "Fire Hydrant & Sprinkler Systems";
+  if (q.includes("alarm") || q.includes("smoke") || q.includes("detection") || q.includes("detector")) return "Fire Alarm & Smoke Detection";
+  if (q.includes("gas") || q.includes("suppression") || q.includes("fm-200") || q.includes("fm200") || q.includes("novec") || q.includes("co2")) return "Gas Suppression (FM-200 / Novec)";
+  if (q.includes("substation") || q.includes("electrical") || q.includes("panel") || q.includes("transformer") || q.includes("lt/ht") || q.includes("lt-ht")) return "Electrical Substation & Panels";
+  if (q.includes("hvac") || q.includes("ventilation") || q.includes("extraction") || q.includes("cooling")) return "HVAC & Smoke Extraction";
+  if (q.includes("plumbing") || q.includes("pump") || q.includes("drainage") || q.includes("sanitary")) return "Plumbing & Pumping Systems";
+  if (q.includes("amc") || q.includes("audit") || q.includes("noc") || q.includes("maintenance")) return "Comprehensive AMC & Fire Audit";
+  if (q.includes("ibms") || q.includes("access") || q.includes("cctv") || q.includes("bms") || q.includes("security") || q.includes("elv")) return "IBMS & Access Control";
+
+  return null;
+};
+
+const findMatchingFacility = (queryVal: string): string | null => {
+  const q = queryVal.toLowerCase().trim();
+  const direct = facilityTypes.find((f) => f.toLowerCase() === q);
+  if (direct) return direct;
+
+  if (q.includes("commercial") || q.includes("office") || q.includes("it park") || q.includes("mall") || q.includes("retail")) return "Commercial Complex / IT Park";
+  if (q.includes("plant") || q.includes("factory") || q.includes("industrial") || q.includes("manufacturing")) return "Industrial Plant / Factory";
+  if (q.includes("hospital") || q.includes("health") || q.includes("clinic") || q.includes("medical")) return "Hospital / Healthcare";
+  if (q.includes("institution") || q.includes("college") || q.includes("school") || q.includes("campus") || q.includes("university")) return "Institutional / College Campus";
+  if (q.includes("warehouse") || q.includes("logistics") || q.includes("depot") || q.includes("hub") || q.includes("airport")) return "Warehouse / Logistics Hub";
+  if (q.includes("residential") || q.includes("high-rise") || q.includes("apartment") || q.includes("housing") || q.includes("society")) return "Residential High-Rise";
+
+  return null;
+};
+
+const findMatchingScope = (queryVal: string): string | null => {
+  const q = queryVal.toLowerCase().trim();
+  const direct = scopeTypes.find((s) => s.toLowerCase() === q);
+  if (direct) return direct;
+
+  if (q.includes("turnkey") || q.includes("supply") || q.includes("install") || q.includes("execution")) return "Turnkey Execution (Supply & Install)";
+  if (q.includes("expansion") || q.includes("retrofit") || q.includes("upgrade")) return "System Expansion / Retrofit";
+  if (q.includes("amc") || q.includes("annual maintenance") || q.includes("maintenance contract")) return "Annual Maintenance Contract (AMC)";
+  if (q.includes("noc") || q.includes("audit") || q.includes("statutory")) return "Statutory Fire NOC & Safety Audit";
+  if (q.includes("emergency") || q.includes("repair") || q.includes("breakdown")) return "Emergency Breakdown / Repair";
+
+  return null;
+};
+
+const findMatchingUrgency = (queryVal: string): string | null => {
+  const q = queryVal.toLowerCase().trim();
+  const direct = urgencyLevels.find((u) => u.toLowerCase() === q);
+  if (direct) return direct;
+
+  if (q.includes("urgent") || q.includes("immediate") || q.includes("48")) return "Immediate / Urgent (< 48 hrs)";
+  if (q.includes("week") || q.includes("1-2")) return "Within 1-2 Weeks";
+  if (q.includes("month") || q.includes("planned") || q.includes("1-3")) return "Planned Project (1-3 Months)";
+  if (q.includes("budget") || q.includes("quotation") || q.includes("tender")) return "Budgetary Quotation / Tender";
+
+  return null;
+};
+
 export default function ContactForm() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("work-request");
 
@@ -62,6 +121,13 @@ export default function ContactForm() {
   const [wrScope, setWrScope] = useState(scopeTypes[0]);
   const [wrFacility, setWrFacility] = useState(facilityTypes[0]);
   const [wrUrgency, setWrUrgency] = useState(urgencyLevels[1]);
+  const [wrName, setWrName] = useState("");
+  const [wrPhone, setWrPhone] = useState("");
+  const [wrEmail, setWrEmail] = useState("");
+  const [wrCompany, setWrCompany] = useState("");
+  const [wrLocation, setWrLocation] = useState("");
+  const [wrBrief, setWrBrief] = useState("");
+  const [isPrefilled, setIsPrefilled] = useState(false);
   const [wrStatus, setWrStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [wrMessage, setWrMessage] = useState("");
   const [wrReferenceNumber, setWrReferenceNumber] = useState("");
@@ -73,6 +139,153 @@ export default function ContactForm() {
   const [fbRecommend, setFbRecommend] = useState(true);
   const [fbStatus, setFbStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [fbMessage, setFbMessage] = useState("");
+
+  // Sync with URL Parameters safely after client mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    if (window.location.hash === "#feedback") {
+      setActiveTab("feedback");
+    } else if (window.location.hash === "#request-work") {
+      setActiveTab("work-request");
+      setTimeout(() => {
+        const el = document.getElementById("request-work");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 150);
+    }
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "feedback" || tabParam === "review") {
+      setActiveTab("feedback");
+    }
+
+    let prefilled = false;
+    let autoDiscipline = "";
+    let autoFacility = "";
+    let autoLocation = "";
+
+    // 1. Discipline / Service
+    const rawDiscipline =
+      searchParams.get("discipline") ||
+      searchParams.get("service") ||
+      searchParams.get("category");
+    if (rawDiscipline) {
+      const match = findMatchingService(rawDiscipline);
+      if (match) {
+        setWrCategory(match);
+        autoDiscipline = match;
+        prefilled = true;
+      }
+    }
+
+    // 2. Facility Typology
+    const rawFacility =
+      searchParams.get("facility") ||
+      searchParams.get("facilityType") ||
+      searchParams.get("building");
+    if (rawFacility) {
+      const match = findMatchingFacility(rawFacility);
+      if (match) {
+        setWrFacility(match);
+        autoFacility = match;
+        prefilled = true;
+      }
+    }
+
+    // 3. Scope of Work
+    const rawScope = searchParams.get("scope") || searchParams.get("scopeType");
+    if (rawScope) {
+      const match = findMatchingScope(rawScope);
+      if (match) {
+        setWrScope(match);
+        prefilled = true;
+      }
+    }
+
+    // 4. Urgency
+    const rawUrgency = searchParams.get("urgency") || searchParams.get("timeline");
+    if (rawUrgency) {
+      const match = findMatchingUrgency(rawUrgency);
+      if (match) {
+        setWrUrgency(match);
+        prefilled = true;
+      }
+    }
+
+    // 5. Site Location
+    const rawLocation =
+      searchParams.get("location") ||
+      searchParams.get("city") ||
+      searchParams.get("site");
+    if (rawLocation) {
+      setWrLocation(rawLocation);
+      autoLocation = rawLocation;
+      prefilled = true;
+    }
+
+    // 6. Client Name
+    const rawName = searchParams.get("name") || searchParams.get("client");
+    if (rawName) {
+      setWrName(rawName);
+      prefilled = true;
+    }
+
+    // 7. Phone / WhatsApp
+    const rawPhone =
+      searchParams.get("phone") ||
+      searchParams.get("mobile") ||
+      searchParams.get("whatsapp");
+    if (rawPhone) {
+      setWrPhone(rawPhone);
+      prefilled = true;
+    }
+
+    // 8. Email
+    const rawEmail = searchParams.get("email");
+    if (rawEmail) {
+      setWrEmail(rawEmail);
+      prefilled = true;
+    }
+
+    // 9. Company
+    const rawCompany = searchParams.get("company") || searchParams.get("org");
+    if (rawCompany) {
+      setWrCompany(rawCompany);
+      prefilled = true;
+    }
+
+    // 10. Message / Scope Brief
+    const rawMessage =
+      searchParams.get("message") ||
+      searchParams.get("brief") ||
+      searchParams.get("details");
+    if (rawMessage) {
+      setWrBrief(rawMessage);
+      prefilled = true;
+    } else if (prefilled) {
+      const parts: string[] = [];
+      const disc = autoDiscipline || rawDiscipline;
+      const fac = autoFacility || rawFacility;
+      const loc = autoLocation || rawLocation;
+
+      if (disc) parts.push(`System Scope: ${disc}`);
+      if (fac) parts.push(`Facility Typology: ${fac}`);
+      if (loc) parts.push(`Site Location: ${loc}`);
+
+      if (parts.length > 0) {
+        setWrBrief(
+          `${parts.join(" | ")}. Requesting technical site inspection, bill of quantities (BOQ), and formal proposal.`
+        );
+      }
+    }
+
+    if (prefilled) {
+      setIsPrefilled(true);
+    }
+  }, []);
 
   // Work Request Submit
   const handleWorkRequestSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,6 +302,12 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
+          name: wrName || data.name,
+          phone: wrPhone || data.phone,
+          email: wrEmail || data.email,
+          company: wrCompany || data.company,
+          location: wrLocation || data.location,
+          message: wrBrief || data.message,
           serviceCategory: wrCategory,
           scopeType: wrScope,
           facilityType: wrFacility,
@@ -209,6 +428,13 @@ export default function ContactForm() {
                 onClick={() => {
                   setWrStatus("idle");
                   setWrMessage("");
+                  setWrName("");
+                  setWrPhone("");
+                  setWrEmail("");
+                  setWrCompany("");
+                  setWrLocation("");
+                  setWrBrief("");
+                  setIsPrefilled(false);
                 }}
               >
                 <RotateCcw size={14} style={{ marginRight: "6px" }} />
@@ -223,6 +449,25 @@ export default function ContactForm() {
                   <input name="website" type="text" tabIndex={-1} autoComplete="off" />
                 </label>
               </div>
+
+              {/* Prefilled Alert Notice from Hero / AI Helpdesk */}
+              {isPrefilled && (
+                <div className="terminal-prefilled-alert">
+                  <div className="prefill-title-row">
+                    <span className="live-dot" />
+                    <strong>Pre-configured from Engineering Desk</strong>
+                  </div>
+                  <div className="prefill-pills-wrap">
+                    <span className="prefill-pill">{wrCategory}</span>
+                    <span className="prefill-pill">{wrFacility}</span>
+                    {wrLocation && <span className="prefill-pill">📍 {wrLocation}</span>}
+                  </div>
+                  <p className="prefill-note">
+                    Parameters and preliminary scope draft have been automatically loaded from your
+                    selection. Feel free to adjust any specification before submitting.
+                  </p>
+                </div>
+              )}
 
               <div className="form-intro-banner">
                 <p className="intro-title">
@@ -299,6 +544,8 @@ export default function ContactForm() {
                     placeholder="e.g. Rajesh Sharma"
                     maxLength={100}
                     className="input-custom"
+                    value={wrName}
+                    onChange={(e) => setWrName(e.target.value)}
                   />
                 </label>
 
@@ -314,6 +561,8 @@ export default function ContactForm() {
                     pattern="[0-9+()\\-\\s]{7,25}"
                     maxLength={25}
                     className="input-custom"
+                    value={wrPhone}
+                    onChange={(e) => setWrPhone(e.target.value)}
                   />
                 </label>
               </div>
@@ -327,6 +576,8 @@ export default function ContactForm() {
                     placeholder="name@company.com"
                     maxLength={160}
                     className="input-custom"
+                    value={wrEmail}
+                    onChange={(e) => setWrEmail(e.target.value)}
                   />
                 </label>
 
@@ -337,6 +588,8 @@ export default function ContactForm() {
                     placeholder="e.g. DLF Commercial, Fortis, etc."
                     maxLength={120}
                     className="input-custom"
+                    value={wrCompany}
+                    onChange={(e) => setWrCompany(e.target.value)}
                   />
                 </label>
               </div>
@@ -352,6 +605,8 @@ export default function ContactForm() {
                     placeholder="e.g. Sector 62 Noida / Okhla Ph-III New Delhi"
                     maxLength={200}
                     className="input-custom"
+                    value={wrLocation}
+                    onChange={(e) => setWrLocation(e.target.value)}
                   />
                 </label>
 
@@ -385,6 +640,8 @@ export default function ContactForm() {
                   maxLength={3000}
                   className="textarea-custom"
                   placeholder="Describe your site parameters (built-up area, hydrant line requirement, pump capacity, transformer rating, AMC scope, or fire NOC audit)."
+                  value={wrBrief}
+                  onChange={(e) => setWrBrief(e.target.value)}
                 />
               </label>
 
