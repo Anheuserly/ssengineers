@@ -477,6 +477,30 @@ li {
   gap: 0.65rem;
 }
 
+.header-activity-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  min-height: 40px;
+  padding: 0.38rem 0.65rem;
+  border: 1px solid rgba(220, 38, 38, 0.28);
+  border-radius: 9px;
+  color: #b91c1c;
+  background: #fef2f2;
+  font-size: 0.82rem;
+  font-weight: 750;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.header-activity-btn:hover,
+.header-activity-btn:focus-visible {
+  color: #991b1b;
+  border-color: rgba(220, 38, 38, 0.6);
+  background: #fee2e2;
+  transform: translateY(-1px);
+}
+
 .app-login-link {
   display: inline-flex;
   align-items: center;
@@ -3100,11 +3124,13 @@ textarea {
     display: none;
   }
 
-  .app-login-link span {
+  .app-login-link span,
+  .header-activity-btn span {
     display: none;
   }
 
-  .app-login-link {
+  .app-login-link,
+  .header-activity-btn {
     width: 40px;
     justify-content: center;
     padding: 0.38rem;

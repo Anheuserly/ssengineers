@@ -2,6 +2,12 @@ import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import PartnerVisualShowcase from "@/components/PartnerVisualShowcase";
 import ProjectImageGallery from "@/components/ProjectImageGallery";
+import ActivityVideoGallery from "@/components/ActivityVideoGallery";
+
+export const metadata = {
+  title: "On-Site Activity & Video Gallery | S.S. Engineers & Consultants",
+  description: "Track live on-site MEP project milestones, fire safety tutorials, NBC compliance standards, and technical masterclasses from Anil Saini Fire Academy.",
+};
 
 const activityLinks = [
   { href: "/working-activity", label: "Working Activity", detail: "Upcoming project mobilization and planning." },
@@ -16,9 +22,9 @@ export default function ActivityPage() {
       <section className="page-hero">
         <div className="container">
           <SectionHeading
-            eyebrow="Activity"
-            title="Site Activity & Project Library"
-            subtitle="Follow execution progress, view real project imagery, and access current delivery records."
+            eyebrow="Activity & Masterclasses"
+            title="Site Activity & Engineering Video Gallery"
+            subtitle="Follow field progress, watch practical fire safety demonstrations from Anil Saini Fire Academy, and access delivery records."
           />
           <div className="activity-link-row">
             {activityLinks.map((item) => (
@@ -31,7 +37,19 @@ export default function ActivityPage() {
         </div>
       </section>
 
-      <section className="section">
+      {/* Video Gallery Section */}
+      <section className="section" style={{ paddingTop: "1rem" }}>
+        <div className="container">
+          <SectionHeading
+            eyebrow="Video Masterclasses"
+            title="Practical Field Engineering Demonstrations"
+            subtitle="Hands-on tutorials on National Building Code (NBC 2016), gas suppression, pump house operations, and statutory compliance from Anil Saini Fire Academy."
+          />
+          <ActivityVideoGallery />
+        </div>
+      </section>
+
+      <section className="section alt">
         <div className="container">
           <SectionHeading
             eyebrow="On-site activity"
@@ -42,7 +60,7 @@ export default function ActivityPage() {
         </div>
       </section>
 
-      <section className="section alt">
+      <section className="section">
         <div className="container">
           <SectionHeading
             eyebrow="Project library"

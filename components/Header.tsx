@@ -17,6 +17,7 @@ import {
   Clock,
   ChevronRight,
   Building,
+  Video,
 } from "lucide-react";
 import { company, gstRegistrations } from "@/lib/content";
 import { serviceCatalog } from "@/lib/service-catalog";
@@ -243,6 +244,15 @@ export default function Header() {
 
         {/* Header Actions */}
         <div className="header-actions">
+          <Link
+            href="/activity"
+            className="header-activity-btn"
+            title="Fire Protection & Safety Activity Masterclasses"
+          >
+            <Video aria-hidden="true" size={15} />
+            <span>Activity</span>
+          </Link>
+
           <BucketLink />
 
           <a
@@ -345,6 +355,22 @@ export default function Header() {
             </div>
 
             <div className="mobile-category-list">
+              <Link
+                href="/activity"
+                className="mobile-category-link"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  background: "#fef2f2",
+                  color: "#b91c1c",
+                  fontWeight: 700,
+                  borderColor: "rgba(220, 38, 38, 0.25)",
+                  marginBottom: "0.5rem"
+                }}
+              >
+                <Video size={16} className="category-icon" />
+                <span>Activity & Video Academy</span>
+              </Link>
+
               <p className="mobile-nav-group-title">Select Discipline</p>
               {categoryNavItems.map((cat) => {
                 const Icon = cat.icon;
